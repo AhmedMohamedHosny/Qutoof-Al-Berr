@@ -1192,12 +1192,32 @@ document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
     if (transferDetails) {
       const showTransfer = (selectedPaymentMethod === "instapay" || selectedPaymentMethod === "vodafone_cash");
       transferDetails.style.display = showTransfer ? "flex" : "none";
+      
       if (showTransfer) {
         const totalVal = getCartTotal() + getShippingFee();
         const amtValEl = document.getElementById("transferAmountVal");
         if (amtValEl) amtValEl.textContent = `${totalVal.toLocaleString("ar-EG")} جنيه`;
+
+        // تغيير الاسم المشفر ورقم النسخ تلقائياً حسب الوسيلة
+        const recipientNameEl = document.getElementById("recipientName");
+        const transferNumberEl = document.getElementById("transferNumber");
+
+        if (selectedPaymentMethod === "vodafone_cash") {
+          if (recipientNameEl) recipientNameEl.textContent = "حمدي ع... ع...";
+          if (transferNumberEl) transferNumberEl.textContent = "01005293067";
+        } else if (selectedPaymentMethod === "instapay") {
+          if (recipientNameEl) recipientNameEl.textContent = "Youssef H... O...";
+          if (transferNumberEl) transferNumberEl.textContent = "01005293067";
+        }
       }
     }
+  });
+});
+
+document.getElementById("copyNumberBtn")?.addEventListener("click", () => {
+  const num = document.getElementById("transferNumber")?.textContent.trim() || "01005293067";
+  navigator.clipboard.writeText(num).then(() => {
+    showToast("تم النسخ", `تم نسخ الرقم: ${num}`);
   });
 });
 
