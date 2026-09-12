@@ -650,11 +650,11 @@ function updateCartUI() {
 
   if (cart.length === 0) {
     cartItems.innerHTML = `
-      <div class="cart-empty">
-        <div class="cart-empty-icon">🍯</div>
-        <h3>${escapeHtml(t("emptyCartTitle"))}</h3>
-        <p>${escapeHtml(t("emptyCartText"))}</p>
-        <button class="btn btn-dark" id="continueShopping">${escapeHtml(t("exploreFragrances"))}</button>
+<div class="cart-empty" style="text-align:center; padding:50px 20px;">
+        <div style="font-size:48px; margin-bottom:12px;">🍯</div>
+        <h3 style="font-size:18px; font-weight:800; color:var(--honey-gold); margin-bottom:6px;">سلتك فارغة حالياً</h3>
+        <p style="font-size:12px; color:var(--text-muted); line-height:1.6; margin-bottom:18px;">لم تقم بإضافة أي عبوة عسل بعد. اختر من محاصيلنا الطبيعية ما يناسب صحتك.</p>
+        <button class="btn btn-honey" id="continueShopping" style="font-size:12px; padding:8px 20px;">تصفح المحاصيل الآن</button>
       </div>
     `;
     if (cartFooter) cartFooter.style.display = "none";
@@ -691,14 +691,14 @@ function updateCartUI() {
 function openCart() {
   cartDrawer?.classList.add("active", "open");
   overlay?.classList.add("active", "open");
-  document.body.classList.add("no-scroll");
+  document.body.classList.add("no-scroll", "cart-open");
   updateCartUI();
 }
 
 function closeCart() {
   cartDrawer?.classList.remove("active", "open");
   overlay?.classList.remove("active", "open");
-  document.body.classList.remove("no-scroll");
+  document.body.classList.remove("no-scroll", "cart-open");
 }
 
 /* =========================================================
