@@ -5111,3 +5111,26 @@ body {
 .hero-cta-btn:hover .cta-arrow {
   transform: translateX(-4px);
 }
+/* إخفاء صورة الموبايل على الكمبيوتر */
+.hero-mobile-img {
+  display: none;
+}
+
+/* عند فتح الموقع من الموبايل */
+@media (max-width: 800px) {
+  /* إخفاء الفيديو نهائياً لمنع أي تهنيج أو تعليق */
+  .hero-video-bg {
+    display: none !important;
+  }
+
+  /* إظهار صورة asal.jpg كخلفية كاملة للشاشة */
+  .hero-mobile-img {
+    display: block !important;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+}
