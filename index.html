@@ -3,86 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="قطوف البر — QOTOF ELBR. عسل طبيعي من قلب الطبيعة وخيرات المناحل البرية.">
-  <meta name="theme-color" content="#3a2213">
-  <title data-ar="قطوف البر — عسل طبيعي من قلب الطبيعة" data-en="Qutoof Al-Berr — Pure Natural Honey">قطوف البر — عسل طبيعي من قلب الطبيعة</title>
+  <meta name="description" content="قطوف البر — عسل طبيعي خام ومصفى من خيرات الطبيعة والمناحل البرية. شفاء، نقاء، وجودة لا تُضاهى.">
+  <meta name="theme-color" content="#d97706">
+  <title data-ar="قطوف البر — عسل طبيعي 100%" data-en="Qutoof Al-Berr — Pure Natural Honey">قطوف البر — عسل طبيعي 100%</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Amiri:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- 1. الشريط العلوي الداكن (Top Utility Bar) مثل الصورة -->
-  <div class="top-utility-bar">
-    <div class="top-bar-inner">
-      <!-- السلة في أقصى اليمين/اليسار حسب الاتجاه -->
-      <div class="top-bar-actions">
-        <button class="top-cart-btn" id="cartBtn" aria-label="سلة المشتريات">
-          <span class="cart-icon">🛒</span>
-          <span>سلة المشتريات</span>
-          <strong class="cart-badge-count" id="cartCount">0</strong>
-        </button>
-
-        <button class="top-action-btn wishlist-nav-btn" id="wishlistNavBtn" title="المفضلة">
-          <span>❤️</span>
-          <span id="wishlistCount">0</span>
-        </button>
-
-        <button class="top-action-btn" id="themeBtn" title="تبديل المظهر">
-          <span>🌙</span>
-        </button>
-
-        <button class="top-lang-btn" id="langBtn">
-          <span id="langBtnText">EN</span>
-        </button>
-      </div>
-
-      <!-- حقل البحث المباشر في منتصف الشريط مثل الصورة -->
-      <div class="top-search-box">
-        <input type="search" id="searchInput" placeholder="ابحث عن نوع العسل..." autocomplete="off">
-        <button type="button" id="searchBtn">🔍</button>
-      </div>
-    </div>
+<!-- شريط الإعلانات العلوي -->
+<div class="ticker-wrap">
+  <div class="ticker-move">
+    <div class="ticker-item">🍯 قال تعالى: ﴿فِيهِ شِفَاءٌ لِّلنَّاسِ﴾ 🍯</div>
+    <div class="ticker-item">🌿 قطوف البر — عسل نحل طبيعي خام ومفحوص معملياً 🌿</div>
+    <div class="ticker-item">🚚 شحن مجاني لكافة المحافظات للطلبات فوق 1,500 جنيه 🚚</div>
+    <div class="ticker-item">✨ الضمان الذهبي: حق الفحص والاسترجاع الفوري إن لم يكن طبيعياً ✨</div>
+    <div class="ticker-item">🍯 قال تعالى: ﴿فِيهِ شِفَاءٌ لِّلنَّاسِ﴾ 🍯</div>
   </div>
+</div>
 
-  <!-- 2. شريط التنقل الرئيسي والهيدر الفاتح -->
-  <header class="main-header" id="navbar">
-    <div class="header-inner">
-      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="القائمة">
+  <!-- الهيدر -->
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="فتح القائمة">
         <span></span><span></span><span></span>
       </button>
 
-      <!-- روابط القائمة الرئيسية -->
-      <nav class="desktop-nav" aria-label="التنقل الرئيسي">
-        <a href="#home" class="active">الرئيسية</a>
+      <a href="#home" class="logo">
+        <img src="image/logo.png" alt="قطوف البر">
+        <span>قطوف البر</span>
+      </a>
+
+      <nav class="desktop-nav">
+        <a href="#home">الرئيسية</a>
         <a href="#collections">أقسام العسل</a>
-        <a href="#shop">منتجاتنا</a>
-        <a href="#whyUs">عن منحلنا</a>
+        <a href="#shop">المتجر</a>
+        <a href="#whyUs">ميثاق الجودة</a>
         <a href="#customerReviewsSection">آراء العملاء</a>
-        <a href="#footer">تواصل معنا</a>
+        <a href="#footer">تواصل معنا</a>        
       </nav>
 
-      <!-- لوجو وهوية قطوف البر الكلاسيكية -->
-      <a href="#home" class="classic-brand-logo">
-        <div class="logo-text-wrap">
-          <span class="brand-ar">قطوف البر</span>
-          <span class="brand-en">QOTOF ELBR</span>
-        </div>
-        <div class="bee-honeycomb-icon">
-          <img src="image/logo.png" alt="شعار قطوف البر" onerror="this.src='https://cdn-icons-png.flaticon.com/512/826/826963.png'">
-        </div>
-      </a>
+      <div class="nav-actions">
+        <button class="icon-btn" id="searchBtn" aria-label="بحث">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
+        </button>
+
+        <button class="icon-btn wishlist-nav-btn" id="wishlistNavBtn" aria-label="المفضلة">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path></svg>
+          <span class="cart-count" id="wishlistCount">0</span>
+        </button>
+
+        <button class="cart-btn" id="cartBtn" aria-label="السلة">
+          <svg viewBox="0 0 24 24"><path d="M4 5h2l1.7 10.2a2 2 0 0 0 2 1.8h7.9a2 2 0 0 0 1.9-1.5L21 8H7"></path><circle cx="10" cy="20" r="1"></circle><circle cx="18" cy="20" r="1"></circle></svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
     </div>
 
-    <!-- قائمة الموبايل -->
     <div class="mobile-nav" id="mobileNav">
       <a href="#home">الرئيسية</a>
       <a href="#collections">أقسام العسل</a>
-      <a href="#shop">منتجاتنا</a>
-      <a href="#whyUs">عن منحلنا</a>
+      <a href="#shop">المتجر</a>
+      <a href="#whyUs">ميثاق الجودة</a>
       <a href="#customerReviewsSection">آراء العملاء</a>
       <a href="#footer">تواصل معنا</a>
     </div>
@@ -90,131 +76,238 @@
 
   <main>
 
-    <!-- 3. بنر الهيرو البانورامي (Hero Section) مع صورة العسل والخلية الطبيعية -->
-    <section class="classic-hero-banner" id="home">
-      <div class="hero-bg-media">
-        <!-- يمكنك استخدام صورة بنر عسل أو فيديو -->
-        <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=1600&q=85" alt="عسل قطوف البر" class="hero-bg-img">
-        <div class="hero-soft-overlay"></div>
-      </div>
-
-      <div class="hero-centered-content">
-        <div class="hero-emblem">
-          <span class="emblem-bee">🐝</span>
+    <!-- HERO SECTION (تصميم هادئ ومدمج) -->
+    <div class="hero-container">
+      <section class="hero" id="home">
+        <video class="hero-video-bg" autoplay muted loop playsinline preload="auto">
+          <source src="video/hero-video.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <span class="honey-badge-pill">🌿 محصول بلدي طبيعي 100%</span>
+          <h1>عسلٌ نقيّ.. مِن خيراتِ البرِّ والمناحل</h1>
+          <p class="hero-text">
+            نوفر لكم خلاصة المناحل البرية المفحوصة مخبرياً؛ عسل خام غير مبستر بدون أي سكريات صناعية أو إضافات، يصلكم بطعمه الأصلي وفوائده الحية.
+          </p>
+          <div class="hero-buttons">
+            <a href="#shop" class="btn btn-honey">تصفح المحصول</a>
+            <a href="#collections" class="btn btn-outline">الأقسام المتاحة</a>
+          </div>
         </div>
-        <h1 class="hero-main-title">قطوف البر</h1>
-        <span class="hero-sub-en">Q O T O F &nbsp; E L B R</span>
-        <p class="hero-tagline-text">عسل طبيعي من قلب الطبيعة</p>
+      </section>
+    </div>
+
+    <!-- شريط الثقة المدمج -->
+    <section class="trust-strip">
+      <div class="trust-item">
+        <span class="trust-icon">🍯</span>
+        <div>
+          <h4>خام وغير مبستر</h4>
+          <p>يحتفظ بكامل إنزيماته الطبيعية</p>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">🔬</span>
+        <div>
+          <h4>مفحوص معملياً</h4>
+          <p>نسب سكروز منخفضة ومضمونة</p>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">🚚</span>
+        <div>
+          <h4>دفع عند الاستلام</h4>
+          <p>حق المعاينة والتذوق قبل الاستلام</p>
+        </div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">✨</span>
+        <div>
+          <h4>ضمان استرجاع ذهبي</h4>
+          <p>استرداد فوري إن ثبت عدم نقائه</p>
+        </div>
       </div>
     </section>
 
-    <!-- 4. شريط الأقسام الدائرية الكلاسيكي (مثل الصورة تماماً) -->
-    <section class="categories-strip-section" id="collections">
-      <div class="categories-container" id="categoryTabs">
-        <!-- زر جميع الأنواع -->
-        <button type="button" class="category-pill-card active filter-btn" data-category="all">
-          <div class="cat-icon-circle">🍯</div>
-          <span class="cat-name">جميع الأنواع</span>
-        </button>
+    <!-- تصنيفات الأعسال الأربعة الجديدة -->
+    <section class="section collections-section" id="collections">
+      <div class="section-heading centered">
+        <span class="sub-title">محاصيل المناحل</span>
+        <h2>أصناف <em>قطوف البر</em> المختارة</h2>
+        <p class="section-description">اختر من بين مجموعاتنا الطبيعية المفحوصة بعناية لتناسب صحتك واحتياجك اليومي.</p>
+      </div>
 
-        <!-- برسيم وزهور -->
-        <button type="button" class="category-pill-card filter-btn" data-category="men">
-          <div class="cat-icon-circle">🌸</div>
-          <span class="cat-name">برسيم وزهور</span>
-        </button>
+      <div class="collections-grid">
+        <!-- 1. برسيم وزهور -->
+        <div class="collection-card" data-collection="men">
+          <div class="collection-image" style="background-image: url('https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=700&q=80');"></div>
+          <div class="collection-content">
+            <span class="cat-tag">الأصناف الزهرية</span>
+            <h3>برسيم وزهور</h3>
+            <p>قوام خفيف ذهبي، مذاق معتدل ومحبب للأطفال، ومثالي كبديل صحي للسكر في المشروبات اليومية.</p>
+            <span class="cat-link">تصفح الأصناف ←</span>
+          </div>
+        </div>
 
-        <!-- عسل بالمكسرات -->
-        <button type="button" class="category-pill-card filter-btn" data-category="women">
-          <div class="cat-icon-circle">🥜</div>
-          <span class="cat-name">عسل بالمكسرات</span>
-        </button>
+        <!-- 2. عسل بالمكسرات -->
+        <div class="collection-card" data-collection="women">
+          <div class="collection-image" style="background-image: url('https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&w=700&q=80');"></div>
+          <div class="collection-content">
+            <span class="cat-tag">طاقة وحيوية</span>
+            <h3>عسل بالمكسرات</h3>
+            <p>عسل نقي معتق مع تشكيلة غنية من المكسرات النيئة الفاخرة (لوز، عين جمل، كاجو، وبندق) لطاقة تدوم طوال اليوم.</p>
+            <span class="cat-link">تصفح الأصناف ←</span>
+          </div>
+        </div>
 
-        <!-- مشتقات الخلية -->
-        <button type="button" class="category-pill-card filter-btn" data-category="unisex">
-          <div class="cat-icon-circle">🐝</div>
-          <span class="cat-name">مشتقات الخلية</span>
-        </button>
+        <!-- 3. مشتقات الخلية -->
+        <div class="collection-card" data-collection="unisex">
+          <div class="collection-image" style="background-image: url('https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?auto=format&fit=crop&w=700&q=80');"></div>
+          <div class="collection-content">
+            <span class="cat-tag">خلاصة الخلية</span>
+            <h3>مشتقات الخلية</h3>
+            <p>غذاء ملكات النحل الصافي، العكبر الجبلي (البروبوليس)، وحبوب اللقاح الخام الغنية بالفيتامينات والمعادن الطبيعية.</p>
+            <span class="cat-link">تصفح الأصناف ←</span>
+          </div>
+        </div>
 
-        <!-- خلطات طبيعية -->
-        <button type="button" class="category-pill-card filter-btn" data-category="bestseller">
-          <div class="cat-icon-circle">🌿</div>
-          <span class="cat-name">خلطات طبيعية</span>
-        </button>
+        <!-- 4. خلطات طبيعية -->
+        <div class="collection-card" data-collection="bestseller">
+          <div class="collection-image" style="background-image: url('https://images.unsplash.com/photo-1471943311424-646960669fbc?auto=format&fit=crop&w=700&q=80');"></div>
+          <div class="collection-content">
+            <span class="cat-tag">تركيبات خاصة</span>
+            <h3>خلطات طبيعية</h3>
+            <p>توليفات علاجية ومنشطة محضرة بنسب دقيقة تجمع بين عسل السدر والأعشاب الطبية وغذاء الملكات للمناعة والنشاط.</p>
+            <span class="cat-link">تصفح الأصناف ←</span>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- 5. قسم المنتجات المميزة (Featured Products Grid) -->
+    <!-- سلايدر باقات المناحل 3D -->
+    <section class="offers-showcase-section" id="offersShowcaseSection" style="display: none;">
+      <div class="offers-container">
+        <div class="offers-header-head">
+          <div class="offers-badge-flame">🔥 باقات وعروض التوفير</div>
+          <h2 class="offers-main-title">عروض <em>قطوف البر</em> الخاصة</h2>
+        </div>
+
+        <div class="offers-carousel-wrapper" id="offersCarouselWrapper">
+          <button type="button" class="offer-nav-btn prev-btn" id="offerPrevBtn">❮</button>
+          <div class="offers-track" id="offersTrack"></div>
+          <button type="button" class="offer-nav-btn next-btn" id="offerNextBtn">❯</button>
+        </div>
+
+        <div class="offers-dots-indicators" id="offersDots"></div>
+      </div>
+    </section>
+
+    <!-- متجر قطوف البر -->
     <section class="section shop-section" id="shop">
-      <div class="section-title-ornament">
-        <span class="bee-divider">🐝</span>
-        <h2>منتجاتنا المميزة</h2>
+      <div class="section-heading">
+        <div>
+          <span class="sub-title">المحصول المتاح للطلب</span>
+          <h2>متجر <em>قطوف البر</em></h2>
+        </div>
+        <p class="section-description">جميع العبوات زجاجية معقمة ومحكمة الإغلاق ومتاحة بأوزان (ربع كيلو، نصف كيلو، كيلو كامل).</p>
       </div>
 
-      <!-- ترتيب وفلترة إضافية -->
-      <div class="shop-filter-bar">
-        <div class="sort-box">
-          <label for="sortSelect">ترتيب حسب:</label>
+      <!-- تصنيفات الفلترة -->
+      <div class="shop-toolbar">
+        <div class="category-tabs" id="categoryTabs">
+          <button class="filter-btn active" data-category="all">الكل</button>
+          <button class="filter-btn" data-category="men">برسيم وزهور</button>
+          <button class="filter-btn" data-category="women">عسل بالمكسرات</button>
+          <button class="filter-btn" data-category="unisex">مشتقات الخلية</button>
+          <button class="filter-btn" data-category="bestseller">خلطات طبيعية</button>
+          <button class="filter-btn" data-category="wishlist">المفضلة ❤️</button>
+        </div>
+
+        <div class="sort-wrapper">
+          <label for="sortSelect">الترتيب:</label>
           <select id="sortSelect">
             <option value="featured">المميز</option>
-            <option value="price-low">السعر: من الأقل للأعلى</option>
-            <option value="price-high">السعر: من الأعلى للأقل</option>
+            <option value="price-low">السعر: الأقل للأعلى</option>
+            <option value="price-high">السعر: الأعلى للأقل</option>
             <option value="rating">الأعلى تقييماً</option>
           </select>
         </div>
       </div>
 
-      <!-- كروت المنتجات تتولد هنا برمجياً بأسلوب الصورة الكلاسيكي -->
+      <!-- حقل البحث السريع -->
+      <div class="search-panel" id="searchPanel">
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
+          <input type="search" id="searchInput" placeholder="ابحث عن نوع عسل أو منتج..." autocomplete="off">
+          <button id="clearSearch">&times;</button>
+        </div>
+      </div>
+
+      <!-- شبكة المنتجات (مدمجة ومحكمة) -->
       <div class="products-grid" id="productsGrid"></div>
 
       <div class="no-products" id="noProducts">
         <div>🍯</div>
-        <h3>لم نجد أصنافاً مطابقة</h3>
-        <p>يرجى تجربة تصنيف آخر من الأقسام بالأعلى.</p>
+        <h3>لا توجد أصناف في هذا التصنيف حالياً</h3>
+        <p>اختر تصنيفاً آخر أو جرب البحث بكلمة مختلفة.</p>
       </div>
 
       <div class="pagination" id="pagination"></div>
     </section>
 
-    <!-- 6. نبذة وميثاق الجودة (عن مناحلنا) -->
-    <section class="section about-section" id="whyUs">
-      <div class="about-card-classic">
-        <div class="about-text-content">
-          <span class="about-eyebrow">أمانة وجودة من الخلية إلى يدك</span>
-          <h2>نقاء طبيعي <em>مفحوص معملياً</em></h2>
-          <p>
-            في مناحل <strong>قطوف البر</strong> نضمن لكم عسلاً حراً نقياً لم يتعرض لأي بسترة أو إضافات كيميائية أو تغذية سكرية، مصفى على البارد لحفظ كامل إنزيماته ومضادات الأكسدة الحيوية.
-          </p>
-          <div class="trust-mini-strip">
-            <span>✓ مفحوص مخبرياً</span>
-            <span>✓ عبوات زجاجية معقمة</span>
-            <span>✓ فحص وتذوق قبل الاستلام</span>
-          </div>
+    <!-- ميثاق الجودة (تصميم كروت عصرية مدمجة ومريحة بدون مط) -->
+    <section class="why-section" id="whyUs">
+      <div class="why-container">
+        <div class="why-header">
+          <span class="sub-title">أمانة وجودة</span>
+          <h2>ميثاق الجودة في <em>مناحل قطوف البر</em></h2>
+          <p>نعمل بقاعدة واحدة لا نحيد عنها: العسل غذاء وشفاء، ولا نقبل أي معاملة حرارية أو تغذية صناعية تمس بركة النحل.</p>
         </div>
-        <div class="about-side-img">
-          <img src="https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&w=600&q=80" alt="عسل قطوف البر">
+
+        <div class="why-cards-grid">
+          <div class="feature-box">
+            <span class="f-icon">🌿</span>
+            <h3>مراعٍ طبيعية نقية</h3>
+            <p>خلايانا تستقر في محميات وأودية برية بعيدة تماماً عن التلوث والمبيدات الزراعية.</p>
+          </div>
+          <div class="feature-box">
+            <span class="f-icon">❄️</span>
+            <h3>تصفية على البارد</h3>
+            <p>لا نستخدم التسخين أو البسترة؛ ليبقى العسل بكامل إنزيماته الحية وحبوب اللقاح الأصلية.</p>
+          </div>
+          <div class="feature-box">
+            <span class="f-icon">🏺</span>
+            <h3>برطمانات زجاجية معقمة</h3>
+            <p>تعبئة صحية في زجاج غذائي محكم يمنع تفاعل العسل ويحفظ لزوجته ونكهته الطبيعية.</p>
+          </div>
+          <div class="feature-box">
+            <span class="f-icon">📦</span>
+            <h3>تغليف ضد الكسر</h3>
+            <p>طرد محكم وتغليف مبطن يضمن وصول طرد العسل سليماً تماماً حتى باب بيتك.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- 7. قسم آراء وتجارب عملائنا (Reviews Section) مثل الصورة -->
-    <section class="section reviews-section" id="customerReviewsSection">
-      <div class="section-title-ornament">
-        <span class="bee-divider">🐝</span>
-        <h2>آراء عملائنا</h2>
+    <!-- آراء وتجارب العملاء من الواتساب -->
+    <section class="section testimonials-section" id="customerReviewsSection">
+      <div class="section-heading centered">
+        <span class="sub-title">تجارب واقعية</span>
+        <h2>آراء <em>عملاء قطوف البر</em></h2>
+        <p class="section-description">لقطات حية من محادثات عملائنا الكرام على واتساب بعد فحص وتذوق العسل.</p>
       </div>
 
-      <!-- بطاقات آراء العملاء -->
       <div class="reviews-screens-grid" id="homeReviewsGrid"></div>
 
-      <div style="text-align: center; margin-top: 25px;" id="moreReviewsBtnWrap">
+      <div style="text-align: center; margin-top: 30px;" id="moreReviewsBtnWrap">
         <button type="button" class="btn-more-reviews" id="openAllReviewsBtn">
-          <span>💬 استعراض المزيد من محادثات وتجارب العملاء</span>
+          <span>💬 عرض كافة تجارب وتقييمات العملاء</span>
           <span>←</span>
         </button>
       </div>
     </section>
 
-    <!-- صفحة الأرشيف الكامل لتجارب العملاء -->
+    <!-- صفحة أرشيف تجارب العملاء الكاملة -->
     <div class="all-reviews-page" id="allReviewsPage" style="display: none;">
       <div class="pfp-top-nav">
         <button type="button" class="pfp-back-btn" id="closeAllReviewsBtn">
@@ -222,19 +315,21 @@
           <span>العودة للمتجر</span>
         </button>
         <div class="pfp-brand-mini">
-          <span>قطوف البر — QOTOF ELBR</span>
+          <img src="image/logo.png" alt="قطوف البر" style="height: 26px;">
+          <span>قطوف البر</span>
         </div>
       </div>
 
       <div class="all-reviews-container">
-        <div class="section-title-ornament" style="margin: 25px auto;">
-          <h2>جميع تجارب وتقييمات العملاء</h2>
+        <div class="section-heading centered" style="margin: 25px auto 30px;">
+          <span class="sub-title">سجل الثقة</span>
+          <h2>تجارب وتقييمات <em>قطوف البر</em></h2>
         </div>
         <div class="all-reviews-gallery" id="fullReviewsGallery"></div>
       </div>
     </div>
 
-    <!-- نافذة تكبير الصورة (Lightbox) -->
+    <!-- نافذة تكبير صورة التجربة (Lightbox) -->
     <div class="review-lightbox-modal" id="reviewLightbox" onclick="this.classList.remove('open')">
       <span class="lightbox-close">&times;</span>
       <img id="lightboxImg" src="" alt="رأي العميل">
@@ -242,49 +337,59 @@
 
   </main>
 
-  <!-- 8. الفوتر الكلاسيكي الداكن المطابق للصورة -->
-  <footer class="classic-footer" id="footer">
-    <div class="footer-top-row">
-      <!-- البراند والشعار -->
-      <div class="footer-brand-box">
-        <div class="footer-logo-title">قطوف البر 🐝</div>
-        <span class="footer-logo-sub">QOTOF ELBR</span>
-        <p class="footer-desc">عسل طبيعي من قلب الطبيعة.. نعتني بأدق تفاصيل الجودة لنقدم لكم غذاءً وشفاءً حقيقياً يثري يومكم بالصحة والنشاط.</p>
+  <!-- الفوتر -->
+  <footer class="footer" id="footer">    
+    <div class="footer-main">
+      <div class="footer-brand">
+        <div class="footer-logo">قطوف البر</div>
+        <p>شهدٌ نقي من رحيق البر، نسعى لتقديم أجود أنواع العسل الطبيعي والمشتقات الملكية بأعلى معايير الأمانة والجودة.</p>
       </div>
 
-      <!-- أيقونات التواصل الاجتماعي -->
-      <div class="footer-social-box">
-        <div class="social-links-row">
-          <a href="https://www.facebook.com/share/1JU4s4eMgd/" target="_blank" rel="noopener" aria-label="Facebook">📘</a>
-          <a href="https://www.instagram.com/suraqa.perfume?stkn=ZzIzOXVvZm9sNXlm" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
-          <a href="https://wa.me/201016118242" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
-          <a href="https://www.tiktok.com/@soraqa26?_r=1&_t=ZS-99b1iNo1fVs" target="_blank" rel="noopener" aria-label="TikTok">🎵</a>
-        </div>
+      <div class="footer-column">
+        <h4>روابط سريعة</h4>
+        <a href="#home">الرئيسية</a>
+        <a href="#collections">أقسام العسل</a>
+        <a href="#shop">المتجر والأسعار</a>
+        <a href="#whyUs">ميثاق الجودة</a>
       </div>
 
-      <!-- الاشتراك البريدي -->
-      <div class="footer-newsletter-box">
-        <span class="newsletter-title">اشترك في عروض مواسم الجني</span>
-        <div class="newsletter-form-row">
-          <input type="email" placeholder="أدخل بريدك الإلكتروني" aria-label="البريد">
-          <button type="button">اشتراك</button>
+      <div class="footer-column">
+        <h4>خدمة العملاء</h4>
+        <a href="#customerReviewsSection">آراء وتجارب العملاء</a>
+        <a href="#">الشحن وضمان الكسر</a>
+        <a href="#">الضمان الذهبي للاسترجاع</a>
+      </div>
+
+      <div class="footer-column">
+        <h4>تواصل مع المنحل</h4>
+        <div class="socials">
+          <a class="social-tt" href="https://www.tiktok.com/@soraqa26?_r=1&_t=ZS-99b1iNo1fVs" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg viewBox="0 0 24 24"><path d="M16.6 5.2c.6 1.6 1.8 2.7 3.4 3v2.5c-1.4 0-2.7-.4-3.8-1.2v5.8c0 2.7-2.2 4.8-4.9 4.8-2.7 0-4.9-2.1-4.9-4.8 0-2.6 2.1-4.7 4.7-4.8v2.6c-1.2.1-2.2 1-2.2 2.2 0 1.2 1 2.2 2.3 2.2 1.3 0 2.4-1 2.4-2.3V3.3h2.7c.1.7.2 1.3.3 1.9Z" fill="currentColor"></path></svg>
+          </a>
+          <a class="social-fb" href="https://www.facebook.com/share/1JU4s4eMgd/" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M15 8.5h2V5.2h-2.4c-2.4 0-3.9 1.5-3.9 4v2.1H8.5v3.1h2.2V21h3.2v-6.6h2.3l.4-3.1h-2.7v-1.7c0-.8.3-1.1 1.1-1.1Z" fill="currentColor"></path></svg>
+          </a>
+          <a class="social-ig" href="https://www.instagram.com/suraqa.perfume?stkn=ZzIzOXVvZm9sNXlm" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"></circle></svg>
+          </a>
         </div>
       </div>
     </div>
 
-    <div class="footer-bottom-bar">
-      <span>جميع الحقوق محفوظة © 2026 - قطوف البر</span>
-      <a href="https://wa.me/201101579399" target="_blank" rel="noopener" class="dev-link">صُنع بعناية بواسطة أحمد محمد</a>
+    <div class="footer-bottom">
+      <span>© 2026 مناحل قطوف البر. جميع الحقوق محفوظة.</span>
+      <a href="https://wa.me/201101579399" target="_blank" rel="noopener" class="dev-credit">صُنع بعناية بواسطة أحمد محمد</a>      
     </div>
   </footer>
 
-  <!-- درج سلة المشتريات (Slide Drawer) -->
+  <!-- درج سلة المشتريات -->
   <div class="overlay" id="overlay"></div>
+
   <aside class="cart-drawer" id="cartDrawer">
     <div class="drawer-header">
       <div>
-        <span style="font-size:11px; color:#8c532d; font-weight:bold;">سلة المشتريات</span>
-        <h2 style="font-size:20px; font-weight:800; color:#3a2213;">مختاراتك من العسل</h2>
+        <span class="sub-title">سلتك العسلية</span>
+        <h2>مشترياتك</h2>
       </div>
       <button class="close-btn" id="closeCart">&times;</button>
     </div>
@@ -296,8 +401,8 @@
         <span>الإجمالي:</span>
         <strong id="cartTotal">0 ج</strong>
       </div>
-      <p class="shipping-note">يُحسب الشحن عند إتمام الطلب بناءً على محافظتك.</p>
-      <button class="checkout-btn" id="checkoutBtn">إتمام الشراء والطلب</button>
+      <p class="shipping-note">يُحسب الشحن وتفاصيل التوصيل عند إتمام الطلب.</p>
+      <button class="btn btn-honey checkout-btn" id="checkoutBtn">إتمام الطلب الآن</button>
     </div>
   </aside>
 
@@ -305,10 +410,12 @@
   <div class="product-full-page" id="productFullPage" style="display: none;">
     <div class="pfp-top-nav">
       <button type="button" class="pfp-back-btn" id="closeProductPage">
-        <span>➔ العودة للمتجر</span>
+        <span>➔</span>
+        <span>العودة للمتجر</span>
       </button>
       <div class="pfp-brand-mini">
-        <span>قطوف البر — QOTOF ELBR</span>
+        <img src="image/logo.png" alt="قطوف البر" style="height: 26px;">
+        <span>قطوف البر</span>
       </div>
     </div>
 
@@ -316,7 +423,7 @@
       <div class="pfp-hero-grid">
         <div class="pfp-image-column">
           <div class="pfp-image-wrap">
-            <img id="pfpImage" src="" alt="العسل">
+            <img id="pfpImage" src="" alt="">
           </div>
         </div>
 
@@ -351,20 +458,20 @@
           <p class="pfp-description" id="pfpDesc"></p>
           <div class="pfp-notes-tags" id="pfpNotes"></div>
 
-          <!-- اختيار الأوزان الثلاثة -->
+          <!-- اختيار الوزن (3 أوزان فقط) -->
           <div class="pfp-sizes-wrap">
             <label class="pfp-label">اختر وزن العبوة:</label>
             <div class="pfp-sizes-list" id="pfpSizes">
-              <button type="button" class="pfp-size-btn" data-size="30">250g <span>(ربع كيلو)</span></button>
-              <button type="button" class="pfp-size-btn active" data-size="50">500g <span>(نصف كيلو)</span></button>
-              <button type="button" class="pfp-size-btn" data-size="100">1000g <span>(كيلو كامل)</span></button>
+              <button type="button" class="pfp-size-btn" data-size="30">ربع كيلو <span>(250 جم)</span></button>
+              <button type="button" class="pfp-size-btn active" data-size="50">نصف كيلو <span>(500 جم)</span></button>
+              <button type="button" class="pfp-size-btn" data-size="100">كيلو كامل <span>(1000 جم)</span></button>
             </div>
           </div>
 
           <div class="pfp-purchase-card">
             <div class="pfp-price-row">
               <div class="pfp-price-wrap">
-                <span class="pfp-label">السعر:</span>
+                <span class="pfp-label">المبلغ:</span>
                 <strong class="pfp-price-val" id="pfpPrice">0 جنيه</strong>
               </div>
 
@@ -376,14 +483,15 @@
             </div>
 
             <button type="button" class="pfp-add-btn" id="pfpAddBtn">
-              <span>🛒 أضف إلى السلة</span>
+              <span>🛒</span>
+              <span>أضف إلى السلة</span>
             </button>
           </div>
         </div>
       </div>
 
       <section class="pfp-related-section">
-        <h2 class="pfp-sec-title">أصناف عسل أخرى قد تنال إعجابك</h2>
+        <h2 class="pfp-sec-title">أصناف عسل أخرى قد تهمك</h2>
         <div class="pfp-related-grid" id="pfpRelatedGrid"></div>
       </section>
     </div>
@@ -395,8 +503,8 @@
       <button class="modal-close" id="checkoutClose">&times;</button>
       
       <div class="checkout-header">
-        <span style="font-size:11px; color:#8c532d; font-weight:bold;">بيانات الشحن والتوصيل</span>
-        <h2>تأكيد طلب العسل</h2>
+        <span class="sub-title">توصيل سريع وآمن</span>
+        <h2>بيانات استلام الطلب</h2>
       </div>
 
       <form id="checkoutForm" class="checkout-form">
@@ -425,9 +533,9 @@
 
         <div class="form-group">
           <label>العنوان بالتفصيل *</label>
-          <textarea id="custAddress" rows="2" required placeholder="اسم الشارع، رقم العمارة، الشقة، علامة مميزة"></textarea>
+          <textarea id="custAddress" rows="2" required placeholder="اسم الشارع، العمارة، الشقة، علامة مميزة"></textarea>
           <button type="button" class="btn-location" id="btnLocation">
-            <span>📍 تحديد موقعي الحالي تلقائياً عبر الخريطة</span>
+            <span>📍 تحديد موقعي الحالي تلقائياً بالخريطة</span>
           </button>
           <input type="hidden" id="custLocationMap">
           <span id="locationStatus" class="location-status"></span>
@@ -451,50 +559,50 @@
           </div>
         </div>
 
-        <!-- تنبيه تحويل رسوم الشحن فودافون كاش مسبقاً -->
+        <!-- تنبيه سداد الشحن مسبقاً بفودافون كاش -->
         <div id="shippingDepositAlert" class="shipping-deposit-card" style="display: none;">
           <div class="deposit-header">
-            <span>✨ تنويه مهم لتأكيد الشحن</span>
+            <span>✨ تنويه لعملائنا الكرام</span>
           </div>
           <p class="deposit-body">
-            حرصاً على سلامة طرود العسل الزجاجية، يُرجى سداد قيمة الشحن (<strong id="depositShippingVal">0 جنيه</strong>) مقدماً عبر فودافون كاش، وقيمة العسل بالكامل تُدفع عند الاستلام والفحص.
+            حرصًا على تأكيد شحن الطرود الزجاجية، يتم سداد قيمة الشحن (<strong id="depositShippingVal">0 جنيه</strong>) مقدمًا عبر فودافون كاش، وقيمة العسل بالكامل تُدفع عند الاستلام والمعاينة.
           </p>
           <div class="deposit-wallet-box">
-            <span>رقم فودافون كاش:</span>
+            <span>رقم التحويل:</span>
             <div class="wallet-action">
               <strong id="depositVodafoneNum">01016118242</strong>
-              <button type="button" id="copyDepositVodafoneBtn" class="copy-deposit-btn">نسخ 📋</button>
+              <button type="button" id="copyDepositVodafoneBtn" class="copy-deposit-btn">نسخ الرقم 📋</button>
             </div>
           </div>
         </div>
 
-        <!-- بيانات التحويل الإلكتروني -->
+        <!-- تحويل إلكتروني مع صورة الإيصال -->
         <div id="transferDetails" class="transfer-info" style="display: none;">
-          <h4 id="transferHeading" class="transfer-title">بيانات الحساب للتحويل</h4>
+          <h4 id="transferHeading" class="transfer-title">بيانات التحويل للمنحل</h4>
           <div class="transfer-row">
             <span>المستلم:</span>
             <strong id="recipientName">أحمد محمد (قطوف البر)</strong>
           </div>
           <div class="transfer-row">
-            <span>رقم المحفظة:</span>
+            <span>رقم الحساب / المحفظة:</span>
             <div class="copy-box-mini">
               <strong id="transferNumber">01016118242</strong>
               <button type="button" id="copyNumberBtn" class="copy-btn-mini">نسخ</button>
             </div>
           </div>
           <div class="transfer-row highlight">
-            <span>المبلغ المطلوب تحويله:</span>
+            <span>المبلغ المطلوب:</span>
             <strong class="transfer-val gold" id="transferAmountVal">0 جنيه</strong>
           </div>
         </div>
 
         <div class="checkout-summary">
           <div class="summary-line">
-            <span>قيمة العسل:</span>
+            <span>قيمة المنتجات:</span>
             <span id="summarySubtotal">0 جنيه</span>
           </div>
           <div class="summary-line">
-            <span>مصاريف الشحن:</span>
+            <span>الشحن:</span>
             <span id="summaryShipping">0 جنيه</span>
           </div>
           <div class="summary-line total-line">
@@ -503,17 +611,16 @@
           </div>
         </div>
 
-        <button type="submit" class="checkout-btn submit-order-btn" id="submitOrderBtn">تأكيد طلب العسل الآن 🍯</button>
+        <button type="submit" class="btn btn-honey submit-order-btn" id="submitOrderBtn">تأكيد الطلب الآن 🍯</button>
       </form>
     </div>
   </div>
 
-  <!-- زر واتساب العائم -->
+  <!-- زر واتساب عائم -->
   <a class="whatsapp-btn" href="https://wa.me/201016118242" target="_blank" rel="noopener" aria-label="واتساب">
     <svg viewBox="0 0 32 32"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.3.6 4.5 1.8 6.4L4 29l7.8-1.7c1.9 1 4 1.6 6.2 1.6 6.6 0 12-5.4 12-12S22.6 3 16 3Zm0 21.8c-1.9 0-3.7-.5-5.3-1.4l-.4-.2-4.4 1 1-4.3-.3-.4C5.5 17.9 5 16.5 5 15c0-6.1 4.9-11 11-11s11 4.9 11 11-4.9 10.8-11 10.8Zm6-8.2c-.3-.2-1.9-1-2.2-1s-.5-.1-.7.2-.8 1-1 1.2-.4.2-.7.1c-1.9-.8-3.1-2.6-3.2-2.8-.1-.2 0-.4.1-.5.2-.3.5-.6.7-.9.2-.3.1-.5 0-.7-.1-.2-.9-2.1-1.1-2.6-.2-.4-.4-.4-.6-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1.1 1-1.1 2.5s1.1 2.9 1.3 3.1c.2.2 2.1 3.3 5.2 4.5 2.7 1.1 3.2.9 3.8.8.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.3.2-1.5-.1-.1-.3-.2-.6-.4Z" fill="currentColor"></path></svg>
   </a>
 
-  <!-- إشعار التوست -->
   <div class="toast" id="toast">
     <span class="toast-icon">✓</span>
     <div>
@@ -535,10 +642,10 @@
       <div class="prayer-animated-box">
         <p class="prayer-text">«اللَّهُمَّ صَلِّ وَسَلِّمْ وَبَارِكْ عَلَىٰ سَيِّدِنَا مُحَمَّدٍ» 🌿</p>
       </div>
-      <p class="closed-desc">نقوم حالياً بفحص وتصفية دفعات العسل الجديدة والتأكد من أعلى معايير النقاء. نعود لاستقبال طلباتكم قريباً بإذن الله.</p>
+      <p class="closed-desc">نقوم حالياً بفحص دفعات العسل الجديدة وتصفيتها على البارد. نعود لاستقبال طلباتكم قريباً بإذن الله.</p>
       <div class="closed-btn-wrap">
         <a href="https://wa.me/201016118242" target="_blank" rel="noopener" class="closed-wa-btn">
-          <span>تواصل مع إدارة المنحل عبر واتساب 💬</span>
+          <span>تواصل مع مسؤول المنحل عبر واتساب 💬</span>
         </a>
       </div>
     </div>
