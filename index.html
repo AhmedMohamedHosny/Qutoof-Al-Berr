@@ -120,25 +120,7 @@
       </section>
     </div>
 
-    <!-- شريط مميزات الثقة -->
-    <section class="trust-strip">
-      <div class="trust-item">
-        <span class="trust-icon">🍯</span>
-        <p data-ar="طبيعي وخام 100%" data-en="100% Pure & Raw">طبيعي وخام 100%</p>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon">🔬</span>
-        <p data-ar="مفحوص ومضمون معملياً" data-en="Lab Certified">مفحوص ومضمون معملياً</p>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon">🚚</span>
-        <p data-ar="الدفع عند الاستلام أو كاش" data-en="Cash on Delivery">الدفع عند الاستلام أو كاش</p>
-      </div>
-      <div class="trust-item">
-        <span class="trust-icon">✨</span>
-        <p data-ar="الضمان الذهبي للاسترجاع" data-en="Golden Guarantee">الضمان الذهبي للاسترجاع</p>
-      </div>
-    </section>
+
 
     <!-- قسم العروض الترويجية 3D -->
     <section class="offers-showcase-section" id="offersShowcaseSection" style="display: none;">
@@ -175,14 +157,13 @@
         </p>
       </div>
 
-      <div class="shop-toolbar">
-        <div class="category-tabs" id="categoryTabs">
-          <button class="filter-btn active" data-category="all" data-ar="جميع الأعسال" data-en="All">جميع الأعسال</button>
-          <button class="filter-btn" data-category="men" data-ar="عسل سدر جبلي" data-en="Sidr Honey">عسل سدر جبلي</button>
-          <button class="filter-btn" data-category="women" data-ar="زهور وموالح" data-en="Citrus & Flowers">زهور وموالح</button>
-          <button class="filter-btn" data-category="unisex" data-ar="غذاء ملكات وعكبر" data-en="Propolis & Royal">غذاء ملكات وعكبر</button>
-          <button class="filter-btn" data-category="bestseller" data-ar="الأكثر طلباً" data-en="Best Sellers">الأكثر طلباً</button>
-          <button class="filter-btn" data-category="wishlist" data-ar="المفضلة ❤️" data-en="Wishlist">المفضلة ❤️</button>
+<div class="category-tabs" id="categoryTabs">
+          <button class="filter-btn active" data-category="all">الكل</button>
+          <button class="filter-btn" data-category="men">برسيم وزهور</button>
+          <button class="filter-btn" data-category="women">عسل بالمكسرات</button>
+          <button class="filter-btn" data-category="unisex">مشتقات الخلية</button>
+          <button class="filter-btn" data-category="bestseller">خلطات طبيعية</button>
+          <button class="filter-btn" data-category="wishlist">المفضلة ❤️</button>
         </div>
 
         <div class="sort-wrapper">
@@ -219,106 +200,57 @@
       <div class="pagination" id="pagination"></div>
     </section>
 
-    <!-- تصنيفات الأعسال -->
+<!-- تصنيفات الأعسال -->
     <section class="section collections-section" id="collections">
       <div class="section-heading centered">
-        <p class="eyebrow" data-ar="مواسم الجني" data-en="HARVEST SEASONS">مواسم الجني</p>
-        <h2 data-ar-html="اكتشف <em>أصناف قطوف البر</em>" data-en-html="Explore Our <em>Varieties</em>">اكتشف <em>أصناف قطوف البر</em></h2>
+        <p class="eyebrow">مواسم الجني</p>
+        <h2>اكتشف <em>أصناف قطوف البر</em></h2>
       </div>
 
       <div class="collections-grid">
-        <button class="collection-card collection-men" data-collection="men">
-          <div class="collection-image"></div>
+        <!-- 1. برسيم وزهور -->
+        <button class="collection-card" data-collection="men">
+          <div class="collection-image" style="background-image: url('https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center;"></div>
           <div class="collection-content">
             <span>01</span>
-            <h3 data-ar="سدر جبلي" data-en="Sidr Honey">سدر جبلي</h3>
-            <p data-ar="كثافة عالية، مذاق غني، وقيمة علاجية استثنائية." data-en="High density and exceptional healing properties.">كثافة عالية، مذاق غني، وقيمة علاجية استثنائية.</p>
-            <strong data-ar="اكتشف الأصناف ←" data-en="Explore →">اكتشف الأصناف ←</strong>
+            <h3>برسيم وزهور</h3>
+            <p>قوام خفيف ومذاق ناعم معتدل، ممتاز للأطفال وبديل صحي للسكر.</p>
+            <strong>اكتشف الأصناف ←</strong>
           </div>
         </button>
 
-        <button class="collection-card collection-women" data-collection="women">
-          <div class="collection-image"></div>
+        <!-- 2. عسل بالمكسرات -->
+        <button class="collection-card" data-collection="women">
+          <div class="collection-image" style="background-image: url('https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center;"></div>
           <div class="collection-content">
             <span>02</span>
-            <h3 data-ar="موالح وزهور" data-en="Citrus & Floral">موالح وزهور</h3>
-            <p data-ar="قوام خفيف منعش غني بفيتامين C ومثالي للأطفال." data-en="Light, refreshing, and rich in natural Vitamin C.">قوام خفيف منعش غني بفيتامين C ومثالي للأطفال.</p>
-            <strong data-ar="اكتشف الأصناف ←" data-en="Explore →">اكتشف الأصناف ←</strong>
+            <h3>عسل بالمكسرات</h3>
+            <p>عسل نقي مدعّم بتشكيلة مكسرات نيئة فاخرة لجرعة طاقة ونشاط يومي.</p>
+            <strong>اكتشف الأصناف ←</strong>
           </div>
         </button>
 
-        <button class="collection-card collection-unisex" data-collection="unisex">
-          <div class="collection-image"></div>
+        <!-- 3. مشتقات الخلية -->
+        <button class="collection-card" data-collection="unisex">
+          <div class="collection-image" style="background-image: url('https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center;"></div>
           <div class="collection-content">
             <span>03</span>
-            <h3 data-ar="مشتقات الخلية" data-en="Hive Products">مشتقات الخلية</h3>
-            <p data-ar="غذاء ملكات النحل، العكبر (البروبوليس)، وحبوب لقاح نقية." data-en="Royal jelly, propolis, and raw bee pollen.">غذاء ملكات النحل، العكبر (البروبوليس)، وحبوب لقاح نقية.</p>
-            <strong data-ar="اكتشف الأصناف ←" data-en="Explore →">اكتشف الأصناف ←</strong>
+            <h3>مشتقات الخلية</h3>
+            <p>غذاء ملكات النحل الصافي، العكبر البري، وحبوب لقاح نقية 100%.</p>
+            <strong>اكتشف الأصناف ←</strong>
           </div>
         </button>
 
-        <button class="collection-card collection-best" data-collection="bestseller">
-          <div class="collection-image"></div>
+        <!-- 4. خلطات طبيعية -->
+        <button class="collection-card" data-collection="bestseller">
+          <div class="collection-image" style="background-image: url('https://images.unsplash.com/photo-1471943311424-646960669fbc?auto=format&fit=crop&w=800&q=80'); background-size: cover; background-position: center;"></div>
           <div class="collection-content">
             <span>04</span>
-            <h3 data-ar="شمع العسل" data-en="Honeycombs">شمع العسل</h3>
-            <p data-ar="أقراص شمعية طبيعية ومقطوفة طازجة من الخلية مباشرة." data-en="Fresh, raw comb honey straight from the frame.">أقراص شمعية طبيعية ومقطوفة طازجة من الخلية مباشرة.</p>
-            <strong data-ar="اكتشف الأصناف ←" data-en="Explore →">اكتشف الأصناف ←</strong>
+            <h3>خلطات طبيعية</h3>
+            <p>تركيبات علاجية تجمع عسل السدر بالأعشاب الطبية لرفع المناعة.</p>
+            <strong>اكتشف الأصناف ←</strong>
           </div>
         </button>
-      </div>
-    </section>
-
-    <!-- قسم معيار الجودة البرية (صُنع بعناية) -->
-    <section class="why-section">
-      <div class="why-inner">
-        <div class="why-intro">
-          <p class="eyebrow" data-ar="ميثاق قطوف البر" data-en="THE QUTOOF STANDARD">ميثاق قطوف البر</p>
-          <h2 data-ar-html="نَقَاءٌ طَبِيعِيّ <em>بِلا تَدَخُّلٍ بَشَرِيّ.</em>" data-en-html="Pure Honey <em>Untouched by Humans.</em>">نَقَاءٌ طَبِيعِيّ <em>بِلا تَدَخُّلٍ بَشَرِيّ.</em></h2>
-          
-          <div class="why-rich-text">
-            <p class="why-lead-text">
-              في مناحل قطوف البر، نؤمن بأن العسل الحقيقي يُصنع بالأمانة: <strong>نترك النحل يرعى على أزهار البراري والجبال النقية دون تغذية سكرية أو معاملات حرارية تفقده إنزيماته.</strong>
-            </p>
-            <p class="why-sub-desc">
-              يُصفى العسل على البارد ويُعبأ في عبوات زجاجية معقمة لحفظ كامل فوائده الغذائية وقيمته العلاجية لتصلك الجرعة اليومية من الشفاء والطاقة كما أرادها الله تعالى.
-            </p>
-            <div class="why-signature-badge">
-              <span>✦ عسل خام غير مبستر</span>
-              <span>✦ فحص معملي دوري بنسب السكروز والإنزيمات</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="benefits-grid">
-          <div class="benefit">
-            <span class="benefit-number">01</span>
-            <div class="benefit-icon">🌿</div>
-            <h3 data-ar="مراعٍ برية نقية" data-en="Wild Flora">مراعٍ برية نقية</h3>
-            <p data-ar="خلايانا تتنقل بين الوديان والمحميات الجبلية البعيدة عن الملوثات." data-en="Apiaries located in unpolluted wild valleys and mountains.">خلايانا تتنقل بين الوديان والمحميات الجبلية البعيدة عن الملوثات.</p>
-          </div>
-
-          <div class="benefit">
-            <span class="benefit-number">02</span>
-            <div class="benefit-icon">🍯</div>
-            <h3 data-ar="تصفية باردة 100%" data-en="Cold Filtered">تصفية باردة 100%</h3>
-            <p data-ar="لا نلجأ أبداً للتسخين الصناعي لنحافظ على حبوب اللقاح والإنزيمات الحية." data-en="Never heated, preserving active enzymes and natural pollen.">لا نلجأ أبداً للتسخين الصناعي لنحافظ على حبوب اللقاح والإنزيمات الحية.</p>
-          </div>
-
-          <div class="benefit">
-            <span class="benefit-number">03</span>
-            <div class="benefit-icon">🏺</div>
-            <h3 data-ar="تعبئة زجاجية صحية" data-en="Glass Packaging">تعبئة زجاجية صحية</h3>
-            <p data-ar="نستخدم زجاجاً مخصصاً يمنع تفاعل العسل مع الضوء ويحفظ مذاقه ولزوجته." data-en="Food-grade dark jars to protect honey vitality and taste.">نستخدم زجاجاً مخصصاً يمنع تفاعل العسل مع الضوء ويحفظ مذاقه ولزوجته.</p>
-          </div>
-
-          <div class="benefit">
-            <span class="benefit-number">04</span>
-            <div class="benefit-icon">🚚</div>
-            <h3 data-ar="تغليف آمن وتوصيل سريع" data-en="Safe Shipping">تغليف آمن وتوصيل سريع</h3>
-            <p data-ar="تغليف مقوى مقاوم للصدمات ليصلك عسلك سليماً وطازجاً حتى باب دارك." data-en="Shockproof packaging delivered fresh right to your doorstep.">تغليف مقوى مقاوم للصدمات ليصلك عسلك سليماً وطازجاً حتى باب دارك.</p>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -407,49 +339,45 @@
 
   </main>
 
-  <!-- الفوتر -->
+ <!-- الفوتر -->
   <footer class="footer" id="footer">    
-    <div class="footer-main">
+    <div class="footer-main" style="grid-template-columns: 2fr 1fr 1fr; gap: 30px;">
       <div class="footer-brand">
         <a href="#home" class="footer-logo">قطوف البر</a>
-        <p class="footer-tagline" data-ar="شهدٌ نقي من رحيق البر." data-en="Pure Raw Honey.">شهدٌ نقي من رحيق البر.</p>
+        <p class="footer-tagline">شهدٌ نقي من رحيق البر.</p>
+        <p style="font-size: 11.5px; color: var(--muted); margin-top: 8px; line-height: 1.7; max-width: 360px;">
+          نوفر لكم عسل نحل طبيعي مفحوص معملياً ومصفى على البارد بدون أي إضافات، مع الضمان الذهبي للاسترجاع والمعاينة قبل الدفع.
+        </p>
       </div>
 
       <div class="footer-column">
-        <h4 data-ar="استكشف" data-en="Explore">استكشف</h4>
-        <a href="#home" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
-        <a href="#shop" data-ar="منتجات العسل" data-en="Shop">منتجات العسل</a>
-        <a href="#collections" data-ar="أنواع الرحيق" data-en="Varieties">أنواع الرحيق</a>
-        <a href="#about" data-ar="عن مناحلنا" data-en="About Us">عن مناحلنا</a>
+        <h4>أقسام المتجر</h4>
+        <a href="#home">الرئيسية</a>
+        <a href="#collections">أقسام العسل</a>
+        <a href="#shop">المحصول المتاح</a>
+        <a href="#customerReviewsSection">آراء وتجارب العملاء</a>
       </div>
 
       <div class="footer-column">
-        <h4 data-ar="خدمة العملاء" data-en="Customer Care">خدمة العملاء</h4>
-        <a href="#" data-ar="الشحن وضمان الكسر" data-en="Shipping & Delivery">الشحن وضمان الكسر</a>
-        <a href="#" data-ar="الضمان الذهبي للاسترجاع" data-en="Returns">الضمان الذهبي للاسترجاع</a>
-        <a href="#" data-ar="طرق فحص العسل الطبيعي" data-en="Honey FAQ">طرق فحص العسل الطبيعي</a>
-        <a href="#" data-ar="تواصل مع المنحل" data-en="Contact Us">تواصل مع المنحل</a>
-      </div>
-
-      <div class="footer-column">
-        <h4 data-ar="تواصل معنا" data-en="Contact">تواصل معنا</h4>
-        <div class="socials">
+        <h4>تواصل مع المنحل</h4>
+        <p style="font-size: 11px; color: var(--muted); margin-bottom: 8px;">نسعد بخدمتكم وتأكيد طلباتكم مباشرة عبر منصاتنا:</p>
+        <div class="socials" style="margin-top: 5px;">
           <a class="social-tt" href="https://www.tiktok.com/@soraqa26?_r=1&_t=ZS-99b1iNo1fVs" target="_blank" rel="noopener" aria-label="TikTok">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.2c.6 1.6 1.8 2.7 3.4 3v2.5c-1.4 0-2.7-.4-3.8-1.2v5.8c0 2.7-2.2 4.8-4.9 4.8-2.7 0-4.9-2.1-4.9-4.8 0-2.6 2.1-4.7 4.7-4.8v2.6c-1.2.1-2.2 1-2.2 2.2 0 1.2 1 2.2 2.3 2.2 1.3 0 2.4-1 2.4-2.3V3.3h2.7c.1.7.2 1.3.3 1.9Z" fill="currentColor" stroke="none"></path></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.2c.6 1.6 1.8 2.7 3.4 3v2.5c-1.4 0-2.7-.4-3.8-1.2v5.8c0 2.7-2.2 4.8-4.9 4.8-2.7 0-4.9-2.1-4.9-4.8 0-2.6 2.1-4.7 4.7-4.8v2.6c-1.2.1-2.2 1-2.2 2.2 0 1.2 1 2.2 2.3 2.2 1.3 0 2.4-1 2.4-2.3V3.3h2.7c.1.7.2 1.3.3 1.9Z" fill="currentColor"></path></svg>
           </a>
           <a class="social-fb" href="https://www.facebook.com/share/1JU4s4eMgd/" target="_blank" rel="noopener" aria-label="Facebook">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 8.5h2V5.2h-2.4c-2.4 0-3.9 1.5-3.9 4v2.1H8.5v3.1h2.2V21h3.2v-6.6h2.3l.4-3.1h-2.7v-1.7c0-.8.3-1.1 1.1-1.1Z" fill="currentColor" stroke="none"></path></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 8.5h2V5.2h-2.4c-2.4 0-3.9 1.5-3.9 4v2.1H8.5v3.1h2.2V21h3.2v-6.6h2.3l.4-3.1h-2.7v-1.7c0-.8.3-1.1 1.1-1.1Z" fill="currentColor"></path></svg>
           </a>
           <a class="social-ig" href="https://www.instagram.com/suraqa.perfume?stkn=ZzIzOXVvZm9sNXlm" target="_blank" rel="noopener" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"></circle></svg>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"></circle></svg>
           </a>
         </div>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <span data-ar="© 2026 قطوف البر. جميع الحقوق محفوظة." data-en="© 2026 Qutoof Al-Berr. All rights reserved.">© 2026 قطوف البر. جميع الحقوق محفوظة.</span>
-      <a href="https://wa.me/201101579399" target="_blank" rel="noopener" class="dev-credit" data-ar="صُنع بعناية بواسطة أحمد محمد" data-en="Crafted with care by Ahmed Mohamed">صُنع بعناية بواسطة أحمد محمد</a>      
+      <span>© 2026 قطوف البر. جميع الحقوق محفوظة.</span>
+      <a href="https://wa.me/201101579399" target="_blank" rel="noopener" class="dev-credit">صُنع بعناية بواسطة أحمد محمد</a>      
     </div>
   </footer>
 
