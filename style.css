@@ -1509,3 +1509,68 @@ img {
   background: transparent;
   border: none;
 }
+/* =========================================================
+   إصلاح العرض والتجاوب النهائي للموبايل
+   ========================================================= */
+@media (max-width: 900px) {
+  body {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+
+  .nav-inner, .hero-container, .trust-strip, .section, .why-container, .footer-main, .footer-bottom, .pfp-container {
+    width: 100% !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+
+  /* الهيدر والقائمة */
+  .desktop-nav {
+    display: none !important;
+  }
+  .mobile-menu-btn {
+    display: block !important;
+  }
+
+  /* شبكة أصناف الأقسام (تكون عمودين أو تحت بعض بشكل مريح) */
+  .collections-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .collection-card {
+    height: 180px !important;
+  }
+
+  /* شبكة المنتجات (عمودين متناسقين تماماً على الموبايل) */
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  /* شريط الثقة */
+  .trust-strip {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  /* ميثاق الجودة */
+  .why-cards-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* آراء العملاء */
+  .reviews-screens-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .review-screen-img {
+    height: 200px !important;
+  }
+
+  /* الفوتر */
+  .footer-main {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+}
