@@ -472,6 +472,9 @@
         <div class="dropdown-item" onclick="openSection('analyticsSec')">
           <span>📊 تقرير المبيعات الأكثر طلباً</span>
         </div>
+        <div class="dropdown-item" onclick="openSection('shippingSec')">
+          <span>🚚 إدارة أسعار شحن المحافظات</span>
+        </div>
         <div class="dropdown-item" id="syncDefaultsBtn" style="color: #64b5f6;">
           <span>📥 مزامنة عسل قطوف البر لـ Firebase</span>
         </div>
@@ -511,13 +514,13 @@
               <label>اسم الصنف / المحصول *</label>
               <input type="text" id="pName" placeholder="مثال: عسل سدر جبلي ملكي" required>
             </div>
-            <div class="form-group">
+<div class="form-group">
               <label>نوع المحصول / التصنيف *</label>
               <select id="pCategory">
-                <option value="men">عسل سدر جبلي</option>
-                <option value="women">موالح وزهور</option>
-                <option value="unisex">غذاء ملكات وعكبر</option>
-                <option value="bestseller">خلطات ملكية وشمع</option>
+                <option value="men">برسيم وزهور</option>
+                <option value="women">عسل بالمكسرات</option>
+                <option value="unisex">مشتقات الخلية</option>
+                <option value="bestseller">خلطات طبيعية</option>
               </select>
             </div>
             <div class="form-group">
@@ -822,7 +825,25 @@
         </div>
       </div>
     </section>
+<!-- 6. قسم إدارة أسعار شحن المحافظات -->
+    <section id="shippingSec" class="section-view">
+      <div class="panel">
+        <div class="panel-title">
+          <span>🚚 تسعير شحن طرود العسل لكافة المحافظات</span>
+          <button class="stock-btn" style="width:auto; padding:4px 10px; font-size:11px;" onclick="openSection('inventorySec')">➔ العودة للمخزون</button>
+        </div>
+        <p style="font-size:11.5px; color:var(--text-muted); margin-bottom:16px;">
+          عدّل سعر الشحن لأي محافظة واضغط على زر الحفظ بالأسفل؛ وسيتم تطبيق التسعيرة فوراً داخل سلة المتجر لجميع العملاء.
+        </p>
 
+        <form id="shippingRatesForm">
+          <div id="govRatesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+            <!-- تتولد حقول المحافظات تلقائياً بالجافاسكريبت -->
+          </div>
+          <button type="submit" class="btn-submit" id="saveShippingBtn" style="margin-top:20px; width:100%;">حفظ وتحديث أسعار الشحن بالمتجر 🚚</button>
+        </form>
+      </div>
+    </section>
   </main>
 
   <!-- نافذة مظهر وحالة المتجر -->
@@ -1818,6 +1839,75 @@ const firebaseConfig = {
       await deleteDoc(doc(db, "reviews", id));
       toast("تم حذف التجربة بنجاح!");
     };
+    /* =========================================================
+       إدارة وحفظ أسعار شحن المحافظات (Shipping Rates)
+       ========================================================= */
+    const shippingDocRef = doc(db, "settings", "shippingRates");
+
+    const DEFAULT_GOVS = [
+      { name: "القاهرة", fee: 45 }, { name: "الجيزة", fee: 45 }, { name: "الإسكندرية", fee: 55 },
+      { name: "القليوبية", fee: 50 }, { name: "الغربية", fee: 55 }, { name: "المنوفية", fee: 55 },
+      { name: "الشرقية", fee: 55 }, { name: "الدقهلية", fee: 55 }, { name: "البحيرة", fee: 60 },
+      { name: "كفر الشيخ", fee: 60 }, { name: "دمياط", fee: 60 }, { name: "بورسعيد", fee: 60 },
+      { name: "الإسماعيلية", fee: 60 }, { name: "السويس", fee: 60 }, { name: "الفيوم", fee: 65 },
+      { name: "بني سويف", fee: 70 }, { name: "المنيا", fee: 75 }, { name: "أسيوط", fee: 80 },
+      { name: "سوهاج", fee: 85 }, { name: "قنا", fee: 90 }, { name: "الأقصر", fee: 95 },
+      { name: "أسوان", fee: 95 }, { name: "البحر الأحمر", fee: 100 }, { name: "مطروح", fee: 90 },
+      { name: "الوادي الجديد", fee: 100 }, { name: "شمال سيناء", fee: 110 }, { name: "جنوب سيناء", fee: 110 }
+    ];
+
+    let currentShippingRates = {};
+
+    function renderShippingInputs() {
+      const grid = document.getElementById("govRatesGrid");
+      if (!grid) return;
+
+      grid.innerHTML = DEFAULT_GOVS.map(g => {
+        const fee = currentShippingRates[g.name] !== undefined ? currentShippingRates[g.name] : g.fee;
+        return `
+          <div style="background:rgba(18,11,5,0.7); border:1px solid var(--line); border-radius:6px; padding:8px 10px; display:flex; justify-content:space-between; align-items:center;">
+            <label style="font-size:11.5px; color:#fff; font-weight:700;">${g.name}</label>
+            <div style="display:flex; align-items:center; gap:4px;">
+              <input type="number" class="gov-fee-input" data-gov="${g.name}" value="${fee}" min="0" style="width:65px; padding:4px 6px; text-align:center; font-size:11px;">
+              <span style="font-size:10px; color:var(--gold);">ج</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    onSnapshot(shippingDocRef, (snap) => {
+      if (snap.exists()) {
+        currentShippingRates = snap.data().rates || {};
+      } else {
+        DEFAULT_GOVS.forEach(g => currentShippingRates[g.name] = g.fee);
+      }
+      renderShippingInputs();
+    });
+
+    document.getElementById("shippingRatesForm")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const saveBtn = document.getElementById("saveShippingBtn");
+      saveBtn.disabled = true;
+      saveBtn.textContent = "جاري الحفظ...";
+
+      const updatedRates = {};
+      document.querySelectorAll(".gov-fee-input").forEach(inp => {
+        const gov = inp.dataset.gov;
+        const fee = Number(inp.value) || 0;
+        updatedRates[gov] = fee;
+      });
+
+      try {
+        await setDoc(shippingDocRef, { rates: updatedRates }, { merge: true });
+        toast("تم تحديث أسعار شحن المحافظات بنجاح! 🚚");
+      } catch (err) {
+        toast("حدث خطأ أثناء حفظ أسعار الشحن!");
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "حفظ وتحديث أسعار الشحن بالمتجر 🚚";
+      }
+    });
   </script>
 </body>
 </html>
