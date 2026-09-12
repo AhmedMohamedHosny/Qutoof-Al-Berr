@@ -1054,6 +1054,22 @@ document.querySelectorAll(".collection-card").forEach(card => {
    CHECKOUT, LOCATION & WHATSAPP SUBMIT
    ========================================================= */
 
+/* =========================================================
+   CHECKOUT, LOCATION & WHATSAPP SUBMIT
+   ========================================================= */
+
+const checkoutModal = document.getElementById("checkoutModalBackdrop");
+const checkoutClose = document.getElementById("checkoutClose");
+const custGovSelect = document.getElementById("custGov");
+const summarySubtotal = document.getElementById("summarySubtotal");
+const summaryShipping = document.getElementById("summaryShipping");
+const summaryTotal = document.getElementById("summaryTotal");
+const btnLocation = document.getElementById("btnLocation");
+const locationStatus = document.getElementById("locationStatus");
+const custLocationMap = document.getElementById("custLocationMap");
+const transferDetails = document.getElementById("transferDetails");
+const checkoutForm = document.getElementById("checkoutForm");
+
 let GOVERNORATES = [
   { name: "القاهرة", fee: 45 }, { name: "الجيزة", fee: 45 }, { name: "الإسكندرية", fee: 55 },
   { name: "القليوبية", fee: 50 }, { name: "الغربية", fee: 55 }, { name: "المنوفية", fee: 55 },
@@ -1091,18 +1107,6 @@ onSnapshot(doc(db, "settings", "shippingRates"), (docSnap) => {
   populateGovSelect();
   updateCheckoutSummary();
 });
-
-const checkoutModal = document.getElementById("checkoutModalBackdrop");
-const checkoutClose = document.getElementById("checkoutClose");
-const custGovSelect = document.getElementById("custGov");
-const summarySubtotal = document.getElementById("summarySubtotal");
-const summaryShipping = document.getElementById("summaryShipping");
-const summaryTotal = document.getElementById("summaryTotal");
-const btnLocation = document.getElementById("btnLocation");
-const locationStatus = document.getElementById("locationStatus");
-const custLocationMap = document.getElementById("custLocationMap");
-const transferDetails = document.getElementById("transferDetails");
-const checkoutForm = document.getElementById("checkoutForm");
 
 if (custGovSelect) {
   GOVERNORATES.forEach(gov => {
