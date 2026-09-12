@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة التحكم | مناحل قطوف البر</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --honey-dark: #120b05;
+      --honey-main: #1c1308;
+      --honey-card: #26180c;
+      --honey-light: #3a2513;
+      --gold: #f59e0b;
+      --gold-hover: #fbbf24;
+      --text-light: #fef3c7;
+      --text-muted: #bda38b;
+      --danger: #e74c3c;
+      --success: #2ecc71;
+      --line: rgba(245, 158, 11, 0.25);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--honey-dark);
+      color: var(--text-light); 
+      font-family: 'Cairo', sans-serif;
+      min-height: 100vh;
+      padding-bottom: 50px;
+    }
+
+    /* شريط الرأس */
+    .top-bar {
+      background: var(--honey-main);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-side { display: flex; align-items: center; gap: 12px; }
+    .brand-logo { height: 38px; width: auto; object-fit: contain; }
+    .brand-title { font-size: 16px; font-weight: 800; color: var(--gold); }
+    .brand-badge {
+      background: rgba(245,158,11,0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+    .actions-side { display: flex; align-items: center; gap: 10px; position: relative; }
+    .btn-exit {
+      background: var(--danger);
+      color: #fff;
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 5px;
+      transition: 0.2s;
+    }
+    .btn-exit:hover { opacity: 0.9; }
+    
+    .menu-trigger-btn {
+      background: var(--honey-card);
+      border: 1px solid var(--line);
+      color: var(--gold);
+      font-size: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: 0.2s;
+    }
+    .menu-trigger-btn:hover { border-color: var(--gold); background: var(--honey-light); }
+
+    /* القائمة المنسدلة للثلاث شرط */
+    .dropdown-menu {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      background: #1a1007;
+      border: 1px solid var(--gold);
+      border-radius: 8px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.85);
+      width: 260px;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 105;
+    }
+    .dropdown-menu.show { display: flex; }
+    .dropdown-item {
+      padding: 13px 16px;
+      color: var(--text-light);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.2s;
+    }
+    .dropdown-item:hover { background: rgba(245,158,11,0.15); color: var(--gold); }
+    .dropdown-item.active-item { color: var(--gold); background: rgba(245,158,11,0.1); }
+
+    /* كروت إحصائيات المبيعات */
+    .container { width: 95%; max-width: 1400px; margin: 20px auto 0; }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .kpi-card {
+      background: var(--honey-card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+    .kpi-label { font-size: 11px; color: var(--text-muted); font-weight: 600; margin-bottom: 6px; }
+    .kpi-value { font-size: 24px; font-weight: 900; color: var(--gold); }
+    .kpi-value.green { color: var(--success); }
+    .kpi-value.red { color: var(--danger); }
+
+    /* محتوى الأقسام */
+    .section-view { display: none; }
+    .section-view.active { display: block; }
+
+    .panel {
+      background: var(--honey-card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .panel-title {
+      font-size: 15px;
+      color: var(--gold);
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* شبكة المخزون والوفرة للأعسال */
+    .perfumes-stock-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .stock-card {
+      background: var(--honey-main);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .stock-card-top { display: flex; gap: 12px; padding: 12px; }
+    .stock-card-img { width: 70px; height: 70px; object-fit: cover; border-radius: 4px; border: 1px solid var(--line); }
+    .stock-card-info { flex: 1; }
+    .stock-card-name { font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+    .stock-card-price { font-size: 12px; color: var(--gold); font-weight: 700; }
+    
+    .stock-control-bar {
+      background: rgba(0,0,0,0.25);
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    .stock-counter { display: flex; align-items: center; gap: 8px; }
+    .stock-btn {
+      width: 26px;
+      height: 26px;
+      background: var(--honey-light);
+      border: 1px solid var(--line);
+      color: #fff;
+      font-size: 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+    .stock-btn:hover { background: var(--gold); color: #120b05; }
+    .stock-num { font-size: 13px; font-weight: 800; color: var(--gold); min-width: 24px; text-align: center; }
+
+    /* الفورم */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    label { font-size: 11px; color: var(--text-muted); font-weight: 700; }
+    input, select, textarea {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      background: var(--honey-dark);
+      border: 1px solid var(--line);
+      color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      outline: none;
+    }
+    input:focus { border-color: var(--gold); }
+    .btn-submit {
+      background: linear-gradient(135deg, var(--gold), #d97706);
+      color: #120b05;
+      font-weight: 800;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 14px;
+      font-size: 13px;
+      transition: 0.2s;
+    }
+    .btn-submit:hover { background: var(--gold-hover); }
+
+    /* الجداول */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: right; }
+    th { background: rgba(0,0,0,0.35); color: var(--gold); padding: 12px 10px; border-bottom: 1px solid var(--line); }
+    td { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+    /* صندوق اختيار الصورة */
+    .file-uploader-box {
+      background: rgba(18, 11, 5, 0.7);
+      border: 2px dashed rgba(245, 158, 11, 0.4);
+      border-radius: 6px;
+      padding: 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .file-uploader-box:hover {
+      border-color: var(--gold);
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    /* أزرار الكروت */
+    .btn-card-edit {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--line);
+      color: var(--text-light);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+    .btn-card-edit:hover { border-color: var(--gold); color: var(--gold); }
+
+    .btn-card-delete {
+      background: rgba(231, 76, 60, 0.15);
+      border: 1px solid var(--danger);
+      color: var(--danger);
+      width: 26px;
+      height: 26px;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      transition: all 0.2s ease;
+    }
+    .btn-card-delete:hover {
+      background: var(--danger);
+      color: #fff;
+      transform: scale(1.1);
+      box-shadow: 0 0 10px rgba(231, 76, 60, 0.5);
+    }
+
+    .btn-action-wa {
+      background: #25d366;
+      color: #fff;
+      text-decoration: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+    .btn-action-copy {
+      background: rgba(245,158,11,0.15);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    /* نافذة مظهر وحالة المتجر */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: none;
+      place-items: center;
+      z-index: 1000;
+      padding: 15px;
+    }
+    .modal-overlay.open { display: grid; }
+    .theme-modal-box {
+      background: #1c1308;
+      border: 1px solid var(--gold);
+      padding: 24px;
+      border-radius: 10px;
+      width: min(720px, 95vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+    }
+
+    .store-toggle-box {
+      background: rgba(231,76,60,0.1);
+      border: 1px solid rgba(231,76,60,0.3);
+      padding: 14px 18px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+    .store-toggle-box.active-open {
+      background: rgba(46,204,113,0.1);
+      border-color: rgba(46,204,113,0.3);
+    }
+    .switch-ui {
+      width: 50px;
+      height: 26px;
+      appearance: none;
+      background: #444;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      outline: none;
+      transition: 0.3s;
+    }
+    .switch-ui:checked { background: var(--danger); }
+    .switch-ui::before {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      background: #fff;
+      transition: 0.3s;
+    }
+    .switch-ui:checked::before { transform: translateX(24px); }
+
+    .themes-palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+      margin: 15px 0 20px;
+    }
+    .theme-chip {
+      background: rgba(38,24,12,0.6);
+      border: 1px solid var(--line);
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: 0.2s;
+    }
+    .theme-chip:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .theme-chip.selected {
+      border-color: var(--gold);
+      background: rgba(245,158,11,0.2);
+      box-shadow: 0 0 10px rgba(245,158,11,0.3);
+    }
+    .theme-preview-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.3);
+      flex-shrink: 0;
+    }
+    .theme-name-text { font-size: 11px; font-weight: 700; line-height: 1.3; }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      background: var(--honey-card);
+      border: 1px solid var(--gold);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-size: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      z-index: 1100;
+      display: none;
+    }
+    .toast.show { display: block; }
+
+    @media (max-width: 600px) {
+      .top-bar { padding: 8px 12px; }
+      .brand-side { gap: 6px; }
+      .brand-logo { height: 28px; }
+      .brand-title { font-size: 12.5px; }
+      .brand-badge { display: none !important; }
+      .actions-side { gap: 6px; }
+      .btn-exit { padding: 6px 10px; font-size: 10px; }
+      .menu-trigger-btn { width: 34px; height: 34px; font-size: 16px; }
+      .container { width: 96%; margin-top: 12px; }
+      .kpi-row { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+      .kpi-card { padding: 10px; }
+      .kpi-value { font-size: 17px; }
+      .panel { padding: 14px 10px; }
+      .form-grid { grid-template-columns: 1fr; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- شريط الرأس -->
+  <header class="top-bar">
+    <div class="brand-side">
+      <img src="image/logo.png" alt="قطوف البر" class="brand-logo">
+      <span class="brand-title">مناحل قطوف البر — الإدارة والطلبات</span>
+      <span class="brand-badge">لوحة التحكم</span>
+    </div>
+
+    <div class="actions-side">
+      <a href="index.html" class="btn-exit">خروج للمتجر ➔</a>
+      <button class="menu-trigger-btn" id="menuBtn" title="القائمة الشاملة">☰</button>
+
+      <!-- القائمة المنسدلة -->
+      <div class="dropdown-menu" id="dropdownMenu">
+        <div class="dropdown-item" id="openThemeModalBtn" style="color: var(--gold);">
+          <span>🎨 مظهر وحالة المتجر</span>
+          <span id="menuStatusBadge" style="font-size:10px; color:var(--success);">يعمل</span>
+        </div>
+        <div class="dropdown-item" onclick="openSection('inventorySec')">
+          <span>🍯 إدارة المحصول والمخزون</span>
+        </div>
+        <div class="dropdown-item" onclick="openSection('ordersSec')">
+          <span>📋 إدارة طلبات العسل</span>
+        </div>
+        <div class="dropdown-item" onclick="openSection('offersSec')">
+          <span>🔥 باقات وعروض المناحل</span>
+        </div>
+        <div class="dropdown-item" onclick="openSection('reviewsSec')">
+          <span>💬 تجارب وتقييمات العملاء</span>
+        </div>
+        <div class="dropdown-item" onclick="openSection('analyticsSec')">
+          <span>📊 تقرير المبيعات الأكثر طلباً</span>
+        </div>
+        <div class="dropdown-item" id="syncDefaultsBtn" style="color: #64b5f6;">
+          <span>📥 مزامنة عسل قطوف البر لـ Firebase</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- كروت إحصائيات المبيعات والأرقام الحية -->
+    <section class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">إجمالي المبيعات التحصيلية</div>
+        <div class="kpi-value" id="kpiTotalRevenue">0 ج</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">عدد الطلبات المسجلة</div>
+        <div class="kpi-value green" id="kpiTotalOrders">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">طلبات عسل قيد الانتظار</div>
+        <div class="kpi-value red" id="kpiNewOrders">0</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">الأصناف المتوفرة بالمناحل</div>
+        <div class="kpi-value" id="kpiPerfumesCount">0</div>
+      </div>
+    </section>
+
+    <!-- 1. القسم الافتراضي: إدارة المحصول والمخزون للأعسال -->
+    <section id="inventorySec" class="section-view active">
+      <div class="panel">
+        <div class="panel-title">🍯 إضافة صنف عسل جديد وتحديد مخزون الأوزان</div>
+        <form id="addPerfumeForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>اسم الصنف / المحصول *</label>
+              <input type="text" id="pName" placeholder="مثال: عسل سدر جبلي ملكي" required>
+            </div>
+            <div class="form-group">
+              <label>نوع المحصول / التصنيف *</label>
+              <select id="pCategory">
+                <option value="men">عسل سدر جبلي</option>
+                <option value="women">موالح وزهور</option>
+                <option value="unisex">غذاء ملكات وعكبر</option>
+                <option value="bestseller">خلطات ملكية وشمع</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>سعر عبوة النصف كيلو (الأساسي) *</label>
+              <input type="number" id="pPrice" placeholder="550" required>
+            </div>
+            <div class="form-group">
+              <label>السعر قبل الخصم (اختياري - مشطوب)</label>
+              <input type="number" id="pOldPrice" placeholder="700">
+            </div>
+
+            <input type="hidden" id="pEditId" value="">
+
+            <!-- بوكس تحديد السعر والمخزون لكل وزن (ربع ك - نصف ك - 1 كجم) -->
+            <div class="form-group" style="grid-column: 1 / -1; background: rgba(38,24,12,0.7); border: 1px solid var(--line); border-radius: 8px; padding: 14px; margin: 6px 0;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(245,158,11,0.2); padding-bottom: 8px; flex-wrap: wrap; gap: 6px;">
+                <label style="color: var(--gold); font-size: 12.5px; font-weight: 800; margin: 0;">
+                  🏺 تسعير وعدد البرطمانات المتاحة لكل وزن
+                </label>
+                <span id="totalStockPreview" style="font-size: 11.5px; color: var(--success); font-weight: 800;">إجمالي المخزون: 0 عبوة</span>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px;">
+                
+                <!-- ربع كيلو (250 جم) -->
+                <div style="background: rgba(18,11,5,0.85); border: 1px solid var(--line); border-radius: 6px; padding: 10px;">
+                  <strong style="color: var(--gold); font-size: 11.5px; display: block; margin-bottom: 6px;">🍯 ربع كيلو (250 جم)</strong>
+                  <div style="display: flex; gap: 6px;">
+                    <div style="flex: 1;">
+                      <label style="font-size: 9px; display: block;">السعر:</label>
+                      <input type="number" id="pSize30" placeholder="300" min="0" required style="padding: 6px; font-size: 11px;">
+                    </div>
+                    <div style="flex: 1;">
+                      <label style="font-size: 9px; display: block;">العدد:</label>
+                      <input type="number" id="pStock30" class="stock-input-calc" placeholder="15" min="0" value="15" required style="padding: 6px; font-size: 11px;">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- نصف كيلو (500 جم) -->
+                <div style="background: rgba(18,11,5,0.85); border: 1px solid var(--line); border-radius: 6px; padding: 10px;">
+                  <strong style="color: var(--gold); font-size: 11.5px; display: block; margin-bottom: 6px;">✨ نصف كيلو (500 جم - أساسي)</strong>
+                  <div style="display: flex; gap: 6px;">
+                    <div style="flex: 1;">
+                      <label style="font-size: 9px; display: block;">السعر:</label>
+                      <input type="number" id="pSize50" placeholder="550" min="0" required style="padding: 6px; font-size: 11px;">
+                    </div>
+                    <div style="flex: 1;">
+                      <label style="font-size: 9px; display: block;">العدد:</label>
+                      <input type="number" id="pStock50" class="stock-input-calc" placeholder="20" min="0" value="20" required style="padding: 6px; font-size: 11px;">
+                    </div>
+                  </div>
+                </div>
+
+                <!-- كيلو كامل (1000 جم) -->
+                <div style="background: rgba(18,11,5,0.85); border: 1px solid var(--line); border-radius: 6px; padding: 10px;">
+                  <strong style="color: var(--gold); font-size: 11.5px; display: block; margin-bottom: 6px;">👑 كيلو كامل (1000 جم)</strong>
+                  <div style="display: flex; gap: 6px;">
+                    <div style="flex: 1;">
+                      <label style="font-size: 9px; display: block;">السعر:</label>
+                      <input type="number" id="pSize100" placeholder="990" min="0" required style="padding: 6px; font-size: 11px;">
+                    </div>
+                    <div style="flex: 1;">
+                      <label style="font-size: 9px; display: block;">العدد:</label>
+                      <input type="number" id="pStock100" class="stock-input-calc" placeholder="10" min="0" value="10" required style="padding: 6px; font-size: 11px;">
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- رفع صورة برطمان العسل -->
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label>صورة العسل أو العبوة *</label>
+              <div class="file-uploader-box" id="fileDropzone" onclick="document.getElementById('pFileInput').click()">
+                <input type="file" id="pFileInput" accept="image/*" style="display:none;">
+                <div id="uploadPromptText">
+                  <span style="font-size:22px; color:var(--gold);">🍯</span>
+                  <p style="font-size:12px; margin:4px 0;">اضغط لاختيار صورة العبوة من ملفاتك</p>
+                  <span style="font-size:10px; color:var(--text-muted);">يتم ضغط الصورة وضبط أبعادها سحابياً تلقائياً</span>
+                </div>
+                <div id="imagePreviewContainer" style="display:none; align-items:center; gap:12px; justify-content:center;">
+                  <img id="previewImgEl" src="" style="width:70px; height:70px; object-fit:cover; border-radius:6px; border:1px solid var(--gold);">
+                  <span id="previewNameEl" style="font-size:11px; color:var(--gold); font-weight:700;"></span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label>وصف العسل، مصدر الزهرة، وفوائده الصحية</label>
+              <input type="text" id="pDesc" placeholder="عسل جبلي نقي، مقوي للمناعة، مفحوص مخبرياً على البارد...">
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; align-items:center;">
+            <button type="submit" class="btn-submit" id="submitPerfumeBtn">حفظ ونشر العسل بالمتجر</button>
+            <button type="button" class="btn-exit" id="cancelEditBtn" style="display:none; margin-top:14px; background:rgba(255,255,255,0.1); border:1px solid var(--line);">إلغاء التعديل</button>
+          </div>          
+        </form>
+      </div>
+
+      <!-- قائمة أصناف العسل مع إنقاص المخزون للمنفذ المباشر -->
+      <div class="panel">
+        <div class="panel-title">
+          <span>الوفرة والمخزون الحالي (يمكنك إنقاص المخزون إذا بيعت عبوة مباشرة في المعرض)</span>
+        </div>
+        <div class="perfumes-stock-grid" id="perfumesStockList"></div>
+      </div>
+    </section>
+
+    <!-- 2. قسم إدارة الطلبات -->
+    <section id="ordersSec" class="section-view">
+      <div class="panel">
+        <div class="panel-title">
+          <span>سجل طلبات العسل الواردة من الموقع</span>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button type="button" class="btn-submit" id="exportExcelBtn" style="margin:0; padding:6px 14px; font-size:11px; background:#217346; color:#fff;">
+              📊 تصدير شيت Excel
+            </button>
+            <button class="stock-btn" style="width:auto; padding:4px 10px; font-size:11px;" onclick="openSection('inventorySec')">➔ العودة للمخزون</button>
+          </div>
+        </div>
+        
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>العميل</th>
+                <th>الهاتف</th>
+                <th>المحافظة</th>
+                <th>الأعسال المطلوبة</th>
+                <th>طريقة الدفع</th>
+                <th>الإجمالي</th>
+                <th>الحالة</th>
+                <th>إجراء</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+              <tr><td colspan="8" style="text-align:center; color:var(--text-muted);">جاري جلب الطلبات...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. قسم باقات وعروض المناحل -->
+    <section id="offersSec" class="section-view">
+      <div class="panel">
+        <div class="panel-title">
+          <span>🔥 إنشاء ونشر عرض وباقة عسل 3D بالمتجر</span>
+          <button class="stock-btn" style="width:auto; padding:4px 10px; font-size:11px;" onclick="openSection('inventorySec')">➔ العودة للمخزون</button>
+        </div>
+
+        <form id="createOfferForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>عنوان العرض الرئيسي *</label>
+              <input type="text" id="offerTitle" placeholder="مثال: باقة المناعة الذهبية — 3 عبوات + هدية غذاء ملكات" required>
+            </div>
+
+            <div class="form-group">
+              <label>وسم العرض (Ribbon) *</label>
+              <input type="text" id="offerTag" placeholder="مثال: وفر 30% 🔥" required>
+            </div>
+
+            <div class="form-group">
+              <label>سعر الباقة بعد الخصم (EGP) *</label>
+              <input type="number" id="offerPrice" placeholder="1250" required>
+            </div>
+
+            <div class="form-group">
+              <label>السعر الأصلي قبل الخصم (مشطوب)</label>
+              <input type="number" id="offerOldPrice" placeholder="1650">
+            </div>
+
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label>محتويات ووصف الباقة</label>
+              <input type="text" id="offerDesc" placeholder="كيلو سدر جبلي + نصف كيلو موالح + حبوب لقاح مع شحن مجاني">
+            </div>
+
+            <div class="form-group">
+              <label>تاريخ ووقت انتهاء العرض (اختياري) ⏳</label>
+              <input type="datetime-local" id="offerExpiry">
+            </div>
+
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label>صورة الباقة أو العرض *</label>
+              <div class="file-uploader-box" onclick="document.getElementById('offerFileInput').click()">
+                <input type="file" id="offerFileInput" accept="image/*" style="display:none;">
+                <div id="offerUploadText">
+                  <span style="font-size:20px; color:var(--gold);">📸</span>
+                  <p style="font-size:12px; margin:4px 0;">اضغط لاختيار صورة باقة العرض</p>
+                </div>
+                <div id="offerPreviewBox" style="display:none; align-items:center; gap:10px; justify-content:center;">
+                  <img id="offerPreviewImg" src="" style="width:70px; height:70px; object-fit:cover; border-radius:6px; border:1px solid var(--gold);">
+                  <span id="offerPreviewName" style="font-size:11px; color:var(--gold);"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit" id="saveOfferBtn">نشر الباقة بالمتجر الآن 🚀</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">الباقات المعروضة حالياً بالمتجر</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>الصورة</th>
+                <th>عنوان الباقة</th>
+                <th>السعر بعد الخصم</th>
+                <th>قبل الخصم</th>
+                <th>الوسم</th>
+                <th>إجراء</th>
+              </tr>
+            </thead>
+            <tbody id="offersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. قسم تجارب وتقييمات العملاء (سكرينات الواتساب) -->
+    <section id="reviewsSec" class="section-view">
+      <div class="panel">
+        <div class="panel-title">
+          <span>💬 رفع تجربة عميل جديدة (سكرين شوت واتساب)</span>
+          <button class="stock-btn" style="width:auto; padding:4px 10px; font-size:11px;" onclick="openSection('inventorySec')">➔ العودة للمخزون</button>
+        </div>
+
+        <form id="addReviewForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>اسم العميل أو تعليق مختصر (اختياري)</label>
+              <input type="text" id="revAuthor" placeholder="مثال: تجربة أ/ محمود مع عسل السدر">
+            </div>
+
+            <div class="form-group" style="grid-column: 1 / -1;">
+              <label>صورة السكرين شوت لمحادثة الواتساب *</label>
+              <div class="file-uploader-box" onclick="document.getElementById('revFileInput').click()">
+                <input type="file" id="revFileInput" accept="image/*" style="display:none;" required>
+                <div id="revUploadPrompt">
+                  <span style="font-size:24px; color:var(--gold);">📸</span>
+                  <p style="font-size:12px; margin:4px 0;">اضغط لاختيار سكرين شوت الرأي من جهازك</p>
+                  <span style="font-size:10px; color:var(--text-muted);">تُضغط الصورة سحابياً وتُنشر للمتجر فوراً</span>
+                </div>
+                <div id="revPreviewBox" style="display:none; align-items:center; gap:12px; justify-content:center;">
+                  <img id="revPreviewImg" src="" style="max-height:90px; border-radius:6px; border:1px solid var(--gold);">
+                  <span id="revPreviewName" style="font-size:11px; color:var(--gold);"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit" id="saveRevBtn" style="margin-top:14px;">نشر التجربة في المتجر الآن 🚀</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">سكرينات تجارب العملاء المعروضة حالياً بالمتجر</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>الصورة</th>
+                <th>الملاحظة</th>
+                <th>تاريخ النشر</th>
+                <th>إجراء</th>
+              </tr>
+            </thead>
+            <tbody id="reviewsTableBody">
+              <tr><td colspan="4" style="text-align:center; color:var(--text-muted);">جاري جلب الآراء...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. قسم التحليلات والأكثر طلباً -->
+    <section id="analyticsSec" class="section-view">
+      <div class="panel">
+        <div class="panel-title">
+          <span>📊 تحليل أصناف العسل الأكثر طلباً وسرعة في السحب</span>
+          <button class="stock-btn" style="width:auto; padding:4px 10px; font-size:11px;" onclick="openSection('inventorySec')">➔ العودة للمخزون</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>اسم المحصول</th>
+                <th>عدد العبوات المباعة</th>
+                <th>إجمالي العائد المادي</th>
+                <th>المخزون المتبقي</th>
+              </tr>
+            </thead>
+            <tbody id="topSellingTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- نافذة مظهر وحالة المتجر -->
+  <div class="modal-overlay" id="themeModal">
+    <div class="theme-modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line); padding-bottom:12px; margin-bottom:18px;">
+        <h3 style="color:var(--gold); font-size:16px;">🎨 مظهر وحالة المتجر للعملاء</h3>
+        <button type="button" style="background:none; border:none; color:#fff; font-size:24px; cursor:pointer;" onclick="document.getElementById('themeModal').classList.remove('open')">&times;</button>
+      </div>
+
+      <div class="store-toggle-box" id="storeToggleContainer">
+        <div>
+          <strong id="storeStatusLabel" style="font-size:13px; color:#fff;">حالة المتجر: يعمل ويستقبل الزوار</strong>
+          <p style="font-size:10.5px; color:var(--text-muted); margin-top:3px;">عند التفعيل، يُغلق المتجر وتظهر شاشة الصلاة على النبي وموسم الجني فوراً.</p>
+        </div>
+        <input type="checkbox" id="closeStoreCheckbox" class="switch-ui">
+      </div>
+
+      <label style="font-size:12px; color:var(--gold); font-weight:800; display:block; margin-bottom:8px;">اختر هوية وألوان المتجر (تتغير عند العملاء لحظياً):</label>
+      <div class="themes-palette-grid" id="themesContainer"></div>
+
+      <button type="button" class="btn-submit" id="saveThemeAndStatusBtn" style="width:100%; margin-top:10px;">حفظ وتطبيق المظهر والحالة الآن 🚀</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- فايربيز والمنطق البرمجي -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { 
+      getFirestore, collection, onSnapshot, doc, updateDoc, 
+      setDoc, getDoc, addDoc, deleteDoc
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBc1DZlKPE7bc-hyaDy7NHMJxnCepKIzqI",
+      authDomain: "suraka-cfb2d.firebaseapp.com",
+      projectId: "suraka-cfb2d",
+      storageBucket: "suraka-cfb2d.firebasestorage.app",
+      messagingSenderId: "1082260408358",
+      appId: "1:1082260408358:web:41aa9f7cb0bd778408bee7",
+      measurementId: "G-PTVR815MCF"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const ordersCol = collection(db, "orders");
+    const perfumesCol = collection(db, "perfumes");
+    const offersCol = collection(db, "offers");
+    const reviewsCol = collection(db, "reviews");
+    const settingsDoc = doc(db, "settings", "storeConfig");
+
+    const STORE_THEMES = [
+      { id: "amber-honey", name: "الكهرمان البري (الأصلي)", gradient: "linear-gradient(135deg, #1c1308, #d97706)" },
+      { id: "golden-nectar", name: "رحيق الذهب الصافي", gradient: "linear-gradient(135deg, #26180c, #f59e0b)" },
+      { id: "mountain-sidr", name: "سدر الجبال الداكن", gradient: "linear-gradient(135deg, #120b05, #b45309)" },
+      { id: "royal-propolis", name: "العكبر والغذاء الملكي", gradient: "linear-gradient(135deg, #1f140a, #eab308)" },
+      { id: "black-seed", name: "حبة البركة والعسل", gradient: "linear-gradient(135deg, #0a0a0a, #d97706)" },
+      { id: "wild-forest", name: "غابات البراري والزهور", gradient: "linear-gradient(135deg, #14170d, #d4af37)" }
+    ];
+
+    let selectedThemeId = "amber-honey";
+    let allOrders = [];
+    let allPerfumes = [];
+    let currentBase64Image = "";
+
+    function toast(msg) {
+      const t = document.getElementById("toast");
+      if (!t) return;
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 3000);
+    }
+
+    window.openSection = function(secId) {
+      document.querySelectorAll(".section-view").forEach(s => s.classList.remove("active"));
+      document.getElementById(secId)?.classList.add("active");
+      document.getElementById("dropdownMenu")?.classList.remove("show");
+    };
+
+    document.getElementById("menuBtn")?.addEventListener("click", () => {
+      document.getElementById("dropdownMenu")?.classList.toggle("show");
+    });
+
+    function compressImageFile(file, maxWidth = 700, quality = 0.8) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = (e) => {
+          const img = new Image();
+          img.src = e.target.result;
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            let w = img.width, h = img.height;
+            if (w > maxWidth) {
+              h = Math.round((h * maxWidth) / w);
+              w = maxWidth;
+            }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL("image/jpeg", quality));
+          };
+        };
+      });
+    }
+
+    document.getElementById("pFileInput")?.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      currentBase64Image = await compressImageFile(file);
+      const previewImg = document.getElementById("previewImgEl");
+      const previewName = document.getElementById("previewNameEl");
+      if (previewImg) previewImg.src = currentBase64Image;
+      if (previewName) previewName.textContent = file.name;
+      document.getElementById("uploadPromptText").style.display = "none";
+      document.getElementById("imagePreviewContainer").style.display = "flex";
+    });
+
+    onSnapshot(perfumesCol, (snapshot) => {
+      allPerfumes = [];
+      snapshot.forEach(docSnap => allPerfumes.push({ id: docSnap.id, ...docSnap.data() }));
+      const countEl = document.getElementById("kpiPerfumesCount");
+      if (countEl) countEl.textContent = allPerfumes.length;
+      renderStockGrid();
+      renderAnalytics();
+    });
+
+    function calcTotalStockPreview() {
+      const s30 = Number(document.getElementById("pStock30")?.value || 0);
+      const s50 = Number(document.getElementById("pStock50")?.value || 0);
+      const s100 = Number(document.getElementById("pStock100")?.value || 0);
+      const total = s30 + s50 + s100;
+      const preview = document.getElementById("totalStockPreview");
+      if (preview) preview.textContent = `إجمالي المخزون: ${total} عبوة`;
+    }
+
+    document.querySelectorAll(".stock-input-calc").forEach(inp => {
+      inp.addEventListener("input", calcTotalStockPreview);
+    });
+
+    // ملء تلقائي لأسعار العسل (الأساسي نصف كيلو 50)
+    document.getElementById("pPrice")?.addEventListener("input", (e) => {
+      const base = Number(e.target.value);
+      if (base > 0) {
+        const s30 = document.getElementById("pSize30");
+        const s50 = document.getElementById("pSize50");
+        const s100 = document.getElementById("pSize100");
+
+        if (s50 && !s50.value) s50.value = base;
+        if (s30 && !s30.value) s30.value = Math.round((base * 0.55) / 10) * 10;
+        if (s100 && !s100.value) s100.value = Math.round((base * 1.85) / 10) * 10;
+      }
+    });
+
+    function getWeightLabel(sz) {
+      if (Number(sz) === 30) return "ربع ك";
+      if (Number(sz) === 50) return "نصف ك";
+      if (Number(sz) === 100) return "1 كجم";
+      return `${sz}جم`;
+    }
+
+    function renderStockGrid() {
+      const grid = document.getElementById("perfumesStockList");
+      if (!grid) return;
+
+      if (allPerfumes.length === 0) {
+        grid.innerHTML = `<div style="color:var(--text-muted); font-size:12px;">لا توجد منتجات عسل، يمكنك مزامنة المحصول الافتراضي من القائمة ☰.</div>`;
+        return;
+      }
+
+      grid.innerHTML = allPerfumes.map(p => {
+        const stocks = p.stocks || {
+          30: Math.round((p.stock || 20) * 0.3),
+          50: Math.round((p.stock || 20) * 0.5),
+          100: Math.round((p.stock || 20) * 0.2)
+        };
+        const total = (stocks[30] || 0) + (stocks[50] || 0) + (stocks[100] || 0);
+
+        return `
+          <div class="stock-card">
+            <div class="stock-card-top">
+              <img src="${p.image || 'image/S1.png'}" class="stock-card-img" alt="${p.name}">
+              <div class="stock-card-info">
+                <div class="stock-card-name">${p.name}</div>
+                <div class="stock-card-price">${p.price} جنيه</div>
+                <span style="font-size:11px; color:${total > 0 ? 'var(--success)' : 'var(--danger)'}; font-weight:800;">
+                  ${total > 0 ? `المجموع: ${total} عبوة` : 'نفد المحصول ❌'}
+                </span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <button type="button" class="btn-card-edit" onclick="startEditPerfume('${p.id}')" title="تعديل المحصول">✏️ تعديل</button>
+                <button type="button" class="btn-card-delete" onclick="deletePerfume('${p.id}')" title="حذف الصنف نهائياً">✕</button>
+              </div>
+            </div>
+
+            <!-- أزرار الأوزان الثلاثة فقط (ربع ك، نصف ك، 1 كجم) -->
+            <div style="background: rgba(0,0,0,0.3); padding: 10px 12px; border-top: 1px solid rgba(255,255,255,0.05); display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;">
+              ${[30, 50, 100].map(sz => `
+                <div style="display:flex; flex-direction:column; align-items:center; gap:4px; background:rgba(18,11,5,0.6); padding:5px 2px; border-radius:4px; border:1px solid rgba(245,158,11,0.15);">
+                  <span style="font-size:9.5px; color:var(--text-muted);">${getWeightLabel(sz)}:</span>
+                  <div style="display:flex; align-items:center; gap:3px;">
+                    <button class="stock-btn" style="width:18px; height:18px; font-size:11px;" onclick="updateSizeStock('${p.id}', ${sz}, -1)" title="بيع عبوة">−</button>
+                    <strong style="font-size:11px; color:${(stocks[sz] || 0) > 0 ? 'var(--gold)' : 'var(--danger)'}; min-width:14px; text-align:center;">${stocks[sz] || 0}</strong>
+                    <button class="stock-btn" style="width:18px; height:18px; font-size:11px;" onclick="updateSizeStock('${p.id}', ${sz}, 1)" title="إضافة">+</button>
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    window.updateSizeStock = async function(id, size, delta) {
+      const p = allPerfumes.find(x => x.id === id);
+      if (!p) return;
+
+      const currentStocks = p.stocks || { 30: 10, 50: 15, 100: 5 };
+      const currentVal = Number(currentStocks[size] || 0);
+      const newVal = Math.max(0, currentVal + delta);
+      currentStocks[size] = newVal;
+
+      const totalStock = Object.values(currentStocks).reduce((a, b) => a + Number(b), 0);
+
+      await updateDoc(doc(db, "perfumes", id), {
+        stocks: currentStocks,
+        stock: totalStock
+      });
+
+      toast(delta < 0 ? `تم خصم عبوة (${getWeightLabel(size)})` : `تمت إضافة عبوة (${getWeightLabel(size)})`);
+    };
+
+    window.deletePerfume = async function(id) {
+      const p = allPerfumes.find(x => x.id === id);
+      const name = p ? p.name : "هذا الصنف";
+
+      if (!confirm(`هل أنت متأكد من حذف "${name}" نهائياً من قاعدة بيانات المناحل والموقع؟`)) return;
+
+      try {
+        await deleteDoc(doc(db, "perfumes", id));
+        toast(`تم حذف "${name}" بنجاح! 🗑️`);
+      } catch (err) {
+        toast("حدث خطأ أثناء محاولة الحذف!");
+      }
+    };
+
+    window.startEditPerfume = function(id) {
+      const p = allPerfumes.find(x => x.id === id);
+      if (!p) return;
+
+      document.getElementById("pEditId").value = p.id;
+      document.getElementById("pName").value = p.name || "";
+      document.getElementById("pCategory").value = p.category || "men";
+      document.getElementById("pPrice").value = p.price || "";
+      document.getElementById("pOldPrice").value = p.oldPrice || "";
+      document.getElementById("pDesc").value = p.desc || "";
+
+      const base = Number(p.price || 0);
+      document.getElementById("pSize30").value = p.sizes?.[30] ?? Math.round((base * 0.55) / 10) * 10;
+      document.getElementById("pSize50").value = p.sizes?.[50] ?? base;
+      document.getElementById("pSize100").value = p.sizes?.[100] ?? Math.round((base * 1.85) / 10) * 10;
+
+      const stocks = p.stocks || { 30: 15, 50: 20, 100: 10 };
+      document.getElementById("pStock30").value = stocks[30] ?? 15;
+      document.getElementById("pStock50").value = stocks[50] ?? 20;
+      document.getElementById("pStock100").value = stocks[100] ?? 10;
+
+      calcTotalStockPreview();
+
+      if (p.image) {
+        currentBase64Image = p.image;
+        const pImg = document.getElementById("previewImgEl");
+        const pName = document.getElementById("previewNameEl");
+        if (pImg) pImg.src = p.image;
+        if (pName) pName.textContent = "الصورة الحالية";
+        document.getElementById("uploadPromptText").style.display = "none";
+        document.getElementById("imagePreviewContainer").style.display = "flex";
+      }
+
+      document.getElementById("submitPerfumeBtn").textContent = "تحديث بيانات وأوزان العسل 💾";
+      document.getElementById("cancelEditBtn").style.display = "inline-block";
+      window.scrollTo({ top: 120, behavior: "smooth" });
+    };
+
+    document.getElementById("cancelEditBtn")?.addEventListener("click", () => {
+      document.getElementById("addPerfumeForm")?.reset();
+      document.getElementById("pEditId").value = "";
+      currentBase64Image = "";
+      document.getElementById("uploadPromptText").style.display = "block";
+      document.getElementById("imagePreviewContainer").style.display = "none";
+      document.getElementById("submitPerfumeBtn").textContent = "حفظ ونشر العسل بالمتجر";
+      document.getElementById("cancelEditBtn").style.display = "none";
+      calcTotalStockPreview();
+    });
+
+    document.getElementById("addPerfumeForm")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const editId = document.getElementById("pEditId").value;
+      const basePrice = Number(document.getElementById("pPrice").value);
+
+      const size30 = Number(document.getElementById("pSize30").value) || Math.round((basePrice * 0.55) / 10) * 10;
+      const size50 = Number(document.getElementById("pSize50").value) || basePrice;
+      const size100 = Number(document.getElementById("pSize100").value) || Math.round((basePrice * 1.85) / 10) * 10;
+
+      const stock30 = Number(document.getElementById("pStock30").value) || 0;
+      const stock50 = Number(document.getElementById("pStock50").value) || 0;
+      const stock100 = Number(document.getElementById("pStock100").value) || 0;
+      const totalStock = stock30 + stock50 + stock100;
+
+      const honeyData = {
+        name: document.getElementById("pName").value.trim(),
+        category: document.getElementById("pCategory").value,
+        price: basePrice,
+        oldPrice: document.getElementById("pOldPrice").value ? Number(document.getElementById("pOldPrice").value) : null,
+        stock: totalStock,
+        stocks: {
+          30: stock30,
+          50: stock50,
+          100: stock100
+        },
+        sizes: {
+          30: size30,
+          50: size50,
+          100: size100
+        },
+        desc: document.getElementById("pDesc").value.trim()
+      };
+
+      if (currentBase64Image) {
+        honeyData.image = currentBase64Image;
+      }
+
+      if (editId) {
+        await updateDoc(doc(db, "perfumes", editId), honeyData);
+        toast("تم تحديث أسعار ومخزون العسل بنجاح! ✓");
+      } else {
+        if (!honeyData.image) honeyData.image = "image/S1.png";
+        honeyData.createdAt = new Date();
+        await addDoc(perfumesCol, honeyData);
+        toast("تم نشر صنف العسل الجديد بالمتجر! 🍯");
+      }
+
+      document.getElementById("cancelEditBtn")?.click();
+    });
+
+    // 3. مراقبة الطلبات والأرباح
+    onSnapshot(ordersCol, (snapshot) => {
+      allOrders = [];
+      let totalRevenue = 0, newOrdersCount = 0;
+
+      snapshot.forEach(docSnap => {
+        const ord = { id: docSnap.id, ...docSnap.data() };
+        allOrders.push(ord);
+        totalRevenue += Number(ord.pricing?.total || 0);
+        if (ord.status === "new") newOrdersCount++;
+      });
+
+      document.getElementById("kpiTotalOrders").textContent = allOrders.length;
+      document.getElementById("kpiTotalRevenue").textContent = `${totalRevenue.toLocaleString("ar-EG")} ج`;
+      document.getElementById("kpiNewOrders").textContent = newOrdersCount;
+
+      renderOrdersTable();
+      renderAnalytics();
+    });
+
+    function renderOrdersTable() {
+      const tbody = document.getElementById("ordersTableBody");
+      if (!tbody) return;
+
+      if (allOrders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; color:var(--text-muted);">لا توجد طلبات مسجلة بعد.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = allOrders.map(o => {
+        const itemsText = (o.items || []).map(i => `${i.name} × ${i.quantity}`).join("<br>");
+        const phone = o.customer?.phone || "";
+        const waLink = `https://wa.me/20${phone.startsWith("0") ? phone.slice(1) : phone}?text=${encodeURIComponent(`أهلاً بك، بخصوص طلبك من مناحل قطوف البر بقيمة ${o.pricing?.total} ج`)}`;
+
+        return `
+          <tr>
+            <td>
+              <strong>${o.customer?.name || "بدون اسم"}</strong>
+              <div>
+                <button type="button" class="btn-action-copy" onclick="copyShippingLabel('${o.id}')">📋 نسخ بوليصة الشحن</button>
+              </div>
+            </td>
+            <td>
+              <a href="tel:${phone}" style="color:var(--gold); text-decoration:none; display:block; margin-bottom:4px;">${phone}</a>
+              <a href="${waLink}" target="_blank" class="btn-action-wa">💬 واتساب</a>
+            </td>
+            <td>${o.customer?.governorate || ""}<br><span style="font-size:10px; color:var(--text-muted);">${o.customer?.address || ""}</span></td>
+            <td style="font-size:11px;">${itemsText}</td>
+            <td>${o.paymentMethod === "cod" ? "عند الاستلام" : "إلكتروني"}</td>
+            <td><strong style="color:var(--gold);">${(o.pricing?.total || 0).toLocaleString("ar-EG")} ج</strong></td>
+            <td><span style="color:${o.status === 'delivered' ? 'var(--success)' : 'var(--danger)'}; font-weight:700;">${o.status === 'delivered' ? 'تم التسليم' : 'جديد'}</span></td>
+            <td>
+              ${o.status !== 'delivered' ? `<button class="stock-btn" style="width:auto; padding:3px 8px; font-size:10px;" onclick="markDelivered('${o.id}')">✓ تأكيد التسليم</button>` : '—'}
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    window.copyShippingLabel = function(id) {
+      const o = allOrders.find(x => x.id === id);
+      if (!o) return;
+      const itemsList = (o.items || []).map(i => `${i.name} (عدد ${i.quantity})`).join(" + ");
+      const text = `🍯 بوليصة شحن مناحل قطوف البر — QUTOOF AL-BERR
+العميل: ${o.customer?.name}
+المحافظة: ${o.customer?.governorate}
+العنوان: ${o.customer?.address}
+الهاتف: ${o.customer?.phone}
+الهاتف البديل: ${o.customer?.secondaryPhone || "لا يوجد"}
+المبلغ المطلوب تحصيله: ${o.pricing?.total} جنيه
+المنتجات: ${itemsList}
+خاضع للضمان الذهبي وفحص النقاء 🌿`;
+
+      navigator.clipboard.writeText(text).then(() => {
+        toast("تم نسخ بوليصة شحن العسل بنجاح! 📋");
+      });
+    };
+
+    window.markDelivered = async function(id) {
+      await updateDoc(doc(db, "orders", id), { status: "delivered" });
+      toast("تم تحويل حالة الطلب إلى تم التسليم! ✓");
+    };
+
+    // 4. تصدير تقرير الإكسيل
+    function cleanXml(val) {
+      if (val === null || val === undefined) return "";
+      return String(val)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;")
+        .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, "");
+    }
+
+    document.getElementById("exportExcelBtn")?.addEventListener("click", () => {
+      if (allOrders.length === 0) {
+        alert("لا توجد طلبات مسجلة بعد لتصديرها!");
+        return;
+      }
+
+      const totalOrdersCount = allOrders.length;
+      const deliveredOrders = allOrders.filter(o => o.status === "delivered");
+      const deliveredCount = deliveredOrders.length;
+      const pendingCount = totalOrdersCount - deliveredCount;
+      
+      const totalRevenueDelivered = deliveredOrders.reduce((sum, o) => sum + Number(o.pricing?.total || 0), 0);
+      const totalShippingFee = deliveredOrders.reduce((sum, o) => sum + Number(o.pricing?.shippingFee || 0), 0);
+      const netProductsRevenue = totalRevenueDelivered - totalShippingFee;
+
+      const salesAggregate = {};
+      allOrders.forEach(o => {
+        (o.items || []).forEach(item => {
+          const rawName = item.name || "عسل طبيعي";
+          const size = item.size ? String(item.size) : "نصف كيلو";
+          const key = `${rawName}__${size}`;
+          
+          if (!salesAggregate[key]) {
+            salesAggregate[key] = {
+              name: rawName,
+              size: size,
+              ordersCount: 0,
+              totalQty: 0,
+              totalSales: 0
+            };
+          }
+          salesAggregate[key].ordersCount += 1;
+          salesAggregate[key].totalQty += Number(item.quantity || 1);
+          salesAggregate[key].totalSales += (Number(item.price || 0) * Number(item.quantity || 1));
+        });
+      });
+
+      let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Center" ss:ReadingOrder="RightToLeft"/>
+   <Font ss:FontName="Arial" ss:Size="11" ss:Color="#111111"/>
+  </Style>
+  <Style ss:ID="HeaderAmber">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#F59E0B"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#F59E0B"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#F59E0B"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#F59E0B"/>
+   </Borders>
+   <Font ss:FontName="Arial" ss:Size="11" ss:Color="#FFFFFF" ss:Bold="1"/>
+   <Interior ss:Color="#26180C" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="HeaderGold">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#B8860B"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#B8860B"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#B8860B"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#B8860B"/>
+   </Borders>
+   <Font ss:FontName="Arial" ss:Size="11" ss:Color="#FFFFFF" ss:Bold="1"/>
+   <Interior ss:Color="#D97706" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="CellCenter">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+   </Borders>
+  </Style>
+  <Style ss:ID="CellNumber">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+   </Borders>
+   <NumberFormat ss:Format="0"/>
+  </Style>
+  <Style ss:ID="CellText">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+   </Borders>
+   <NumberFormat ss:Format="@"/>
+  </Style>
+  <Style ss:ID="CellMoney">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+   </Borders>
+   <NumberFormat ss:Format="#,##0"/>
+  </Style>
+  <Style ss:ID="CellDelivered">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" ss:Color="#E2E8F0"/>
+   </Borders>
+   <Font ss:FontName="Arial" ss:Color="#27AE60" ss:Bold="1"/>
+  </Style>
+ </Styles>`;
+
+      xml += `
+ <Worksheet ss:Name="الملخص المالي للمناحل">
+  <Table ss:DefaultRowHeight="24">
+   <Column ss:Width="200"/>
+   <Column ss:Width="160"/>
+   <Row ss:Height="26">
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">البيان</Data></Cell>
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">القيمة</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">إجمالي الطلبات الكلي</Data></Cell>
+    <Cell ss:StyleID="CellNumber"><Data ss:Type="Number">${totalOrdersCount}</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">عدد الطلبات المُسلّمة</Data></Cell>
+    <Cell ss:StyleID="CellNumber"><Data ss:Type="Number">${deliveredCount}</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">طلبات قيد المتابعة</Data></Cell>
+    <Cell ss:StyleID="CellNumber"><Data ss:Type="Number">${pendingCount}</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">إجمالي المبيعات المحصلة</Data></Cell>
+    <Cell ss:StyleID="CellMoney"><Data ss:Type="Number">${totalRevenueDelivered}</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">إجمالي مصاريف الشحن</Data></Cell>
+    <Cell ss:StyleID="CellMoney"><Data ss:Type="Number">${totalShippingFee}</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">صافي دخل مبيعات العسل</Data></Cell>
+    <Cell ss:StyleID="CellMoney"><Data ss:Type="Number">${netProductsRevenue}</Data></Cell>
+   </Row>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <DisplayRightToLeft/>
+  </WorksheetOptions>
+ </Worksheet>`;
+
+      xml += `
+ <Worksheet ss:Name="سجل طلبات العسل">
+  <Table ss:DefaultRowHeight="22">
+   <Column ss:Width="100"/>
+   <Column ss:Width="95"/>
+   <Column ss:Width="80"/>
+   <Column ss:Width="140"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="90"/>
+   <Column ss:Width="200"/>
+   <Column ss:Width="100"/>
+   <Column ss:Width="95"/>
+   <Column ss:Width="90"/>
+   <Column ss:Width="100"/>
+   <Row ss:Height="26">
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">رقم الطلب</Data></Cell>
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">التاريخ</Data></Cell>
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">الوقت</Data></Cell>
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">اسم العميل</Data></Cell>
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">الهاتف</Data></Cell>
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">نوع الشحن</Data></Cell>
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">العنوان</Data></Cell>
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">الحالة</Data></Cell>
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">قيمة العسل</Data></Cell>
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">الشحن</Data></Cell>
+    <Cell ss:StyleID="HeaderAmber"><Data ss:Type="String">الإجمالي</Data></Cell>
+   </Row>`;
+
+      allOrders.forEach((o, index) => {
+        const orderNum = `QBR-${String(1001 + index)}`;
+        let dateStr = "2026-09-12", timeStr = "12:00";
+        if (o.createdAt) {
+          const d = o.createdAt.toDate ? o.createdAt.toDate() : new Date(o.createdAt);
+          if (!isNaN(d)) {
+            dateStr = d.toISOString().slice(0, 10);
+            timeStr = d.getHours() + ":" + String(d.getMinutes()).padStart(2, '0');
+          }
+        }
+        const fullAddress = `${cleanXml(o.customer?.governorate || "")} - ${cleanXml(o.customer?.address || "")}`;
+        const isDone = o.status === "delivered";
+
+        xml += `
+   <Row>
+    <Cell ss:StyleID="CellText"><Data ss:Type="String">${orderNum}</Data></Cell>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">${cleanXml(dateStr)}</Data></Cell>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">${cleanXml(timeStr)}</Data></Cell>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">${cleanXml(o.customer?.name || "عميل قطوف البر")}</Data></Cell>
+    <Cell ss:StyleID="CellText"><Data ss:Type="String">${cleanXml(o.customer?.phone || "")}</Data></Cell>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">توصيل طرد</Data></Cell>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">${fullAddress}</Data></Cell>
+    <Cell ss:StyleID="${isDone ? 'CellDelivered' : 'CellCenter'}"><Data ss:Type="String">${isDone ? '✓ تم التسليم' : 'قيد الانتظار'}</Data></Cell>
+    <Cell ss:StyleID="CellMoney"><Data ss:Type="Number">${Number(o.pricing?.subtotal || 0)}</Data></Cell>
+    <Cell ss:StyleID="CellMoney"><Data ss:Type="Number">${Number(o.pricing?.shippingFee || 0)}</Data></Cell>
+    <Cell ss:StyleID="CellMoney"><Data ss:Type="Number">${Number(o.pricing?.total || 0)}</Data></Cell>
+   </Row>`;
+      });
+
+      xml += `
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <DisplayRightToLeft/>
+  </WorksheetOptions>
+ </Worksheet>`;
+
+      xml += `
+ <Worksheet ss:Name="تجميع مبيعات الأعسال">
+  <Table ss:DefaultRowHeight="22">
+   <Column ss:Width="220"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="120"/>
+   <Column ss:Width="140"/>
+   <Column ss:Width="150"/>
+   <Row ss:Height="26">
+    <Cell ss:StyleID="HeaderGold"><Data ss:Type="String">الصنف / المحصول</Data></Cell>
+    <Cell ss:StyleID="HeaderGold"><Data ss:Type="String">الوزن</Data></Cell>
+    <Cell ss:StyleID="HeaderGold"><Data ss:Type="String">مرات الطلب</Data></Cell>
+    <Cell ss:StyleID="HeaderGold"><Data ss:Type="String">إجمالي العبوات</Data></Cell>
+    <Cell ss:StyleID="HeaderGold"><Data ss:Type="String">إجمالي الإيراد (ج.م)</Data></Cell>
+   </Row>`;
+
+      const sortedAgg = Object.values(salesAggregate).sort((a, b) => b.totalSales - a.totalSales);
+      sortedAgg.forEach(p => {
+        xml += `
+   <Row>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">${cleanXml(p.name)}</Data></Cell>
+    <Cell ss:StyleID="CellCenter"><Data ss:Type="String">${cleanXml(p.size)}</Data></Cell>
+    <Cell ss:StyleID="CellNumber"><Data ss:Type="Number">${p.ordersCount}</Data></Cell>
+    <Cell ss:StyleID="CellNumber"><Data ss:Type="Number">${p.totalQty}</Data></Cell>
+    <Cell ss:StyleID="CellMoney"><Data ss:Type="Number">${p.totalSales}</Data></Cell>
+   </Row>`;
+      });
+
+      xml += `
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <DisplayRightToLeft/>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>`;
+
+      const blob = new Blob([xml], { type: "application/vnd.ms-excel;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `تقرير_مبيعات_قطوف_البر_${new Date().toISOString().slice(0, 10)}.xls`;
+      link.click();
+      toast("تم تصدير شيت إكسيل قطوف البر بنجاح! 📊");
+    });
+
+    // 5. نافذة مظهر وحالة المتجر
+    const themesContainer = document.getElementById("themesContainer");
+    if (themesContainer) {
+      STORE_THEMES.forEach(th => {
+        const chip = document.createElement("div");
+        chip.className = `theme-chip ${th.id === selectedThemeId ? 'selected' : ''}`;
+        chip.dataset.theme = th.id;
+        chip.innerHTML = `
+          <div class="theme-preview-dot" style="background: ${th.gradient}"></div>
+          <span class="theme-name-text">${th.name}</span>
+        `;
+        chip.addEventListener("click", () => {
+          document.querySelectorAll(".theme-chip").forEach(c => c.classList.remove("selected"));
+          chip.classList.add("selected");
+          selectedThemeId = th.id;
+        });
+        themesContainer.appendChild(chip);
+      });
+    }
+
+    document.getElementById("openThemeModalBtn")?.addEventListener("click", async () => {
+      document.getElementById("dropdownMenu")?.classList.remove("show");
+      const snap = await getDoc(settingsDoc);
+      if (snap.exists()) {
+        const d = snap.data();
+        const chk = document.getElementById("closeStoreCheckbox");
+        if (chk) chk.checked = !!d.isClosed;
+        selectedThemeId = d.theme || "amber-honey";
+
+        document.querySelectorAll(".theme-chip").forEach(c => {
+          c.classList.toggle("selected", c.dataset.theme === selectedThemeId);
+        });
+        updateStoreToggleUI(!!d.isClosed);
+      }
+      document.getElementById("themeModal")?.classList.add("open");
+    });
+
+    function updateStoreToggleUI(isClosed) {
+      const box = document.getElementById("storeToggleContainer");
+      const lbl = document.getElementById("storeStatusLabel");
+      const badge = document.getElementById("menuStatusBadge");
+      
+      if (isClosed) {
+        box?.classList.remove("active-open");
+        if (lbl) { lbl.textContent = "حالة المتجر: مغلق مؤقتاً (موسم الجني والتصفية)"; lbl.style.color = "var(--danger)"; }
+        if (badge) { badge.textContent = "مغلق"; badge.style.color = "var(--danger)"; }
+      } else {
+        box?.classList.add("active-open");
+        if (lbl) { lbl.textContent = "حالة المتجر: يعمل ويستقبل طلبات العسل"; lbl.style.color = "var(--success)"; }
+        if (badge) { badge.textContent = "يعمل"; badge.style.color = "var(--success)"; }
+      }
+    }
+
+    document.getElementById("closeStoreCheckbox")?.addEventListener("change", (e) => {
+      updateStoreToggleUI(e.target.checked);
+    });
+
+    document.getElementById("saveThemeAndStatusBtn")?.addEventListener("click", async () => {
+      const isClosed = document.getElementById("closeStoreCheckbox").checked;
+      await setDoc(settingsDoc, { 
+        isClosed: isClosed, 
+        theme: selectedThemeId 
+      }, { merge: true });
+
+      document.getElementById("themeModal")?.classList.remove("open");
+      toast("تم حفظ حالة المتجر ومظهر قطوف البر لحظياً! 🍯");
+    });
+
+    // 6. التحليلات
+    function renderAnalytics() {
+      const salesMap = {};
+      allOrders.forEach(o => {
+        (o.items || []).forEach(item => {
+          const key = item.name.split(" (")[0];
+          if (!salesMap[key]) salesMap[key] = { count: 0, revenue: 0 };
+          salesMap[key].count += item.quantity;
+          salesMap[key].revenue += (item.price * item.quantity);
+        });
+      });
+
+      const sorted = Object.keys(salesMap).sort((a,b) => salesMap[b].count - salesMap[a].count);
+      const tbody = document.getElementById("topSellingTableBody");
+      if (!tbody) return;
+
+      if (sorted.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">لا توجد مبيعات تحليلية بعد.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = sorted.map(name => {
+        const prod = allPerfumes.find(p => p.name && p.name.includes(name));
+        return `
+          <tr>
+            <td><strong>${name}</strong></td>
+            <td style="color:var(--success); font-weight:800;">${salesMap[name].count} عبوة</td>
+            <td><strong style="color:var(--gold);">${salesMap[name].revenue.toLocaleString("ar-EG")} ج</strong></td>
+            <td>${prod ? (prod.stock !== undefined ? prod.stock : 20) : '—'}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    // 7. مزامنة تشكيلة أعسال قطوف البر الافتراضية
+    document.getElementById("syncDefaultsBtn")?.addEventListener("click", async () => {
+      if (!confirm("هل تريد رفع تشكيلة أعسال قطوف البر الطبيعية كاملة إلى Firebase الآن؟")) return;
+      const defs = [
+        { name: "عسل سدر جبلي ملكي", category: "men", price: 650, oldPrice: 850, stock: 45, image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=900&q=85", desc: "عسل سدر جبلي بري خام من أشجار السدر المعمرة، ذو كثافة عالية وطعم غني وخصائص علاجية مذهلة." },
+        { name: "عسل حبة البركة والزهور البرية", category: "unisex", price: 420, oldPrice: 550, stock: 40, image: "https://images.unsplash.com/photo-1587049352851-8d4e89133924?auto=format&fit=crop&w=900&q=85", desc: "مستخلص من رحيق أزهار حبة البركة البرية، معزز طبيعي للمناعة ومقاومة الإجهاد بنكهة عطرية أصيلة." },
+        { name: "عسل الموالح وزهر البرتقال", category: "women", price: 340, oldPrice: 450, stock: 50, image: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?auto=format&fit=crop&w=900&q=85", desc: "عسل خفيف نقي مستخلص من أزهار البرتقال والليمون، غني بفيتامين C ومهدئ للأعصاب ومثالي للأطفال." },
+        { name: "قرص شمع عسل السدر الطبيعي", category: "men", price: 580, oldPrice: 750, stock: 25, image: "https://images.unsplash.com/photo-1471943311424-646960669fbc?auto=format&fit=crop&w=900&q=85", desc: "شمع عسل خام مقطوف طازجاً من خلايا النحل، يحتوي على خلاصة العكبر وحبوب اللقاح بكامل فوائدهما الخام." },
+        { name: "عسل البردقوش والأعشاب الجبلية", category: "unisex", price: 390, oldPrice: 490, stock: 35, image: "https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=900&q=85", desc: "مستخلص من مراعي البردقوش الجبلية، ممتاز للجهاز الهضمي وتنظيم النوم ومسكن طبيعي هادئ." },
+        { name: "خلطة الطاقة الملكية (غذاء ملكات + حبوب لقاح)", category: "bestseller", price: 850, oldPrice: 1100, stock: 20, image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=900&q=85", desc: "توليفة فائقة القوة تجمع عسل السدر مع غذاء ملكات النحل الصافي وحبوب اللقاح وغبار الطلع لنشاط وحيوية قصوى." }
+      ];
+      for (const d of defs) {
+        await addDoc(perfumesCol, {
+          ...d,
+          sizes: { 
+            30: Math.round((d.price * 0.55)/10)*10, 
+            50: d.price, 
+            100: Math.round((d.price * 1.85)/10)*10 
+          },
+          stocks: {
+            30: 15,
+            50: 20,
+            100: 10
+          },
+          createdAt: new Date()
+        });
+      }
+      toast("تمت مزامنة أعسال قطوف البر بنجاح! 🍯");
+      document.getElementById("dropdownMenu")?.classList.remove("show");
+    });
+
+    // 8. باقات عروض المناحل
+    let currentOfferImgBase64 = "";
+
+    document.getElementById("offerFileInput")?.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      currentOfferImgBase64 = await compressImageFile(file, 800, 0.85);
+      document.getElementById("offerPreviewImg").src = currentOfferImgBase64;
+      document.getElementById("offerPreviewName").textContent = file.name;
+      document.getElementById("offerUploadText").style.display = "none";
+      document.getElementById("offerPreviewBox").style.display = "flex";
+    });
+
+    document.getElementById("createOfferForm")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const saveBtn = document.getElementById("saveOfferBtn");
+      saveBtn.disabled = true;
+      saveBtn.textContent = "جاري نشر الباقة...";
+
+      try {
+        await addDoc(offersCol, {
+          title: document.getElementById("offerTitle").value.trim(),
+          tag: document.getElementById("offerTag").value.trim(),
+          price: Number(document.getElementById("offerPrice").value),
+          oldPrice: document.getElementById("offerOldPrice").value ? Number(document.getElementById("offerOldPrice").value) : null,
+          desc: document.getElementById("offerDesc").value.trim(),
+          expiryDate: document.getElementById("offerExpiry").value || null,
+          image: currentOfferImgBase64 || "image/S1.png",
+          active: true,
+          createdAt: new Date()
+        });
+
+        toast("تم نشر باقة العسل وسلايدر العروض يعمل الآن! 🔥");
+        e.target.reset();
+        currentOfferImgBase64 = "";
+        document.getElementById("offerUploadText").style.display = "block";
+        document.getElementById("offerPreviewBox").style.display = "none";
+      } catch (err) {
+        toast("حدث خطأ أثناء حفظ الباقة!");
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "نشر الباقة بالمتجر الآن 🚀";
+      }
+    });
+
+    onSnapshot(offersCol, (snapshot) => {
+      const tbody = document.getElementById("offersTableBody");
+      if (!tbody) return;
+      
+      const list = [];
+      snapshot.forEach(docSnap => list.push({ id: docSnap.id, ...docSnap.data() }));
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted);">لا توجد باقات منشورة حالياً.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(o => `
+        <tr>
+          <td><img src="${o.image || 'image/S1.png'}" style="width:45px; height:45px; object-fit:cover; border-radius:4px;"></td>
+          <td><strong>${o.title}</strong></td>
+          <td style="color:var(--gold); font-weight:800;">${o.price} ج</td>
+          <td style="color:#e74c3c; text-decoration:line-through;">${o.oldPrice ? `${o.oldPrice} ج` : '—'}</td>
+          <td><span style="background:#e74c3c; color:#fff; font-size:9.5px; padding:2px 6px; border-radius:3px;">${o.tag}</span></td>
+          <td>
+            <button type="button" class="btn-exit" style="padding:3px 8px; font-size:10px;" onclick="deleteOffer('${o.id}')">حذف الباقة</button>
+          </td>
+        </tr>
+      `).join("");
+    });
+
+    window.deleteOffer = async function(id) {
+      if (!confirm("هل تريد حذف هذه الباقة نهائياً؟")) return;
+      await deleteDoc(doc(db, "offers", id));
+      toast("تم حذف الباقة بنجاح!");
+    };
+
+    // 9. آراء وسكرينات الواتساب
+    let currentRevBase64 = "";
+
+    document.getElementById("revFileInput")?.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      currentRevBase64 = await compressImageFile(file, 900, 0.85);
+      document.getElementById("revPreviewImg").src = currentRevBase64;
+      document.getElementById("revPreviewName").textContent = file.name;
+      document.getElementById("revUploadPrompt").style.display = "none";
+      document.getElementById("revPreviewBox").style.display = "flex";
+    });
+
+    document.getElementById("addReviewForm")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!currentRevBase64) {
+        alert("يرجى اختيار صورة سكرين شوت التجربة أولاً!");
+        return;
+      }
+      const btn = document.getElementById("saveRevBtn");
+      btn.disabled = true;
+      btn.textContent = "جاري النشر...";
+
+      try {
+        await addDoc(reviewsCol, {
+          author: document.getElementById("revAuthor").value.trim() || "عميل قطوف البر",
+          image: currentRevBase64,
+          createdAt: new Date()
+        });
+
+        toast("تم نشر تجربة العميل بنجاح! 💬");
+        e.target.reset();
+        currentRevBase64 = "";
+        document.getElementById("revUploadPrompt").style.display = "block";
+        document.getElementById("revPreviewBox").style.display = "none";
+      } catch (err) {
+        toast("حدث خطأ أثناء حفظ التجربة!");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "نشر التجربة في المتجر الآن 🚀";
+      }
+    });
+
+    onSnapshot(reviewsCol, (snapshot) => {
+      const tbody = document.getElementById("reviewsTableBody");
+      if (!tbody) return;
+      const list = [];
+      snapshot.forEach(docSnap => list.push({ id: docSnap.id, ...docSnap.data() }));
+
+      list.sort((a,b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">لا توجد تجارب منشورة بعد.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(r => `
+        <tr>
+          <td><img src="${r.image}" style="max-height:55px; border-radius:4px; border:1px solid var(--line);"></td>
+          <td><strong>${r.author}</strong></td>
+          <td style="color:var(--text-muted); font-size:11px;">${r.createdAt?.toDate ? r.createdAt.toDate().toLocaleDateString("ar-EG") : "اليوم"}</td>
+          <td>
+            <button type="button" class="btn-exit" style="padding:4px 10px; font-size:10px;" onclick="deleteCustomerReview('${r.id}')">حذف</button>
+          </td>
+        </tr>
+      `).join("");
+    });
+
+    window.deleteCustomerReview = async function(id) {
+      if (!confirm("هل تريد حذف هذه التجربة نهائياً من الموقع؟")) return;
+      await deleteDoc(doc(db, "reviews", id));
+      toast("تم حذف التجربة بنجاح!");
+    };
+  </script>
+</body>
+</html>
