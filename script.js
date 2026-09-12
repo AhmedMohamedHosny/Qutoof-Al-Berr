@@ -1196,7 +1196,7 @@ document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
 });
 
 document.getElementById("copyNumberBtn")?.addEventListener("click", () => {
-  navigator.clipboard.writeText("01016118242").then(() => {
+  navigator.clipboard.writeText("01061934346").then(() => {
     showToast("تم النسخ", "تم نسخ رقم التحويل بنجاح.");
   });
 });
@@ -1361,7 +1361,7 @@ ${receiptMessageText}
 
     showToast("تم تأكيد طلب العسل بنجاح! 🍯", "جاري توجيهك إلى واتساب المنحل...");
 
-    const waUrl = `https://wa.me/201016118242?text=${encodeURIComponent(waMessage)}`;
+    const waUrl = `https://wa.me/201061934346?text=${encodeURIComponent(waMessage)}`;
     setTimeout(() => {
       window.open(waUrl, "_blank");
     }, 1000);
@@ -1435,7 +1435,7 @@ onSnapshot(perfumesCol, (snapshot) => {
    ADMIN SECRET AUTHENTICATION
    ========================================================= */
 
-const ADMIN_PASS = "01016118242";
+const ADMIN_PASS = "01061934346";
 let logoClicks = 0;
 let clickTimer;
 
@@ -1943,7 +1943,7 @@ function setupRatingInteraction(prod) {
 }
 
 document.getElementById("copyDepositVodafoneBtn")?.addEventListener("click", () => {
-  const num = document.getElementById("depositVodafoneNum")?.textContent || "01016118242";
+  const num = document.getElementById("depositVodafoneNum")?.textContent || "01061934346";
   navigator.clipboard.writeText(num).then(() => {
     showToast("تم النسخ بنجاح 📋", `تم نسخ رقم فودافون كاش: ${num}`);
   });
