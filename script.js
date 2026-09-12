@@ -1544,15 +1544,15 @@ onSnapshot(doc(db, "settings", "storeConfig"), (docSnap) => {
   if (!docSnap.exists()) return;
   const cfg = docSnap.data();
 
-  // 1. التحكم في فتح وإغلاق شاشة الصيانة وموسم الجني
+// 1. التحكم في فتح وإغلاق شاشة الصيانة وموسم الجني
   const closedScreen = document.getElementById("storeClosedScreen");
   if (closedScreen) {
     if (cfg.isClosed === true) {
       closedScreen.style.setProperty("display", "flex", "important");
-      document.body.classList.add("no-scroll");
+      document.body.classList.add("no-scroll", "store-closed");
     } else {
       closedScreen.style.setProperty("display", "none", "important");
-      document.body.classList.remove("no-scroll");
+      document.body.classList.remove("no-scroll", "store-closed");
     }
   }
 
