@@ -5079,3 +5079,35 @@ body {
     justify-content: center;
   }
 }
+/* زر التسوق الرئيسي البارز في الواجهة */
+.hero-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #1a0f05 !important;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 14px 28px;
+  border-radius: 50px;
+  border: 2px solid #fef3c7;
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.45), 0 0 0 4px rgba(245, 158, 11, 0.2);
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.hero-cta-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  box-shadow: 0 12px 30px rgba(245, 158, 11, 0.6), 0 0 0 6px rgba(245, 158, 11, 0.25);
+}
+
+.hero-cta-btn .cta-arrow {
+  font-size: 16px;
+  transition: transform 0.25s ease;
+}
+
+.hero-cta-btn:hover .cta-arrow {
+  transform: translateX(-4px);
+}
