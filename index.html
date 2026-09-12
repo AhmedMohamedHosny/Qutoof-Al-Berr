@@ -93,104 +93,31 @@
 
   <main>
 
-<!-- 1. HERO SECTION (تصميم Split Screen 50/50 المخصص لقطوف البر) -->
-    <section class="hero-split-section" id="home">
-      <div class="hero-split-grid">
-        <!-- الطرف الأيمن: النص ونقاط الثقة السريعة وزر الشراء -->
-        <div class="hero-text-side">
-          <div class="hero-nature-pill">🌿 خلاصة المناحل الجبلية والبرية</div>
-          <h1 class="hero-split-title">شهدٌ نقيّ.. <br><span>مِن قلب الطبيعة</span></h1>
-          <p class="hero-split-desc">
-            عسل نحل بري خام 100% لم تمسه حرارة البسترة أو معاملات السكر الصناعي، مصفى على البارد لحفظ الإنزيمات الحية والخصائص العلاجية والغذائية كاملة.
+    <!-- HERO SECTION -->
+    <div class="hero-container">
+      <section class="hero" id="home">
+<video class="hero-video-bg" autoplay muted loop playsinline preload="metadata">
+  <source src="video/hero-video.mp4" type="video/mp4">
+</video>
+<img class="hero-mobile-img" src="image/asal.jpg" alt="عسل قطوف البر">
+        
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <p class="eyebrow" data-ar="مناحل قطوف البر الطبيعية" data-en="QUTOOF AL-BERR APIARIES">مناحل قطوف البر الطبيعية</p>
+          <h1 data-ar-html="شَهدٌ نَقِيّ<br><em>مِنْ رَحِيقِ البَرِّ</em>" data-en-html="Pure Honey<br><em>From Wild Nectar</em>">شَهدٌ نَقِيّ<br><em>مِنْ رَحِيقِ البَرِّ</em></h1>
+          <p class="hero-text" data-ar="نقدم لكم خلاصة المناحل البرية الجبلية، عسل خام نقي لم تمسه بسترة أو إضافات، بجودة غذائية وعلاجية معتمدة." data-en="Pure, raw, unpasteurized honey harvested straight from wild mountain apiaries.">
+            نقدم لكم خلاصة المناحل البرية الجبلية، عسل خام نقي لم تمسه بسترة أو إضافات، بجودة غذائية وعلاجية معتمدة.
           </p>
-
-          <div class="hero-quick-points">
-            <div class="q-point-item">
-              <span class="q-check">✓</span>
-              <span>خام وغير مبستر 100%</span>
-            </div>
-            <div class="q-point-item">
-              <span class="q-check">✓</span>
-              <span>مفحوص معملياً (سكروز منخفض)</span>
-            </div>
-            <div class="q-point-item">
-              <span class="q-check">✓</span>
-              <span>حق الفحص والتذوق مع المندوب</span>
-            </div>
-          </div>
-
-          <div class="hero-cta-wrap">
-            <a href="#shop" class="hero-split-btn">
-              <span>تصفّح محاصيل العسل</span>
-              <span class="btn-arrow">←</span>
+<div class="hero-buttons">
+            <a href="#shop" class="hero-cta-btn">
+              <span class="cta-icon">🍯</span>
+              <span class="cta-text">تسوّق الأعسال الآن</span>
+              <span class="cta-arrow">←</span>
             </a>
           </div>
         </div>
-
-        <!-- الطرف الأيسر: مجسم برطمان العسل والشارات العائمة -->
-        <div class="hero-visual-side">
-          <div class="visual-glow-backdrop"></div>
-          <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=800&q=80" alt="عسل قطوف البر الطبيعي" class="hero-honey-visual">
-
-          <!-- شارات عائمة احترافية -->
-          <div class="floating-honey-badge badge-top-left">
-            <span class="badge-ico">🔬</span>
-            <div class="badge-txt">
-              <strong>فحص معملي معتمد</strong>
-              <small>خالٍ من السكريات المصنعة</small>
-            </div>
-          </div>
-
-          <div class="floating-honey-badge badge-bottom-right">
-            <span class="badge-ico">🌿</span>
-            <div class="badge-txt">
-              <strong>تصفية على البارد</strong>
-              <small>إنزيمات وحبوب لقاح حية</small>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 2. ميثاق الجودة الدائري الناعم -->
-    <section class="honey-trust-ribbon">
-      <div class="ribbon-container">
-        <div class="ribbon-item">
-          <div class="ribbon-circle">🍯</div>
-          <div class="ribbon-info">
-            <strong>طبيعي وخام 100%</strong>
-            <span>مقطوف ومصفى بدون تسخين صناعي</span>
-          </div>
-        </div>
-        <div class="ribbon-sep"></div>
-
-        <div class="ribbon-item">
-          <div class="ribbon-circle">🔬</div>
-          <div class="ribbon-info">
-            <strong>مضمون ومفحوص</strong>
-            <span>اختبارات دورية للجودة والإنزيمات</span>
-          </div>
-        </div>
-        <div class="ribbon-sep"></div>
-
-        <div class="ribbon-item">
-          <div class="ribbon-circle">🥄</div>
-          <div class="ribbon-info">
-            <strong>حق المعاينة والتذوق</strong>
-            <span>تذوق وافحص العسل قبل الدفع</span>
-          </div>
-        </div>
-        <div class="ribbon-sep"></div>
-
-        <div class="ribbon-item">
-          <div class="ribbon-circle">✨</div>
-          <div class="ribbon-info">
-            <strong>الضمان الذهبي</strong>
-            <span>استرجاع فوري إن لم يكن طبيعياً</span>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </div>
 
 
 
