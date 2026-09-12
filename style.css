@@ -4783,3 +4783,299 @@ body {
     height: 260px;
   }
 }
+/* =========================================================
+   تصميم عروض قطوف البر الكلاسيكية (Warm Honey Showcase)
+   ========================================================= */
+.offers-showcase-section {
+  max-width: 1200px;
+  margin: 30px auto 40px;
+  padding: 0 4%;
+}
+
+.offers-header-head {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.offers-badge-flame {
+  display: inline-block;
+  background: #fbf0df;
+  border: 1px solid #d97706;
+  color: #8c532d;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 6px;
+}
+
+.offers-main-title {
+  font-size: clamp(22px, 3.5vw, 30px);
+  font-weight: 900;
+  color: #3a2213;
+}
+
+.offers-main-title em {
+  color: #d97706;
+  font-style: normal;
+}
+
+.offers-carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.offers-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  gap: 20px;
+}
+
+/* الكارت الجديد: خلفية بيضاء عسلية بإطار ناعم */
+.honey-offer-card {
+  min-width: 100%;
+  background: #ffffff;
+  border: 1px solid #ebdccb;
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  align-items: center;
+  box-shadow: 0 8px 24px rgba(58, 34, 19, 0.05);
+  overflow: hidden;
+}
+
+/* جانب الصورة */
+.honey-offer-img-box {
+  position: relative;
+  height: 360px;
+  background: #faf6f0;
+}
+
+.honey-offer-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.honey-offer-badge {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: #3a2213;
+  color: #fef3c7;
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* جانب التفاصيل */
+.honey-offer-details {
+  padding: 30px 35px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.offer-producer-tag {
+  font-size: 11px;
+  font-weight: 800;
+  color: #8c532d;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.honey-offer-title {
+  font-size: clamp(20px, 2.5vw, 26px);
+  font-weight: 900;
+  color: #2b170c;
+  line-height: 1.3;
+}
+
+.honey-offer-desc {
+  font-size: 13px;
+  line-height: 1.7;
+  color: #736256;
+}
+
+/* عداد الوقت التنازلي الكلاسيكي */
+.honey-timer-wrap {
+  background: #fbf7ef;
+  border: 1px dashed #d8cbba;
+  padding: 10px 14px;
+  border-radius: 8px;
+  width: fit-content;
+}
+
+.honey-timer-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #8c532d;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.honey-timer-boxes {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.timer-unit {
+  background: #fff;
+  border: 1px solid #ebdccb;
+  border-radius: 4px;
+  padding: 4px 8px;
+  text-align: center;
+  min-width: 42px;
+}
+
+.timer-unit strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 900;
+  color: #3a2213;
+}
+
+.timer-unit span {
+  font-size: 9px;
+  color: #8c532d;
+}
+
+.timer-sep {
+  font-weight: 900;
+  color: #8c532d;
+}
+
+/* شريط الأسعار وزر الطلب */
+.honey-offer-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid #ebdccb;
+  padding-top: 16px;
+  margin-top: 4px;
+}
+
+.honey-pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.current-price {
+  font-size: 24px;
+  font-weight: 900;
+  color: #8c532d;
+}
+
+.prev-price {
+  font-size: 14px;
+  color: #9c8e83;
+  text-decoration: line-through;
+}
+
+.honey-claim-btn {
+  background: #3a2213;
+  color: #fff;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.honey-claim-btn:hover {
+  background: #5c371f;
+  transform: translateY(-2px);
+}
+
+.offer-expired-badge {
+  background: #fde8e8;
+  color: #c0392b;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* أزرار التنقل يمين ويسار */
+.offer-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  background: #ffffff;
+  border: 1px solid #ebdccb;
+  color: #3a2213;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.offer-nav-btn:hover {
+  background: #3a2213;
+  color: #fff;
+}
+
+.prev-btn { right: 8px; }
+.next-btn { left: 8px; }
+
+/* مؤشرات النقاط بالأسفل */
+.offers-dots-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.offer-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ebdccb;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.offer-dot.active {
+  width: 22px;
+  border-radius: 6px;
+  background: #8c532d;
+}
+
+/* تجاوب الشاشات الصغيرة للموبايل */
+@media (max-width: 850px) {
+  .honey-offer-card {
+    grid-template-columns: 1fr;
+  }
+  .honey-offer-img-box {
+    height: 220px;
+  }
+  .honey-offer-details {
+    padding: 20px 16px;
+  }
+  .honey-offer-action-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .honey-claim-btn {
+    justify-content: center;
+  }
+}
