@@ -1032,10 +1032,16 @@ img {
   font-weight: 800;
 }
 
+.nav-inner,
+.hero-container,
+.trust-strip,
+.section,
+.why-container,
+.footer-main,
+.footer-bottom,
 .pfp-container {
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 0 4%;
+  max-width: 1400px !important;
+  margin: auto;
 }
 
 .pfp-hero-grid {
@@ -1404,31 +1410,34 @@ img {
   .mobile-menu-btn {
     display: block;
   }
-  .hero {
-    height: 320px;
-  }
-  .hero-content {
-    width: 95%;
-  }
+.hero {
+  height: 520px !important; /* بدلاً من 380px لتكون واسعة وفخمة */
+  border-radius: 16px;
+}
+
+.hero-content {
+  width: min(650px, 90%) !important;
+  margin-right: 6% !important;
+}
   .trust-strip {
     grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
-  .collections-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-  .collection-card {
-    height: 220px;
-    padding: 12px;
-  }
+.collections-grid {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 16px !important;
+}
+
+.collection-card {
+  height: 420px !important; /* زيادة طول الكروت لتكون فخمة وغير مضغوطة */
+}
   .collection-content h3 {
     font-size: 15px;
   }
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
+.products-grid {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 25px !important;
+}
   .product-image-wrap {
     height: 140px;
   }
