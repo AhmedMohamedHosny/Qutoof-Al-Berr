@@ -1190,7 +1190,13 @@ document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
   radio.addEventListener("change", (e) => {
     selectedPaymentMethod = e.target.value;
     if (transferDetails) {
-      transferDetails.style.display = (selectedPaymentMethod === "instapay" || selectedPaymentMethod === "vodafone_cash") ? "flex" : "none";
+      const showTransfer = (selectedPaymentMethod === "instapay" || selectedPaymentMethod === "vodafone_cash");
+      transferDetails.style.display = showTransfer ? "flex" : "none";
+      if (showTransfer) {
+        const totalVal = getCartTotal() + getShippingFee();
+        const amtValEl = document.getElementById("transferAmountVal");
+        if (amtValEl) amtValEl.textContent = `${totalVal.toLocaleString("ar-EG")} جنيه`;
+      }
     }
   });
 });
