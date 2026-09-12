@@ -1202,7 +1202,7 @@ document.querySelectorAll('input[name="paymentMethod"]').forEach(radio => {
 });
 
 document.getElementById("copyNumberBtn")?.addEventListener("click", () => {
-  navigator.clipboard.writeText("01061934346").then(() => {
+  navigator.clipboard.writeText("01005293067").then(() => {
     showToast("تم النسخ", "تم نسخ رقم التحويل بنجاح.");
   });
 });
@@ -1932,7 +1932,7 @@ async function trackRealTimeViewers(honeyId) {
     const finalCount = Math.max(1, activeCount);
 
     if (finalCount === 1) {
-      label.textContent = "أنت تتصفح هذا العسل الآن 👁️";
+      label.textContent = "شخص واحد يتصفح هذا المنتج الآن 👁️ ";
     } else {
       label.textContent = `يشاهد هذا العسل الآن ${finalCount} أشخاص في نفس اللحظة 👁️`;
     }
@@ -2018,7 +2018,7 @@ function setupRatingInteraction(prod) {
 }
 
 document.getElementById("copyDepositVodafoneBtn")?.addEventListener("click", () => {
-  const num = document.getElementById("depositVodafoneNum")?.textContent || "01061934346";
+  const num = document.getElementById("depositVodafoneNum")?.textContent || "01005293067";
   navigator.clipboard.writeText(num).then(() => {
     showToast("تم النسخ بنجاح 📋", `تم نسخ رقم فودافون كاش: ${num}`);
   });
