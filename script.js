@@ -1511,6 +1511,13 @@ if (homeSec) {
    ========================================================= */
 
 const THEME_PALETTES = {
+  "white-pure": {
+    bg: "#ffffff",
+    card: "#fcfaf7",
+    text: "#2b170c",
+    gold: "#d97706",
+    line: "rgba(217, 119, 6, 0.2)"
+  },
   "amber-honey": {
     bg: "#140d07",
     card: "#1f140a",
@@ -1553,12 +1560,61 @@ const THEME_PALETTES = {
     gold: "#d4af37",
     line: "rgba(212, 175, 55, 0.25)"
   },
-  "white-pure": {
-    bg: "#ffffff",
-    card: "#fdfbf7",
-    text: "#2d180c",
+  "cream-vanilla": {
+    bg: "#fdfbf7",
+    card: "#f4ede2",
+    text: "#3a2513",
     gold: "#b45309",
-    line: "rgba(140, 83, 45, 0.15)"
+    line: "rgba(180, 83, 9, 0.2)"
+  },
+  "royal-velvet": {
+    bg: "#0f051d",
+    card: "#1a0b2e",
+    text: "#f3e8ff",
+    gold: "#c084fc",
+    line: "rgba(192, 132, 252, 0.25)"
+  },
+  "emerald-hive": {
+    bg: "#062e1b",
+    card: "#093822",
+    text: "#ecfdf5",
+    gold: "#34d399",
+    line: "rgba(52, 211, 153, 0.25)"
+  },
+  "ruby-nectar": {
+    bg: "#310d0f",
+    card: "#3e1215",
+    text: "#fff1f2",
+    gold: "#f87171",
+    line: "rgba(248, 113, 113, 0.25)"
+  },
+  "desert-sand": {
+    bg: "#2d2013",
+    card: "#38291a",
+    text: "#fef3c7",
+    gold: "#fbbf24",
+    line: "rgba(251, 191, 36, 0.25)"
+  },
+  "midnight-blue": {
+    bg: "#080f1e",
+    card: "#111827",
+    text: "#eff6ff",
+    gold: "#60a5fa",
+    line: "rgba(96, 165, 250, 0.25)"
+  },
+  "rose-gold": {
+    bg: "#2b181b",
+    card: "#361f23",
+    text: "#fff1f2",
+    gold: "#fb7185",
+    line: "rgba(251, 113, 133, 0.25)"
+  },
+  "espresso-honey": {
+    bg: "#180f0a",
+    card: "#22160f",
+    text: "#fef3c7",
+    gold: "#d97706",
+    line: "rgba(217, 119, 6, 0.25)"
   }
 };
 
