@@ -1455,13 +1455,66 @@ if (homeSec) {
 }
 
 /* =========================================================
-   STORE CLOSED & THEME CONFIGURATION LISTENER
+   STORE CLOSED & ADMIN THEME LISTENER (تحكم المشرف في ألوان وحالة المتجر)
    ========================================================= */
+
+const THEME_PALETTES = {
+  "amber-honey": {
+    bg: "#140d07",
+    card: "#1f140a",
+    text: "#fef3c7",
+    gold: "#f59e0b",
+    line: "rgba(245, 158, 11, 0.22)"
+  },
+  "golden-nectar": {
+    bg: "#1a1007",
+    card: "#26180c",
+    text: "#fff8db",
+    gold: "#fbbf24",
+    line: "rgba(251, 191, 36, 0.25)"
+  },
+  "mountain-sidr": {
+    bg: "#0c0703",
+    card: "#180e06",
+    text: "#f5e6d3",
+    gold: "#d97706",
+    line: "rgba(217, 119, 6, 0.25)"
+  },
+  "royal-propolis": {
+    bg: "#140d06",
+    card: "#221509",
+    text: "#fffbeb",
+    gold: "#eab308",
+    line: "rgba(234, 179, 8, 0.25)"
+  },
+  "black-seed": {
+    bg: "#070707",
+    card: "#141414",
+    text: "#f4f4f5",
+    gold: "#f59e0b",
+    line: "rgba(245, 158, 11, 0.2)"
+  },
+  "wild-forest": {
+    bg: "#0e1109",
+    card: "#181d0f",
+    text: "#f2f5ea",
+    gold: "#d4af37",
+    line: "rgba(212, 175, 55, 0.25)"
+  },
+  "white-pure": {
+    bg: "#ffffff",
+    card: "#fdfbf7",
+    text: "#2d180c",
+    gold: "#b45309",
+    line: "rgba(140, 83, 45, 0.15)"
+  }
+};
 
 onSnapshot(doc(db, "settings", "storeConfig"), (docSnap) => {
   if (!docSnap.exists()) return;
   const cfg = docSnap.data();
 
+  // 1. التحكم في فتح وإغلاق شاشة الصيانة وموسم الجني
   const closedScreen = document.getElementById("storeClosedScreen");
   if (closedScreen) {
     if (cfg.isClosed === true) {
@@ -1471,6 +1524,28 @@ onSnapshot(doc(db, "settings", "storeConfig"), (docSnap) => {
       closedScreen.style.setProperty("display", "none", "important");
       document.body.classList.remove("no-scroll");
     }
+  }
+
+  // 2. تطبيق الثيم والألوان التي يحددها المشرف فوراً لجميع الزوار
+  const selectedTheme = cfg.theme || "white-pure";
+  const palette = THEME_PALETTES[selectedTheme] || THEME_PALETTES["amber-honey"];
+
+  if (palette) {
+    const root = document.documentElement;
+    root.style.setProperty("--bg-main", palette.bg);
+    root.style.setProperty("--bg-card", palette.card);
+    root.style.setProperty("--text-main", palette.text);
+    root.style.setProperty("--honey-gold", palette.gold);
+    root.style.setProperty("--border-line", palette.line);
+
+    // للتوافق مع المتغيرات العامة
+    root.style.setProperty("--ivory", palette.bg);
+    root.style.setProperty("--cream", palette.card);
+    root.style.setProperty("--text", palette.text);
+    root.style.setProperty("--gold", palette.gold);
+    root.style.setProperty("--line", palette.line);
+    document.body.style.background = palette.bg;
+    document.body.style.color = palette.text;
   }
 });
 
