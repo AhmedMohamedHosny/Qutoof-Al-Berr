@@ -3442,18 +3442,23 @@ body {
 /* =========================================================
    تأثيرات شاشة الصيانة وإغلاق المتجر الفاخرة
    ========================================================= */
-
 .closed-screen-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999999;
-  background: linear-gradient(rgba(7, 25, 20, 0.75), rgba(7, 25, 20, 0.88)), 
-              url("image/W.jpg") center/cover no-repeat !important;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: #120b05 !important; /* لون عسلي داكن مصمت 100% بدون أي شفافية */
+  z-index: 99999999 !important;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
   overflow: hidden;
+}
+
+/* إخفاء كامل عناصر الموقع من خلف الشاشة عند الإغلاق */
+body.store-closed > *:not(#storeClosedScreen) {
+  display: none !important;
 }
 
 /* إضاءات الأورب المضيئة المتحركة بالخلفية */
