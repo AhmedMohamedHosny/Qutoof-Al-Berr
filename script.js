@@ -1524,43 +1524,53 @@ function renderOffersCarousel() {
     const isExpired = o.expiryDate && new Date(o.expiryDate) <= new Date();
 
     return `
-      <div class="offer-3d-card">
-        <div class="offer-image-side">
-          <span class="offer-ribbon-tag">${escapeHtml(o.tag || "عرض مناحل خاص 🔥")}</span>
-          <img src="${o.image || 'image/S1.png'}" alt="${escapeHtml(o.title)}">
+      <div class="honey-offer-card">
+        <!-- جانب صورة العرض الطبيعية -->
+        <div class="honey-offer-img-box">
+          <span class="honey-offer-badge">🍯 ${escapeHtml(o.tag || "باقة توفير خاصة")}</span>
+          <img src="${o.image || 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=800&q=80'}" alt="${escapeHtml(o.title)}">
         </div>
-        <div class="offer-info-side">
-          <h3 class="offer-title-text">${escapeHtml(o.title)}</h3>
-          <p class="offer-desc-text">${escapeHtml(o.desc || "باقة أعسال طبيعية ممتازة ومضمونة 100% بتوفير خاص.")}</p>
-          
+
+        <!-- جانب تفاصيل العرض والأسعار -->
+        <div class="honey-offer-details">
+          <div class="honey-offer-header">
+            <span class="offer-producer-tag">🐝 من خلايا قطوف البر مباشرة</span>
+            <h3 class="honey-offer-title">${escapeHtml(o.title)}</h3>
+            <p class="honey-offer-desc">${escapeHtml(o.desc || "أعسال خام معتّقة مصفاة على البارد ومضمونة معملياً بالضمان الذهبي.")}</p>
+          </div>
+
+          <!-- عداد الوقت التنازلي الكلاسيكي -->
           ${o.expiryDate ? `
-            <div class="offer-timer-box" id="timerBox_${o.id}">
-              <span class="offer-timer-label">⏳ ينتهي العرض خلال:</span>
-              <div class="offer-timer-digits" id="timerDigits_${o.id}">
-                <span class="timer-segment" id="days_${o.id}">00ي</span>
-                <span class="timer-colon">:</span>
-                <span class="timer-segment" id="hours_${o.id}">00س</span>
-                <span class="timer-colon">:</span>
-                <span class="timer-segment" id="mins_${o.id}">00د</span>
-                <span class="timer-colon">:</span>
-                <span class="timer-segment" id="secs_${o.id}">00ث</span>
+            <div class="honey-timer-wrap" id="timerBox_${o.id}">
+              <span class="honey-timer-title">⏳ متبقي على انتهاء موسم العرض:</span>
+              <div class="honey-timer-boxes" id="timerDigits_${o.id}">
+                <div class="timer-unit"><strong id="days_${o.id}">00</strong><span>يوم</span></div>
+                <span class="timer-sep">:</span>
+                <div class="timer-unit"><strong id="hours_${o.id}">00</strong><span>ساعة</span></div>
+                <span class="timer-sep">:</span>
+                <div class="timer-unit"><strong id="mins_${o.id}">00</strong><span>دقيقة</span></div>
+                <span class="timer-sep">:</span>
+                <div class="timer-unit"><strong id="secs_${o.id}">00</strong><span>ثانية</span></div>
               </div>
             </div>
           ` : ''}
 
-          <div class="offer-pricing-bar">
-            <span class="offer-new-price">${Number(o.price || 0).toLocaleString("ar-EG")} جنيه</span>
-            ${o.oldPrice ? `<span class="offer-old-price">${Number(o.oldPrice).toLocaleString("ar-EG")} ج</span>` : ''}
-          </div>
+          <!-- الأسعار وزر الحجز -->
+          <div class="honey-offer-action-bar">
+            <div class="honey-pricing">
+              <span class="current-price">${Number(o.price || 0).toLocaleString("ar-EG")} جنيه</span>
+              ${o.oldPrice ? `<span class="prev-price">${Number(o.oldPrice).toLocaleString("ar-EG")} ج</span>` : ''}
+            </div>
 
-          ${isExpired ? `
-            <div class="offer-expired-badge">⚠️ عذراً، انتهت صلاحية هذا العرض</div>
-          ` : `
-            <button type="button" class="offer-claim-btn" onclick="claimSpecialOffer('${o.id}')">
-              <span>اطلب باقة العسل الآن</span>
-              <span>🍯</span>
-            </button>
-          `}
+            ${isExpired ? `
+              <div class="offer-expired-badge">انتهت باقات هذا العرض</div>
+            ` : `
+              <button type="button" class="honey-claim-btn" onclick="claimSpecialOffer('${o.id}')">
+                <span>اطلب باقة العسل الآن</span>
+                <span>🍯</span>
+              </button>
+            `}
+          </div>
         </div>
       </div>
     `;
