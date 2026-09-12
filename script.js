@@ -1432,12 +1432,11 @@ onSnapshot(perfumesCol, (snapshot) => {
 });
 
 /* =========================================================
-   ADMIN SECRET AUTHENTICATION
+   ADMIN SECRET AUTHENTICATION (Long Press for Mobile & PC)
    ========================================================= */
 
 const ADMIN_PASS = "01061934346";
-let logoClicks = 0;
-let clickTimer;
+let pressTimer = null;
 
 function checkAdminAuth() {
   const pass = prompt("أدخل كلمة سر لوحة تحكم مناحل قطوف البر:");
@@ -1448,22 +1447,36 @@ function checkAdminAuth() {
   }
 }
 
-function handleSecretLogoClicks(e) {
-  logoClicks++;
-  clearTimeout(clickTimer);
-  if (logoClicks === 5) {
+function startLongPress(e) {
+  // منع السلوك الافتراضي لو كان كليك يمين أو سحب
+  pressTimer = setTimeout(() => {
     e.preventDefault();
-    logoClicks = 0;
     checkAdminAuth();
-  } else {
-    clickTimer = setTimeout(() => { logoClicks = 0; }, 2000);
+  }, 4000); // 4000 تعني ضغطة مطولة لمدة 4 ثواني
+}
+
+function cancelLongPress() {
+  if (pressTimer) {
+    clearTimeout(pressTimer);
+    pressTimer = null;
   }
 }
 
-document.querySelector(".logo")?.addEventListener("click", handleSecretLogoClicks);
-document.querySelector(".closed-logo")?.addEventListener("click", handleSecretLogoClicks);
-document.querySelector(".logo-aura-wrap")?.addEventListener("click", handleSecretLogoClicks);
+const targetLogos = document.querySelectorAll(".logo, .closed-logo, .logo-aura-wrap");
 
+targetLogos.forEach(logo => {
+  // للموبايل (لمس مطول)
+  logo.addEventListener("touchstart", startLongPress);
+  logo.addEventListener("touchend", cancelLongPress);
+  logo.addEventListener("touchmove", cancelLongPress);
+
+  // للكمبيوتر (ضغط مطول بالفأرة)
+  logo.addEventListener("mousedown", startLongPress);
+  logo.addEventListener("mouseup", cancelLongPress);
+  logo.addEventListener("mouseleave", cancelLongPress);
+});
+
+// اختصار لوحة المفاتيح للكمبيوتر أيضاً (Ctrl + Shift + A)
 document.addEventListener("keydown", (e) => {
   if (e.shiftKey && e.ctrlKey && e.key.toLowerCase() === "a") {
     e.preventDefault();
