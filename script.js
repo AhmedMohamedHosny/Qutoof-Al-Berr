@@ -13,7 +13,7 @@ const firebaseConfig = {
   appId: "1:102462001917:web:90c140c1714f03afa66494",
   measurementId: "G-7FVJB2J87J"
 };
-
+ 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const perfumesCol = collection(db, "perfumes"); 
