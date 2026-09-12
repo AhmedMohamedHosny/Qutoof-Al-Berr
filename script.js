@@ -622,13 +622,21 @@ function addToCart(id, quantity = 1, size = 50) {
 }
 
 function removeFromCart(id, size) {
-  cart = cart.filter(item => !(String(item.id) === String(id) && String(item.size || '') === String(size || '')));
+  cart = cart.filter(item => {
+    const sameId = String(item.id) === String(id);
+    const sameSize = String(item.size ?? '') === String(size ?? '');
+    return !(sameId && sameSize);
+  });
   saveCart();
   updateCartUI();
 }
 
 function changeQuantity(id, change, size) {
-  const item = cart.find(item => String(item.id) === String(id) && String(item.size || '') === String(size || ''));
+  const item = cart.find(item => {
+    const sameId = String(item.id) === String(id);
+    const sameSize = String(item.size ?? '') === String(size ?? '');
+    return sameId && sameSize;
+  });
   if (!item) return;
 
   item.quantity += change;
@@ -939,21 +947,22 @@ document.addEventListener("click", event => {
       return;
     }
   }
+const cartAction = event.target.closest("[data-cart-action]");
+    if (cartAction) {
+      const action = cartAction.dataset.cartAction;
+      const id = cartAction.dataset.id;
+      const rawSize = cartAction.dataset.size ?? "";
+      // لو الحجم رقم (زي 30 أو 50) نخليه رقم، لو نص لعرض نتركه كنص
+      const size = (!isNaN(rawSize) && rawSize !== "") ? Number(rawSize) : rawSize;
 
-  const cartAction = event.target.closest("[data-cart-action]");
-  if (cartAction) {
-    const action = cartAction.dataset.cartAction;
-    const id = cartAction.dataset.id;
-    const size = Number(cartAction.dataset.size || 50);
-
-    if (action === "increase") changeQuantity(id, 1, size);
-    if (action === "decrease") changeQuantity(id, -1, size);
-    if (action === "remove") {
-      removeFromCart(id, size);
-      showToast(t("removedTitle"), t("removedText"));
+      if (action === "increase") changeQuantity(id, 1, size);
+      if (action === "decrease") changeQuantity(id, -1, size);
+      if (action === "remove") {
+        removeFromCart(id, size);
+        showToast(t("removedTitle"), t("removedText"));
+      }
+      return;
     }
-    return;
-  }
 
   if (event.target.id === "continueShopping") {
     closeCart();
@@ -1778,7 +1787,7 @@ window.claimSpecialOffer = function(offerId) {
   if (existing) {
     existing.quantity++;
   } else {
-    cart.push({
+cart.push({
       id: cartItemId,
       isOffer: true,
       name: `🔥 ${offer.title}`,
