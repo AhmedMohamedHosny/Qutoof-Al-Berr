@@ -897,13 +897,22 @@ const firebaseConfig = {
     const reviewsCol = collection(db, "reviews");
     const settingsDoc = doc(db, "settings", "storeConfig");
 
-    const STORE_THEMES = [
-      { id: "amber-honey", name: "الكهرمان البري (الأصلي)", gradient: "linear-gradient(135deg, #1c1308, #d97706)" },
-      { id: "golden-nectar", name: "رحيق الذهب الصافي", gradient: "linear-gradient(135deg, #26180c, #f59e0b)" },
-      { id: "mountain-sidr", name: "سدر الجبال الداكن", gradient: "linear-gradient(135deg, #120b05, #b45309)" },
-      { id: "royal-propolis", name: "العكبر والغذاء الملكي", gradient: "linear-gradient(135deg, #1f140a, #eab308)" },
-      { id: "black-seed", name: "حبة البركة والعسل", gradient: "linear-gradient(135deg, #0a0a0a, #d97706)" },
-      { id: "wild-forest", name: "غابات البراري والزهور", gradient: "linear-gradient(135deg, #14170d, #d4af37)" }
+const STORE_THEMES = [
+      { id: "white-pure", name: "1. الأبيض الملكي الناصع 🤍", gradient: "linear-gradient(135deg, #ffffff, #d97706)" },
+      { id: "amber-honey", name: "2. الكهرمان البري (الأصلي)", gradient: "linear-gradient(135deg, #1c1308, #d97706)" },
+      { id: "golden-nectar", name: "3. رحيق الذهب الصافي", gradient: "linear-gradient(135deg, #26180c, #f59e0b)" },
+      { id: "mountain-sidr", name: "4. سدر الجبال الداكن", gradient: "linear-gradient(135deg, #120b05, #b45309)" },
+      { id: "royal-propolis", name: "5. العكبر والغذاء الملكي", gradient: "linear-gradient(135deg, #1f140a, #eab308)" },
+      { id: "black-seed", name: "6. حبة البركة والعسل", gradient: "linear-gradient(135deg, #0a0a0a, #d97706)" },
+      { id: "wild-forest", name: "7. غابات البراري والزهور", gradient: "linear-gradient(135deg, #14170d, #d4af37)" },
+      { id: "cream-vanilla", name: "8. فانيليا العسل الفاتحة", gradient: "linear-gradient(135deg, #fdfbf7, #e0a96d)" },
+      { id: "royal-velvet", name: "9. المخملي الملكي الفاخر", gradient: "linear-gradient(135deg, #0f051d, #9333ea)" },
+      { id: "emerald-hive", name: "10. زمرد المناحل الخضراء", gradient: "linear-gradient(135deg, #062e1b, #10b981)" },
+      { id: "ruby-nectar", name: "11. ياقوت الرحيق الأحمر", gradient: "linear-gradient(135deg, #310d0f, #ef4444)" },
+      { id: "desert-sand", name: "12. رمال الصحراء الدافئة", gradient: "linear-gradient(135deg, #2d2013, #d97706)" },
+      { id: "midnight-blue", name: "13. أزرق المنتصف العميق", gradient: "linear-gradient(135deg, #080f1e, #3b82f6)" },
+      { id: "rose-gold", name: "14. ذهبي وردي عصري", gradient: "linear-gradient(135deg, #2b181b, #f43f5e)" },
+      { id: "espresso-honey", name: "15. إسبريسو بالعسل المركّز", gradient: "linear-gradient(135deg, #180f0a, #b45309)" }
     ];
 
     let selectedThemeId = "amber-honey";
