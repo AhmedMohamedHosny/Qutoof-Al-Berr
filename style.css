@@ -733,7 +733,25 @@ img {
   padding: 18px 14px;
   text-align: center;
 }
+.lang-btn {
+  min-width: 34px;
+  height: 30px;
+  padding: 0 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-line);
+  color: var(--honey-gold);
+  font-size: 11px;
+  font-weight: 800;
+  border-radius: var(--radius-sm);
+  display: grid;
+  place-items: center;
+  transition: var(--transition);
+}
 
+.lang-btn:hover {
+  background: var(--honey-gold);
+  color: #120b05;
+}
 .f-icon {
   font-size: 24px;
   display: inline-block;
