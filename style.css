@@ -1399,3 +1399,51 @@ img {
     gap: 20px;
   }
 }
+/* ================= ضبط صندوق وأيقونة البحث ================= */
+.search-panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, margin 0.3s ease;
+  margin-bottom: 0;
+}
+
+.search-panel.open {
+  max-height: 70px;
+  margin-bottom: 20px;
+}
+
+.search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-line);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+}
+
+.search-input-wrap svg {
+  width: 18px !important;
+  height: 18px !important;
+  fill: none !important;
+  stroke: var(--honey-gold) !important;
+  stroke-width: 2 !important;
+  flex-shrink: 0;
+}
+
+.search-input-wrap input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-main);
+  font-size: 13px;
+}
+
+.search-input-wrap button {
+  font-size: 20px;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
