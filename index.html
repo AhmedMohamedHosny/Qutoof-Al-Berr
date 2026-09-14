@@ -415,7 +415,16 @@
 
     <div class="cart-items" id="cartItems"></div>
 
-    <div class="cart-footer" id="cartFooter">
+<div class="cart-footer" id="cartFooter">
+      <!-- خانة كود الخصم (Promo Code) -->
+      <div class="coupon-box" style="margin-bottom: 14px;">
+        <div style="display: flex; gap: 6px;">
+          <input type="text" id="couponCodeInput" placeholder="أدخل كود الخصم (مثال: PROPHET)" style="flex:1; padding:9px 12px; background:var(--bg-main, var(--ivory)); border:1px solid var(--border-line, var(--line)); border-radius:4px; color:var(--text-main, var(--text)); font-size:12px; text-transform:uppercase; outline:none;">
+          <button type="button" id="applyCouponBtn" style="background:var(--honey-gold, var(--gold)); color:#1a0f05; font-weight:800; font-size:11px; padding:0 14px; border-radius:4px; border:none; cursor:pointer; transition: opacity 0.2s;">تطبيق</button>
+        </div>
+        <div id="couponStatusMsg" style="font-size:11px; margin-top:6px; display:none; font-weight:700;"></div>
+      </div>
+
       <div class="cart-summary">
         <span data-ar="الإجمالي" data-en="Subtotal">الإجمالي</span>
         <strong id="cartTotal">0 EGP</strong>
@@ -667,6 +676,10 @@
             <span>مصاريف الشحن:</span>
             <span id="summaryShipping">0 جنيه</span>
           </div>
+          <div class="summary-line" id="discountLineRow" style="display:none; color:var(--success, #2ecc71); font-weight:700;">
+            <span>قيمة الخصم المُطبق:</span>
+            <span id="summaryDiscount">- 0 جنيه</span>
+          </div>
           <div class="summary-line total-line">
             <strong>الإجمالي النهائي:</strong>
             <strong id="summaryTotal">0 جنيه</strong>
@@ -740,6 +753,14 @@
           <span>تواصل مع مسؤول المنحل عبر واتساب 💬</span>
         </a>
       </div>
+    </div>
+  </div>
+  <!-- إشعار الصلاة على النبي الدوري الهادئ -->
+  <div id="prophetPrayerNotification" class="prayer-gentle-toast" aria-live="polite">
+    <div class="prayer-toast-glow"></div>
+    <div class="prayer-toast-content">
+      <span class="prayer-toast-icon">🌿</span>
+      <span class="prayer-toast-msg">لا تنسَ الصلاة على الحبيب المصطفى ﷺ</span>
     </div>
   </div>
 </body>
