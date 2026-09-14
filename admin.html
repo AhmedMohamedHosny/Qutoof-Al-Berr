@@ -914,9 +914,12 @@
       <div class="panel">
         <div class="panel-title">
           <span>سجل طلبات العسل الواردة من الموقع</span>
-          <div style="display:flex; gap:8px; align-items:center;">
+<div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
             <button type="button" class="btn-submit" id="exportExcelBtn" style="margin:0; padding:6px 14px; font-size:11px; background:#217346; color:#fff;">
               📊 تصدير شيت Excel
+            </button>
+            <button type="button" class="btn-exit" id="clearAllOrdersBtn" style="margin:0; padding:6px 14px; font-size:11px; background:#b91c1c;">
+              🗑️ تصفير وحذف جميع الطلبيات
             </button>
             <button class="stock-btn" style="width:auto; padding:4px 10px; font-size:11px;" onclick="openSection('inventorySec')">➔ العودة للمخزون</button>
           </div>
@@ -1587,8 +1590,11 @@ const STORE_THEMES = [
             <td>${o.paymentMethod === "cod" ? "عند الاستلام" : "إلكتروني"}</td>
             <td><strong style="color:var(--gold);">${(o.pricing?.total || 0).toLocaleString("ar-EG")} ج</strong></td>
             <td><span style="color:${o.status === 'delivered' ? 'var(--success)' : 'var(--danger)'}; font-weight:700;">${o.status === 'delivered' ? 'تم التسليم' : 'جديد'}</span></td>
-            <td>
-              ${o.status !== 'delivered' ? `<button class="stock-btn" style="width:auto; padding:3px 8px; font-size:10px;" onclick="markDelivered('${o.id}')">✓ تأكيد التسليم</button>` : '—'}
+<td>
+              <div style="display:flex; align-items:center; gap:6px;">
+                ${o.status !== 'delivered' ? `<button class="stock-btn" style="width:auto; padding:3px 8px; font-size:10px;" onclick="markDelivered('${o.id}')">✓ تأكيد</button>` : '<span style="font-size:11px; color:var(--success);">مكتمل</span>'}
+                <button type="button" class="btn-card-delete" onclick="deleteSingleOrder('${o.id}')" title="حذف هذه الطلبية">✕</button>
+              </div>
             </td>
           </tr>
         `;
@@ -1618,7 +1624,44 @@ const STORE_THEMES = [
       await updateDoc(doc(db, "orders", id), { status: "delivered" });
       toast("تم تحويل حالة الطلب إلى تم التسليم! ✓");
     };
+// 1. حذف طلبية واحدة فردية بعلامة (✕)
+    window.deleteSingleOrder = async function(id) {
+      const ord = allOrders.find(x => x.id === id);
+      const name = ord?.customer?.name || "هذا الطلب";
 
+      if (!confirm(`هل أنت متأكد من حذف طلبية "${name}"؟ سيتم تحديث الإحصائيات تلقائياً.`)) return;
+
+      try {
+        await deleteDoc(doc(db, "orders", id));
+        toast("تم حذف الطلبية وتحديث الإحصائيات بنجاح! 🗑️");
+      } catch (err) {
+        toast("حدث خطأ أثناء محاولة حذف الطلبية!");
+      }
+    };
+
+    // 2. تصفير وحذف جميع الطلبيات والرجوع للصفر
+    document.getElementById("clearAllOrdersBtn")?.addEventListener("click", async () => {
+      if (allOrders.length === 0) {
+        alert("سجل الطلبات فارغ بالفعل!");
+        return;
+      }
+
+      const pass = prompt("تحذير: هذا الإجراء سيحذف كافة الطلبات المسجلة ويصفر الأرباح للصفر!\nأدخل كلمة مرور المشرف للتأكيد:");
+      if (!pass || pass.trim() !== "01061934346") {
+        if (pass !== null) alert("كلمة المرور غير صحيحة! تم إلغاء العملية.");
+        return;
+      }
+
+      if (!confirm(`هل أنت متأكد تماماً من حذف جميع الطلبات (${allOrders.length} طلبية) وتصفير السجل؟`)) return;
+
+      try {
+        const deletePromises = allOrders.map(o => deleteDoc(doc(db, "orders", o.id)));
+        await Promise.all(deletePromises);
+        toast("تم تصفير سجل الطلبات والإحصائيات بالكامل للصفر! 🧹");
+      } catch (err) {
+        toast("حدث خطأ أثناء تصفير السجل!");
+      }
+    });
     // 4. تصدير تقرير الإكسيل
     function cleanXml(val) {
       if (val === null || val === undefined) return "";
