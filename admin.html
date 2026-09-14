@@ -1180,6 +1180,63 @@
             <button type="submit" class="btn-submit" id="saveTickerBtn" style="width: 100%; margin-top: 10px; background: #2980b9; color: #fff;">📢 حفظ ونشر العروض في المتجر</button>
           </form>
         </div>
+        <!-- كارت كوبونات الخصم (Promo Codes) -->
+        <div class="panel" style="margin-bottom: 0; grid-column: 1 / -1;">
+          <div class="panel-title">
+            <span>🎟️ إدارة كوبونات الخصم والبروموكود</span>
+          </div>
+
+          <form id="createCouponForm">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+              <div class="form-group">
+                <label>كود الكوبون (باللغة الإنجليزية)*</label>
+                <input type="text" id="cpnCode" placeholder="مثال: EID10" style="text-transform: uppercase;" required>
+              </div>
+
+              <div class="form-group">
+                <label>نوع الخصم*</label>
+                <select id="cpnType">
+                  <option value="percent">نسبة مئوية (%)</option>
+                  <option value="fixed">مبلغ ثابت (جنيه)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>قيمة الخصم*</label>
+                <input type="number" id="cpnValue" placeholder="مثال: 10 أو 50" min="1" required>
+              </div>
+
+              <div class="form-group">
+                <label>تفعيل الكوبون</label>
+                <select id="cpnStatus">
+                  <option value="active">مفعل ويعمل</option>
+                  <option value="disabled">معطل مؤقتاً</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="saveCouponBtn" style="width: 100%; margin-top: 12px; background: #d97706; color: #fff;">
+              ➕ إضافة الكوبون وتفعيله بالمتجر
+            </button>
+          </form>
+
+          <!-- جدول الكوبونات النشطة -->
+          <div class="table-wrap" style="margin-top: 18px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>كود الخصم</th>
+                  <th>قيمة الخصم</th>
+                  <th>الحالة</th>
+                  <th>إجراء</th>
+                </tr>
+              </thead>
+              <tbody id="couponsTableBody">
+                <tr><td colspan="4" style="text-align:center; color:var(--text-muted);">جاري جلب الكوبونات...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -1233,8 +1290,7 @@ const firebaseConfig = {
     const perfumesCol = collection(db, "perfumes");
     const offersCol = collection(db, "offers");
     const reviewsCol = collection(db, "reviews");
-    const settingsDoc = doc(db, "settings", "storeConfig");
-
+const couponsCol = collection(db, "coupons");
 const STORE_THEMES = [
       { id: "white-pure", name: "1. الأبيض الملكي الناصع 🤍", gradient: "linear-gradient(135deg, #ffffff, #d97706)" },
       { id: "amber-honey", name: "2. الكهرمان البري (الأصلي)", gradient: "linear-gradient(135deg, #1c1308, #d97706)" },
@@ -2431,6 +2487,65 @@ function applyAdminTheme(themeId) {
     setInterval(showGentleReminder, 60000);
   }, 25000);
 })();
+    /* =========================================================
+       إدارة كوبونات الخصم والبروموكود
+       ========================================================= */
+    document.getElementById("createCouponForm")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const code = document.getElementById("cpnCode").value.trim().toUpperCase();
+      const type = document.getElementById("cpnType").value;
+      const val = Number(document.getElementById("cpnValue").value);
+      const active = document.getElementById("cpnStatus").value === "active";
+
+      const btn = document.getElementById("saveCouponBtn");
+      btn.disabled = true;
+
+      try {
+        await setDoc(doc(db, "coupons", code), {
+          code: code,
+          type: type,
+          value: val,
+          active: active,
+          createdAt: new Date()
+        });
+        toast(`تم تفعيل كوبون الخصم [${code}] بنجاح! 🎟️`);
+        e.target.reset();
+      } catch (err) {
+        toast("حدث خطأ أثناء حفظ الكوبون!");
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    onSnapshot(couponsCol, (snap) => {
+      const tbody = document.getElementById("couponsTableBody");
+      if (!tbody) return;
+
+      const list = [];
+      snap.forEach(d => list.push(d.data()));
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">لا توجد كوبونات خصم منشأة بعد.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(c => `
+        <tr>
+          <td><strong style="color:var(--gold); letter-spacing:1px;">${c.code}</strong></td>
+          <td>${c.type === 'percent' ? `${c.value}% خصم مئوي` : `${c.value} ج.م خصم ثابت`}</td>
+          <td><span style="color:${c.active ? 'var(--success)' : 'var(--danger)'}; font-weight:700;">${c.active ? 'مفعل' : 'معطل'}</span></td>
+          <td>
+            <button type="button" class="btn-card-delete" onclick="deleteCoupon('${c.code}')" title="حذف الكوبون">✕</button>
+          </td>
+        </tr>
+      `).join("");
+    });
+
+    window.deleteCoupon = async function(code) {
+      if (!confirm(`هل تريد حذف الكوبون [${code}] نهائياً؟`)) return;
+      await deleteDoc(doc(db, "coupons", code));
+      toast(`تم إيقاف وحذف الكوبون ${code}!`);
+    };
   </script>
         <!-- إشعار الصلاة على النبي الدوري الهادئ -->
   <div id="prophetPrayerNotification" class="prayer-gentle-toast" aria-live="polite">
