@@ -1387,7 +1387,7 @@ ${receiptMessageText}
 
     showToast("تم تأكيد طلب العسل بنجاح! 🍯", "جاري توجيهك إلى واتساب المنحل...");
 
-    const waUrl = `https://wa.me/201061934346?text=${encodeURIComponent(waMessage)}`;
+const waUrl = `https://wa.me/${currentAdminWa}?text=${encodeURIComponent(waMessage)}`;    
     setTimeout(() => {
       window.open(waUrl, "_blank");
     }, 1000);
@@ -1461,12 +1461,13 @@ onSnapshot(perfumesCol, (snapshot) => {
    ADMIN SECRET AUTHENTICATION (Long Press for Mobile & PC)
    ========================================================= */
 
-const ADMIN_PASS = "01061934346";
+let currentAdminPass = "01061934346"; // قيمة احتياطية
+let currentAdminWa = "201061934346";
 let pressTimer = null;
 
 function checkAdminAuth() {
   const pass = prompt("أدخل كلمة سر لوحة تحكم مناحل قطوف البر:");
-  if (pass === ADMIN_PASS) {
+  if (pass && pass.trim() === currentAdminPass.trim()) {
     window.location.href = "admin.html";
   } else if (pass !== null) {
     alert("كلمة السر غير صحيحة!");
@@ -1659,7 +1660,29 @@ onSnapshot(doc(db, "settings", "storeConfig"), (docSnap) => {
       document.body.classList.remove("no-scroll", "store-closed");
     }
   }
+// 1. مزامنة كلمة المرور ورقم الواتساب الحي
+  if (cfg.adminPassword) currentAdminPass = cfg.adminPassword;
+  if (cfg.whatsappNumber) {
+    currentAdminWa = cfg.whatsappNumber;
+    // تحديث رابط زر الواتساب العائم بالموقع
+    const waFloating = document.querySelector(".whatsapp-btn");
+    if (waFloating) waFloating.href = `https://wa.me/${currentAdminWa}`;
+  }
 
+  // 2. تحديث نصوص الشريط الإعلاني العلوي فوراً
+  const tickerMove = document.querySelector(".ticker-move");
+  if (tickerMove && (cfg.ticker1 || cfg.ticker2 || cfg.ticker3)) {
+    const t1 = cfg.ticker1 || "🍯 قال تعالى: ﴿فِيهِ شِفَاءٌ لِّلنَّاسِ﴾ 🍯";
+    const t2 = cfg.ticker2 || "🌿 قطوف البر — عسل طبيعي مفحوص معملياً وخام 100% 🌿";
+    const t3 = cfg.ticker3 || "🚚 شحن مجاني لكافة المحافظات للطلبات فوق 1,500 جنيه 🚚";
+    tickerMove.innerHTML = `
+      <div class="ticker-item">${t1}</div>
+      <div class="ticker-item">${t2}</div>
+      <div class="ticker-item">${t3}</div>
+      <div class="ticker-item">${t1}</div>
+      <div class="ticker-item">${t2}</div>
+    `;
+  }
   // 2. تطبيق الثيم والألوان التي يحددها المشرف فوراً لجميع الزوار
   const selectedTheme = cfg.theme || "white-pure";
   const palette = THEME_PALETTES[selectedTheme] || THEME_PALETTES["amber-honey"];
