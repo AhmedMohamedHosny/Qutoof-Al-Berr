@@ -435,6 +435,158 @@
       .panel { padding: 14px 10px; }
       .form-grid { grid-template-columns: 1fr; gap: 10px; }
     }
+    /* =========================================================
+       تنسيقات الثيم الأبيض الملكي للوحة التحكم بالكامل
+       ========================================================= */
+    body.theme-white-pure {
+      background: #f4f6f9 !important;
+      color: #1e293b !important;
+    }
+
+    body.theme-white-pure .top-bar {
+      background: #ffffff !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+
+    body.theme-white-pure .panel,
+    body.theme-white-pure .kpi-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+
+    body.theme-white-pure .kpi-label {
+      color: #64748b !important;
+      font-weight: 700;
+    }
+
+    body.theme-white-pure .dropdown-menu {
+      background: #ffffff !important;
+      border: 1px solid #cbd5e1 !important;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.12) !important;
+    }
+
+    body.theme-white-pure .dropdown-item {
+      color: #334155 !important;
+      border-bottom: 1px solid #f1f5f9 !important;
+    }
+
+    body.theme-white-pure .dropdown-item:hover {
+      background: #f8fafc !important;
+      color: #d97706 !important;
+    }
+
+    /* حقول الإدخال والقوائم المنسدلة */
+    body.theme-white-pure input,
+    body.theme-white-pure select,
+    body.theme-white-pure textarea {
+      background: #f8fafc !important;
+      border: 1px solid #cbd5e1 !important;
+      color: #0f172a !important;
+      font-weight: 600;
+    }
+
+    body.theme-white-pure input:focus,
+    body.theme-white-pure select:focus,
+    body.theme-white-pure textarea:focus {
+      border-color: #d97706 !important;
+      background: #ffffff !important;
+      box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+    }
+
+    body.theme-white-pure label {
+      color: #334155 !important;
+      font-weight: 800;
+    }
+
+    /* كروت وصناديق تسعير الأوزان */
+    body.theme-white-pure div[style*="background: rgba(38,24,12"],
+    body.theme-white-pure div[style*="background: rgba(18,11,5"] {
+      background: #f1f5f9 !important;
+      border: 1px solid #e2e8f0 !important;
+    }
+
+    body.theme-white-pure div[style*="background: rgba(18,11,5"] strong {
+      color: #92400e !important;
+    }
+
+    body.theme-white-pure div[style*="background: rgba(18,11,5"] label {
+      color: #64748b !important;
+    }
+
+    /* مربع رفع الصور */
+    body.theme-white-pure .file-uploader-box {
+      background: #f8fafc !important;
+      border: 2px dashed #cbd5e1 !important;
+      color: #475569 !important;
+    }
+
+    body.theme-white-pure .file-uploader-box:hover {
+      border-color: #d97706 !important;
+      background: #fffbeb !important;
+    }
+
+    /* كروت المخزون والأعسال المتوفرة بالمعرض */
+    body.theme-white-pure .stock-card {
+      background: #ffffff !important;
+      border: 1px solid #e2e8f0 !important;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    body.theme-white-pure .stock-card-name {
+      color: #0f172a !important;
+    }
+
+    body.theme-white-pure .stock-control-bar {
+      background: #f8fafc !important;
+      border-top: 1px solid #e2e8f0 !important;
+    }
+
+    body.theme-white-pure .stock-btn {
+      background: #e2e8f0 !important;
+      border: 1px solid #cbd5e1 !important;
+      color: #1e293b !important;
+    }
+
+    body.theme-white-pure .stock-btn:hover {
+      background: #d97706 !important;
+      color: #ffffff !important;
+    }
+
+    /* الجداول في القسم الأبيض */
+    body.theme-white-pure th {
+      background: #f1f5f9 !important;
+      color: #b45309 !important;
+      border-bottom: 1px solid #cbd5e1 !important;
+    }
+
+    body.theme-white-pure td {
+      border-bottom: 1px solid #f1f5f9 !important;
+      color: #334155 !important;
+    }
+
+    body.theme-white-pure table tr:hover td {
+      background: #f8fafc !important;
+    }
+
+    /* نافذة الثيمات */
+    body.theme-white-pure .theme-modal-box {
+      background: #ffffff !important;
+      border: 1px solid #cbd5e1 !important;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15) !important;
+      color: #0f172a !important;
+    }
+
+    body.theme-white-pure .theme-chip {
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      color: #1e293b !important;
+    }
+
+    body.theme-white-pure .theme-name-text {
+      color: #334155 !important;
+    }
   </style>
 </head>
 <body>
@@ -1989,15 +2141,22 @@ const STORE_THEMES = [
       "royal-propolis": { bg: "#140d06", panel: "#221509", top: "#140d06", text: "#fffbeb", line: "rgba(234, 179, 8, 0.25)", gold: "#eab308" }
     };
 
-    function applyAdminTheme(themeId) {
-      const pal = ADMIN_THEME_MAP[themeId] || ADMIN_THEME_MAP["amber-honey"];
-      document.body.style.background = pal.bg;
-      document.body.style.color = pal.text;
-      document.querySelectorAll(".top-bar").forEach(el => el.style.background = pal.top);
-      document.querySelectorAll(".panel, .kpi-card").forEach(el => el.style.background = pal.panel);
-      document.documentElement.style.setProperty("--text-light", pal.text);
-      document.documentElement.style.setProperty("--gold", pal.gold);
-      document.documentElement.style.setProperty("--line", pal.line);
+function applyAdminTheme(themeId) {
+      if (themeId === "white-pure") {
+        document.body.classList.add("theme-white-pure");
+        document.body.style.background = "";
+        document.body.style.color = "";
+      } else {
+        document.body.classList.remove("theme-white-pure");
+        const pal = ADMIN_THEME_MAP[themeId] || ADMIN_THEME_MAP["amber-honey"];
+        document.body.style.background = pal.bg;
+        document.body.style.color = pal.text;
+        document.querySelectorAll(".top-bar").forEach(el => el.style.background = pal.top);
+        document.querySelectorAll(".panel, .kpi-card").forEach(el => el.style.background = pal.panel);
+        document.documentElement.style.setProperty("--text-light", pal.text);
+        document.documentElement.style.setProperty("--gold", pal.gold);
+        document.documentElement.style.setProperty("--line", pal.line);
+      }
     }
 
     /* =========================================================
