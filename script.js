@@ -1686,7 +1686,7 @@ onSnapshot(doc(db, "settings", "storeConfig"), (docSnap) => {
   // 2. تطبيق الثيم والألوان التي يحددها المشرف فوراً لجميع الزوار
   const selectedTheme = cfg.theme || "white-pure";
   const palette = THEME_PALETTES[selectedTheme] || THEME_PALETTES["amber-honey"];
-
+localStorage.setItem("qutoof_cached_theme", selectedTheme);
   if (palette) {
     const root = document.documentElement;
     root.style.setProperty("--bg-main", palette.bg);
