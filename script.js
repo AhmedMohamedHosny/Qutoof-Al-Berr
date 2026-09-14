@@ -1662,8 +1662,15 @@ onSnapshot(doc(db, "settings", "storeConfig"), (docSnap) => {
   }
 // 1. مزامنة كلمة المرور ورقم الواتساب الحي
   if (cfg.adminPassword) currentAdminPass = cfg.adminPassword;
-  if (cfg.whatsappNumber) {
-    currentAdminWa = cfg.whatsappNumber;
+if (cfg.whatsappNumber) {
+    let cleanNum = String(cfg.whatsappNumber).replace(/\D/g, ""); // حذف أي مسافات أو رموز
+    if (cleanNum.startsWith("0")) {
+      cleanNum = "2" + cleanNum; // لو بدأ بـ 010 يصبح 2010
+    } else if (!cleanNum.startsWith("20")) {
+      cleanNum = "20" + cleanNum;
+    }
+    currentAdminWa = cleanNum;
+
     // تحديث رابط زر الواتساب العائم بالموقع
     const waFloating = document.querySelector(".whatsapp-btn");
     if (waFloating) waFloating.href = `https://wa.me/${currentAdminWa}`;
