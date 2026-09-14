@@ -125,13 +125,13 @@ html[dir="rtl"] .announcement-close {
 .navbar {
   height: 78px;
   width: 100%;
-background: rgba(10, 34, 28, .95);  
+  background: var(--bg-card, var(--cream));  
   backdrop-filter: blur(15px);
   -webkit-backdrop-filter: blur(15px);
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid var(--border-line, var(--line));
   transition: .3s ease;
 }
 
@@ -175,6 +175,12 @@ html[dir="rtl"] .desktop-nav {
   letter-spacing: 1.7px;
   text-transform: uppercase;
   position: relative;
+  color: var(--text-main, var(--text)) !important;
+}
+
+.icon-btn,
+.cart-btn {
+  color: var(--text-main, var(--text)) !important;
 }
 
 html[lang="ar"] .desktop-nav a,
@@ -2728,12 +2734,21 @@ html[dir="ltr"] .sf-option {
   left: 0;
   width: 100%;
   height: 40px;
-  background: #0a221c;
-  border-bottom: 1px solid var(--line);
+  background: var(--black, #1c1308);
+  border-bottom: 1px solid var(--border-line, var(--line));
   z-index: 10000;
   overflow: hidden;
   display: flex;
   align-items: center;
+}
+
+.ticker-item {
+  font-family: var(--sans-ar);
+  font-size: 13px;
+  font-weight: 700;
+  color: #fef3c7 !important; /* لون فاتح واضح دائماً بغض النظر عن الثيم */
+  padding: 0 80px;
+  display: inline-block;
 }
 
 .ticker-move {
