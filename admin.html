@@ -1276,40 +1276,44 @@ const STORE_THEMES = [
       document.getElementById("dropdownMenu")?.classList.toggle("show");
     });
 
-    function compressImageFile(file, maxWidth = 700, quality = 0.8) {
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (e) => {
-          const img = new Image();
-          img.src = e.target.result;
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            let w = img.width, h = img.height;
-            if (w > maxWidth) {
-              h = Math.round((h * maxWidth) / w);
-              w = maxWidth;
-            }
-            canvas.width = w;
-            canvas.height = h;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(img, 0, 0, w, h);
-            resolve(canvas.toDataURL("image/jpeg", quality));
-          };
-        };
-      });
-    }
+// مفتاح ImgBB API المجاني لرفع الصور سحابياً
+const IMGBB_API_KEY = "2da2a4b7baa7f50622c27991b2071319";
+    async function uploadImageToImgBB(file) {
+      const formData = new FormData();
+      formData.append("image", file);
 
-    document.getElementById("pFileInput")?.addEventListener("change", async (e) => {
+      try {
+        const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+          method: "POST",
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          return data.data.url; // الرابط المباشر الدائم للصورة
+        } else {
+          throw new Error(data.error?.message || "فشل رفع الصورة");
+        }
+      } catch (err) {
+        console.error("ImgBB Upload Error:", err);
+        throw err;
+      }
+    }
+document.getElementById("pFileInput")?.addEventListener("change", async (e) => {
       const file = e.target.files[0];
       if (!file) return;
-      currentBase64Image = await compressImageFile(file);
-      const previewImg = document.getElementById("previewImgEl");
-      const previewName = document.getElementById("previewNameEl");
-      if (previewImg) previewImg.src = currentBase64Image;
-      if (previewName) previewName.textContent = file.name;
-      document.getElementById("uploadPromptText").style.display = "none";
-      document.getElementById("imagePreviewContainer").style.display = "flex";
+      toast("جاري رفع الصورة سحابياً... ⏳");
+      try {
+        currentBase64Image = await uploadImageToImgBB(file);
+        const previewImg = document.getElementById("previewImgEl");
+        const previewName = document.getElementById("previewNameEl");
+        if (previewImg) previewImg.src = currentBase64Image;
+        if (previewName) previewName.textContent = "✓ تم الرفع بنجاح";
+        document.getElementById("uploadPromptText").style.display = "none";
+        document.getElementById("imagePreviewContainer").style.display = "flex";
+        toast("تم رفع صورة العسل بنجاح! ☁️");
+      } catch (err) {
+        toast("تعذر رفع الصورة! تأكد من اتصال الإنترنت أو صحة الـ API Key.");
+      }
     });
 
     onSnapshot(perfumesCol, (snapshot) => {
@@ -2079,14 +2083,20 @@ const STORE_THEMES = [
     // 8. باقات عروض المناحل
     let currentOfferImgBase64 = "";
 
-    document.getElementById("offerFileInput")?.addEventListener("change", async (e) => {
+document.getElementById("offerFileInput")?.addEventListener("change", async (e) => {
       const file = e.target.files[0];
       if (!file) return;
-      currentOfferImgBase64 = await compressImageFile(file, 800, 0.85);
-      document.getElementById("offerPreviewImg").src = currentOfferImgBase64;
-      document.getElementById("offerPreviewName").textContent = file.name;
-      document.getElementById("offerUploadText").style.display = "none";
-      document.getElementById("offerPreviewBox").style.display = "flex";
+      toast("جاري رفع صورة الباقة... ⏳");
+      try {
+        currentOfferImgBase64 = await uploadImageToImgBB(file);
+        document.getElementById("offerPreviewImg").src = currentOfferImgBase64;
+        document.getElementById("offerPreviewName").textContent = "✓ تم الرفع بنجاح";
+        document.getElementById("offerUploadText").style.display = "none";
+        document.getElementById("offerPreviewBox").style.display = "flex";
+        toast("تم رفع صورة العرض بنجاح! ☁️");
+      } catch (err) {
+        toast("فشل رفع صورة الباقة!");
+      }
     });
 
     document.getElementById("createOfferForm")?.addEventListener("submit", async (e) => {
@@ -2156,14 +2166,20 @@ const STORE_THEMES = [
     // 9. آراء وسكرينات الواتساب
     let currentRevBase64 = "";
 
-    document.getElementById("revFileInput")?.addEventListener("change", async (e) => {
+document.getElementById("revFileInput")?.addEventListener("change", async (e) => {
       const file = e.target.files[0];
       if (!file) return;
-      currentRevBase64 = await compressImageFile(file, 900, 0.85);
-      document.getElementById("revPreviewImg").src = currentRevBase64;
-      document.getElementById("revPreviewName").textContent = file.name;
-      document.getElementById("revUploadPrompt").style.display = "none";
-      document.getElementById("revPreviewBox").style.display = "flex";
+      toast("جاري رفع سكرين التجربة... ⏳");
+      try {
+        currentRevBase64 = await uploadImageToImgBB(file);
+        document.getElementById("revPreviewImg").src = currentRevBase64;
+        document.getElementById("revPreviewName").textContent = "✓ تم الرفع بنجاح";
+        document.getElementById("revUploadPrompt").style.display = "none";
+        document.getElementById("revPreviewBox").style.display = "flex";
+        toast("تم رفع سكرين الواتساب بنجاح! 💬");
+      } catch (err) {
+        toast("فشل رفع صورة التجربة!");
+      }
     });
 
     document.getElementById("addReviewForm")?.addEventListener("submit", async (e) => {
