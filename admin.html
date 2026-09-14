@@ -148,8 +148,19 @@
     .kpi-value.red { color: var(--danger); }
 
     /* محتوى الأقسام */
-    .section-view { display: none; }
-    .section-view.active { display: block; }
+/* محتوى الأقسام */
+    .section-view { 
+      display: none !important; 
+    }
+    .section-view.active { 
+      display: block !important; 
+      animation: fadeInSec 0.25s ease-in-out;
+    }
+
+    @keyframes fadeInSec {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     .panel {
       background: var(--honey-card);
@@ -876,9 +887,7 @@
       </div>
     </section>
 
-    <!-- 2. قسم إدارة الطلبات -->
-    <section id="ordersSec" class="section-view">
-      <div class="panel">
+
         <!-- 2. قسم إدارة الطلبات -->
     <section id="ordersSec" class="section-view">
 
