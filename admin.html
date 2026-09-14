@@ -43,7 +43,7 @@
       z-index: 100;
     }
     .brand-side { display: flex; align-items: center; gap: 12px; }
-    .brand-logo { height: 38px; width: auto; object-fit: contain; }
+.brand-logo { height: 52px; width: auto; object-fit: contain; }    
     .brand-title { font-size: 16px; font-weight: 800; color: var(--gold); }
     .brand-badge {
       background: rgba(245,158,11,0.15);
@@ -475,6 +475,9 @@
         <div class="dropdown-item" onclick="openSection('shippingSec')">
           <span>🚚 إدارة أسعار شحن المحافظات</span>
         </div>
+        <div class="dropdown-item" onclick="openSection('settingsSec')" style="color: #4ade80;">
+          <span>⚙️ إعدادات المتجر، الأمان والشريط الإعلاني</span>
+        </div>
         <div class="dropdown-item" id="syncDefaultsBtn" style="color: #64b5f6;">
           <span>📥 مزامنة عسل قطوف البر لـ Firebase</span>
         </div>
@@ -842,6 +845,64 @@
           </div>
           <button type="submit" class="btn-submit" id="saveShippingBtn" style="margin-top:20px; width:100%;">حفظ وتحديث أسعار الشحن بالمتجر 🚚</button>
         </form>
+      </div>
+    </section>
+    <!-- 7. قسم إعدادات المتجر، الأمان والشريط الإعلاني (Ticker) -->
+    <section id="settingsSec" class="section-view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="font-size: 20px; color: var(--gold); font-weight: 900;">⚙️ تخصيص العروض والإعدادات والأمان</h2>
+        <button class="stock-btn" style="width:auto; padding:6px 14px; font-size:11.5px;" onclick="openSection('inventorySec')">➔ العودة للمخزون</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px;">
+        <!-- كارت إعدادات المتجر والأمان -->
+        <div class="panel" style="margin-bottom: 0;">
+          <div class="panel-title">
+            <span>🛡️ إعدادات المتجر والأمان</span>
+          </div>
+
+          <form id="storeSecurityForm">
+            <div class="form-group" style="margin-bottom: 14px;">
+              <label>رقم واتساب استقبال الطلبات 📱</label>
+              <input type="tel" id="cfgAdminWhatsapp" placeholder="مثال: 201061934346" required>
+              <small style="font-size: 10px; color: var(--text-muted);">الرقم الذي ترسل إليه فواتير وبيانات الطلبات تلقائياً مع كود الدولة (20).</small>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 14px;">
+              <label>كلمة مرور لوحة التحكم (Admin Password) 🔒</label>
+              <input type="text" id="cfgAdminPassword" placeholder="أدخل كلمة مرور قوية" required>
+              <small style="font-size: 10px; color: var(--text-muted);">محمية سحابياً ولن تظهر أبداً في الكود البرمجي للمتجر.</small>
+            </div>
+
+            <button type="submit" class="btn-submit" id="saveSecurityBtn" style="width: 100%; margin-top: 10px; background: #27ae60; color: #fff;">💾 حفظ وتحديث الأمان والواتساب</button>
+          </form>
+        </div>
+
+        <!-- كارت الشريط الإعلاني العلوي (Ticker) -->
+        <div class="panel" style="margin-bottom: 0;">
+          <div class="panel-title">
+            <span>📢 الشريط الإعلاني العلوي (Ticker)</span>
+          </div>
+
+          <form id="storeTickerForm">
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label>نص العرض 1</label>
+              <input type="text" id="cfgTicker1" placeholder="مثال: 🍯 قال تعالى: ﴿فِيهِ شِفَاءٌ لِّلنَّاسِ﴾ 🍯" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label>نص العرض 2</label>
+              <input type="text" id="cfgTicker2" placeholder="مثال: 🌿 عسل طبيعي مفحوص معملياً وخام 100% 🌿" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label>نص العرض 3</label>
+              <input type="text" id="cfgTicker3" placeholder="مثال: 🚚 شحن مجاني لكافة المحافظات للطلبات فوق 1,500 جنيه 🚚" required>
+            </div>
+
+            <button type="submit" class="btn-submit" id="saveTickerBtn" style="width: 100%; margin-top: 10px; background: #2980b9; color: #fff;">📢 حفظ ونشر العروض في المتجر</button>
+          </form>
+        </div>
       </div>
     </section>
   </main>
@@ -1915,6 +1976,95 @@ const STORE_THEMES = [
       } finally {
         saveBtn.disabled = false;
         saveBtn.textContent = "حفظ وتحديث أسعار الشحن بالمتجر 🚚";
+      }
+    });
+    /* =========================================================
+       مزامنة مظهر لوحة التحكم مع نفس ثيم المتجر المختار لحظياً
+       ========================================================= */
+    const ADMIN_THEME_MAP = {
+      "white-pure": { bg: "#f5f6f8", panel: "#ffffff", top: "#ffffff", text: "#1a1a1a", line: "rgba(0,0,0,0.12)", gold: "#d97706" },
+      "amber-honey": { bg: "#120b05", panel: "#26180c", top: "#1c1308", text: "#fef3c7", line: "rgba(245, 158, 11, 0.25)", gold: "#f59e0b" },
+      "golden-nectar": { bg: "#1a1007", panel: "#26180c", top: "#1a1007", text: "#fff8db", line: "rgba(251, 191, 36, 0.25)", gold: "#fbbf24" },
+      "mountain-sidr": { bg: "#0c0703", panel: "#180e06", top: "#0c0703", text: "#f5e6d3", line: "rgba(217, 119, 6, 0.25)", gold: "#d97706" },
+      "royal-propolis": { bg: "#140d06", panel: "#221509", top: "#140d06", text: "#fffbeb", line: "rgba(234, 179, 8, 0.25)", gold: "#eab308" }
+    };
+
+    function applyAdminTheme(themeId) {
+      const pal = ADMIN_THEME_MAP[themeId] || ADMIN_THEME_MAP["amber-honey"];
+      document.body.style.background = pal.bg;
+      document.body.style.color = pal.text;
+      document.querySelectorAll(".top-bar").forEach(el => el.style.background = pal.top);
+      document.querySelectorAll(".panel, .kpi-card").forEach(el => el.style.background = pal.panel);
+      document.documentElement.style.setProperty("--text-light", pal.text);
+      document.documentElement.style.setProperty("--gold", pal.gold);
+      document.documentElement.style.setProperty("--line", pal.line);
+    }
+
+    /* =========================================================
+       إدارة إعدادات الأمان (كلمة السر + الواتساب + الشريط العلوي)
+       ========================================================= */
+    onSnapshot(settingsDoc, (snap) => {
+      if (!snap.exists()) return;
+      const data = snap.data();
+
+      // مزامنة ألوان لوحة المشرف مع لون المتجر فوراً
+      if (data.theme) applyAdminTheme(data.theme);
+
+      // تعبئة حقول الأمان
+      const passInp = document.getElementById("cfgAdminPassword");
+      const waInp = document.getElementById("cfgAdminWhatsapp");
+      if (passInp && data.adminPassword) passInp.value = data.adminPassword;
+      if (waInp && data.whatsappNumber) waInp.value = data.whatsappNumber;
+
+      // تعبئة حقول الشريط الإعلاني
+      const t1 = document.getElementById("cfgTicker1");
+      const t2 = document.getElementById("cfgTicker2");
+      const t3 = document.getElementById("cfgTicker3");
+      if (t1 && data.ticker1) t1.value = data.ticker1;
+      if (t2 && data.ticker2) t2.value = data.ticker2;
+      if (t3 && data.ticker3) t3.value = data.ticker3;
+    });
+
+    // حفظ بيانات الأمان والواتساب
+    document.getElementById("storeSecurityForm")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("saveSecurityBtn");
+      btn.disabled = true;
+      btn.textContent = "جاري الحفظ...";
+
+      try {
+        await setDoc(settingsDoc, {
+          adminPassword: document.getElementById("cfgAdminPassword").value.trim(),
+          whatsappNumber: document.getElementById("cfgAdminWhatsapp").value.trim()
+        }, { merge: true });
+        toast("تم حفظ كلمة المرور ورقم الواتساب بنجاح! 🔒");
+      } catch (err) {
+        toast("حدث خطأ أثناء حفظ الأمان!");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "💾 حفظ وتحديث الأمان والواتساب";
+      }
+    });
+
+    // حفظ نصوص الشريط الإعلاني
+    document.getElementById("storeTickerForm")?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById("saveTickerBtn");
+      btn.disabled = true;
+      btn.textContent = "جاري النشر...";
+
+      try {
+        await setDoc(settingsDoc, {
+          ticker1: document.getElementById("cfgTicker1").value.trim(),
+          ticker2: document.getElementById("cfgTicker2").value.trim(),
+          ticker3: document.getElementById("cfgTicker3").value.trim()
+        }, { merge: true });
+        toast("تم تحديث الشريط الإعلاني بالمتجر فوراً! 📢");
+      } catch (err) {
+        toast("حدث خطأ أثناء نشر العروض!");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "📢 حفظ ونشر العروض في المتجر";
       }
     });
   </script>
