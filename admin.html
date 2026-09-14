@@ -31,10 +31,11 @@
     }
 
     /* شريط الرأس */
-    .top-bar {
+.top-bar {
       background: var(--honey-main);
       border-bottom: 1px solid var(--line);
-      padding: 12px 24px;
+      padding: 10px 28px;
+      min-height: 76px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -42,9 +43,9 @@
       top: 0;
       z-index: 100;
     }
-    .brand-side { display: flex; align-items: center; gap: 12px; }
-.brand-logo { height: 52px; width: auto; object-fit: contain; }    
-    .brand-title { font-size: 16px; font-weight: 800; color: var(--gold); }
+    .brand-side { display: flex; align-items: center; gap: 14px; }
+    .brand-logo { height: 56px !important; width: auto; object-fit: contain; }
+    .brand-title { font-size: 20px; font-weight: 900; color: var(--gold); }
     .brand-badge {
       background: rgba(245,158,11,0.15);
       border: 1px solid var(--gold);
@@ -422,8 +423,11 @@
     @media (max-width: 600px) {
       .top-bar { padding: 8px 12px; }
       .brand-side { gap: 6px; }
-      .brand-logo { height: 28px; }
-      .brand-title { font-size: 12.5px; }
+.top-bar { min-height: 60px; }
+      .brand-logo { height: 42px !important; }
+      .brand-title { font-size: 14px; font-weight: 900; }
+
+      
       .brand-badge { display: none !important; }
       .actions-side { gap: 6px; }
       .btn-exit { padding: 6px 10px; font-size: 10px; }
@@ -593,10 +597,10 @@
 
   <!-- شريط الرأس -->
   <header class="top-bar">
-    <div class="brand-side">
-      <img src="image/logo.png" alt="قطوف البر" class="brand-logo">
-      <span class="brand-title">مناحل قطوف البر — الإدارة والطلبات</span>
-      <span class="brand-badge">لوحة التحكم</span>
+<div class="brand-side" style="display: flex; align-items: center; gap: 14px;">
+      <img src="image/logo.png" alt="قطوف البر" class="brand-logo" style="height: 56px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.12));">
+      <span class="brand-title" style="font-size: 20px; font-weight: 900; letter-spacing: -0.5px;">مناحل قطوف البر — الإدارة والطلبات</span>
+      <span class="brand-badge" style="font-size: 11px; padding: 4px 10px;">لوحة التحكم</span>
     </div>
 
     <div class="actions-side">
