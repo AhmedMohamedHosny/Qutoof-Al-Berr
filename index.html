@@ -2,6 +2,32 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
+  <script>
+    (function() {
+      try {
+        const savedTheme = localStorage.getItem("qutoof_cached_theme") || "white-pure";
+        const palettes = {
+          "white-pure": { bg: "#ffffff", card: "#fcfaf7", text: "#2b170c", gold: "#d97706", line: "rgba(217, 119, 6, 0.2)" },
+          "amber-honey": { bg: "#140d07", card: "#1f140a", text: "#fef3c7", gold: "#f59e0b", line: "rgba(245, 158, 11, 0.22)" },
+          "golden-nectar": { bg: "#1a1007", card: "#26180c", text: "#fff8db", gold: "#fbbf24", line: "rgba(251, 191, 36, 0.25)" },
+          "mountain-sidr": { bg: "#0c0703", card: "#180e06", text: "#f5e6d3", gold: "#d97706", line: "rgba(217, 119, 6, 0.25)" },
+          "royal-propolis": { bg: "#140d06", card: "#221509", text: "#fffbeb", gold: "#eab308", line: "rgba(234, 179, 8, 0.25)" }
+        };
+        const p = palettes[savedTheme] || palettes["white-pure"];
+        const r = document.documentElement;
+        r.style.setProperty("--bg-main", p.bg);
+        r.style.setProperty("--bg-card", p.card);
+        r.style.setProperty("--text-main", p.text);
+        r.style.setProperty("--honey-gold", p.gold);
+        r.style.setProperty("--border-line", p.line);
+        r.style.setProperty("--ivory", p.bg);
+        r.style.setProperty("--cream", p.card);
+        r.style.setProperty("--text", p.text);
+        r.style.setProperty("--gold", p.gold);
+        r.style.setProperty("--line", p.line);
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="قطوف البر — عسل طبيعي خام ومصفى من خيرات الطبيعة والمناحل البرية. شفاء، نقاء، وجودة لا تُضاهى.">
   <meta name="theme-color" content="#d97706">
