@@ -2089,19 +2089,20 @@ function renderHomeReviews() {
   if (!grid) return;
 
   if (allCustomerReviews.length === 0) {
-    grid.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color:var(--muted); font-size:13px; padding:30px 0;">سيتم نشر آراء وتجارب عملاء المناحل قريباً.</div>`;
+    grid.innerHTML = `<div style="color:var(--muted); font-size:13px; padding:20px 0; text-align:center; width:100%;">سيتم نشر آراء وتجارب عملاء المناحل قريباً.</div>`;
     if (moreBtnWrap) moreBtnWrap.style.display = "none";
     return;
   }
 
-  const top4 = allCustomerReviews.slice(0, 4);
-
-  grid.innerHTML = top4.map(r => `
+  const cardsHtml = (list) => list.map(r => `
     <div class="review-screen-card" onclick="openReviewLightbox('${r.image}')">
       <img src="${r.image}" class="review-screen-img" alt="${r.author || 'تجربة عميل'}">
       <div class="review-screen-caption">${r.author || 'رأي عميل عبر واتساب 💬'}</div>
     </div>
   `).join("");
+
+  // نكرر القائمة مرتين لضمان استمرار دوران الشريط بشكل لا نهائي (Infinite Loop)
+  grid.innerHTML = cardsHtml(allCustomerReviews) + cardsHtml(allCustomerReviews);
 
   if (moreBtnWrap) {
     moreBtnWrap.style.display = allCustomerReviews.length > 4 ? "block" : "none";
