@@ -2029,8 +2029,8 @@ body.dark-mode .lang-btn {
     display: none !important; /* إخفاء كلمة SURAKA في الموبايل */
   }
 
-  .logo img {
-    height: 30px !important;
+.logo img {
+    height: 44px !important;
   }
 
   /* الأيقونات في المنتصف متجهة لليسار */
