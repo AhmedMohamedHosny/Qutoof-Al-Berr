@@ -591,6 +591,96 @@
     body.theme-white-pure .theme-name-text {
       color: #334155 !important;
     }
+    /* =========================================================
+   إشعار الصلاة على النبي ﷺ الدوري الهادئ
+   ========================================================= */
+.prayer-gentle-toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(30px) scale(0.94);
+  z-index: 99999;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0.8s ease;
+}
+
+/* حالة الظهور */
+.prayer-gentle-toast.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+/* النور / الهالة المتوهجة أسفل الكبسولة */
+.prayer-toast-glow {
+  position: absolute;
+  inset: -6px;
+  background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.45) 0%, rgba(217, 119, 6, 0.15) 50%, transparent 75%);
+  border-radius: 50px;
+  filter: blur(10px);
+  z-index: 1;
+  animation: gentlePulseGlow 2.5s infinite alternate ease-in-out;
+}
+
+@keyframes gentlePulseGlow {
+  0% { transform: scale(0.92); opacity: 0.5; }
+  100% { transform: scale(1.08); opacity: 0.9; }
+}
+
+/* محتوى الكبسولة الزجاجي */
+.prayer-toast-content {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(20, 13, 7, 0.88);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 9px 22px;
+  border-radius: 50px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), inset 0 0 12px rgba(245, 158, 11, 0.1);
+  white-space: nowrap;
+}
+
+.prayer-toast-icon {
+  font-size: 14px;
+  animation: leafFloat 3s infinite ease-in-out alternate;
+}
+
+.prayer-toast-msg {
+  font-family: var(--sans-ar, 'Cairo', sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  color: #fef3c7;
+  letter-spacing: 0.2px;
+  text-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+@keyframes leafFloat {
+  0% { transform: rotate(-6deg) scale(0.95); }
+  100% { transform: rotate(6deg) scale(1.08); }
+}
+
+@media (max-width: 600px) {
+  .prayer-gentle-toast {
+    bottom: 80px; /* ليرتفع فوق أزرار الموبايل قليلاً */
+    width: auto;
+    max-width: 90vw;
+  }
+  .prayer-toast-content {
+    padding: 8px 16px;
+    gap: 8px;
+  }
+  .prayer-toast-msg {
+    font-size: 11.5px;
+  }
+}
   </style>
 </head>
 <body>
@@ -643,25 +733,7 @@
 
   <main class="container">
 
-    <!-- كروت إحصائيات المبيعات والأرقام الحية -->
-    <section class="kpi-row">
-      <div class="kpi-card">
-        <div class="kpi-label">إجمالي المبيعات التحصيلية</div>
-        <div class="kpi-value" id="kpiTotalRevenue">0 ج</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">عدد الطلبات المسجلة</div>
-        <div class="kpi-value green" id="kpiTotalOrders">0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">طلبات عسل قيد الانتظار</div>
-        <div class="kpi-value red" id="kpiNewOrders">0</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">الأصناف المتوفرة بالمناحل</div>
-        <div class="kpi-value" id="kpiPerfumesCount">0</div>
-      </div>
-    </section>
+
 
     <!-- 1. القسم الافتراضي: إدارة المحصول والمخزون للأعسال -->
     <section id="inventorySec" class="section-view active">
@@ -793,6 +865,30 @@
 
     <!-- 2. قسم إدارة الطلبات -->
     <section id="ordersSec" class="section-view">
+      <div class="panel">
+        <!-- 2. قسم إدارة الطلبات -->
+    <section id="ordersSec" class="section-view">
+
+      <!-- كروت إحصائيات المبيعات الخاصة بالطلبات فقط -->
+      <section class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-label">إجمالي المبيعات التحصيلية</div>
+          <div class="kpi-value" id="kpiTotalRevenue">0 ج</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">عدد الطلبات المسجلة</div>
+          <div class="kpi-value green" id="kpiTotalOrders">0</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">طلبات عسل قيد الانتظار</div>
+          <div class="kpi-value red" id="kpiNewOrders">0</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">الأصناف المتوفرة بالمناحل</div>
+          <div class="kpi-value" id="kpiPerfumesCount">0</div>
+        </div>
+      </section>
+
       <div class="panel">
         <div class="panel-title">
           <span>سجل طلبات العسل الواردة من الموقع</span>
@@ -2230,6 +2326,38 @@ function applyAdminTheme(themeId) {
         btn.textContent = "📢 حفظ ونشر العروض في المتجر";
       }
     });
+    /* =========================================================
+   إشعار الصلاة على الحبيب ﷺ الدوري (كل دقيقة لمدة 5 ثوانٍ)
+   ========================================================= */
+(function setupGentlePrayerReminder() {
+  const toastEl = document.getElementById("prophetPrayerNotification");
+  if (!toastEl) return;
+
+  function showGentleReminder() {
+    // إظهار التنبيه
+    toastEl.classList.add("active");
+
+    // يختفي بهدوء بعد 5 ثوانٍ
+    setTimeout(() => {
+      toastEl.classList.remove("active");
+    }, 5000);
+  }
+
+  // أول ظهور بعد 25 ثانية من فتح الموقع لترك انطباع هادئ
+  setTimeout(() => {
+    showGentleReminder();
+    // تكرار الظهور بانتظام كل 60 ثانية (دقيقة واحدة)
+    setInterval(showGentleReminder, 60000);
+  }, 25000);
+})();
   </script>
+        <!-- إشعار الصلاة على النبي الدوري الهادئ -->
+  <div id="prophetPrayerNotification" class="prayer-gentle-toast" aria-live="polite">
+    <div class="prayer-toast-glow"></div>
+    <div class="prayer-toast-content">
+      <span class="prayer-toast-icon">🌿</span>
+      <span class="prayer-toast-msg">لا تنسَ الصلاة على الحبيب المصطفى ﷺ</span>
+    </div>
+  </div>
 </body>
 </html>
