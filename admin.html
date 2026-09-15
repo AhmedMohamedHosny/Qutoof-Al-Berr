@@ -1286,12 +1286,14 @@ const firebaseConfig = {
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const ordersCol = collection(db, "orders");
+const ordersCol = collection(db, "orders");
     const perfumesCol = collection(db, "perfumes");
     const offersCol = collection(db, "offers");
     const reviewsCol = collection(db, "reviews");
-const couponsCol = collection(db, "coupons");
-const STORE_THEMES = [
+    const couponsCol = collection(db, "coupons");
+    const settingsDoc = doc(db, "settings", "storeConfig"); // هذا هو السطر الذي كان مفقوداً!
+
+    const STORE_THEMES = [
       { id: "white-pure", name: "1. الأبيض الملكي الناصع 🤍", gradient: "linear-gradient(135deg, #ffffff, #d97706)" },
       { id: "amber-honey", name: "2. الكهرمان البري (الأصلي)", gradient: "linear-gradient(135deg, #1c1308, #d97706)" },
       { id: "golden-nectar", name: "3. رحيق الذهب الصافي", gradient: "linear-gradient(135deg, #26180c, #f59e0b)" },
