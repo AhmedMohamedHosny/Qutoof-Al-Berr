@@ -5271,3 +5271,11 @@ html[dir="rtl"] @keyframes reviewsScroll {
   border-top: 1px solid var(--border-line, rgba(217, 119, 6, 0.2)) !important;
   color: var(--text-main, #2b170c) !important;
 }
+/* منع فتح الصورة أو قائمة المتصفح عند الضغط المطول على اللوجو */
+.logo, .logo img, .closed-logo, .logo-aura-wrap {
+  -webkit-touch-callout: none !important; /* يمنع قائمة الموبايل لفتح الصورة */
+  -webkit-user-select: none !important;
+  user-select: none !important;
+  -webkit-user-drag: none !important;     /* يمنع سحب الصورة */
+  pointer-events: auto;
+}
