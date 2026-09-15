@@ -1501,11 +1501,12 @@ function checkAdminAuth() {
 }
 
 function startLongPress(e) {
-  // منع السلوك الافتراضي لو كان كليك يمين أو سحب
+  // إلغاء أي مؤقت سابق
+  if (pressTimer) clearTimeout(pressTimer);
+
   pressTimer = setTimeout(() => {
-    e.preventDefault();
     checkAdminAuth();
-  }, 4000); // 4000 تعني ضغطة مطولة لمدة 4 ثواني
+  }, 3000); // 3 ثوانٍ ضغطة مستمرة
 }
 
 function cancelLongPress() {
@@ -1515,12 +1516,19 @@ function cancelLongPress() {
   }
 }
 
-const targetLogos = document.querySelectorAll(".logo, .closed-logo, .logo-aura-wrap");
+const targetLogos = document.querySelectorAll(".logo, .logo img, .closed-logo, .logo-aura-wrap");
 
 targetLogos.forEach(logo => {
+  // منع قائمة فتح الصورة الافتراضية للمتصفح نهائياً
+  logo.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    return false;
+  });
+
   // للموبايل (لمس مطول)
-  logo.addEventListener("touchstart", startLongPress);
+  logo.addEventListener("touchstart", startLongPress, { passive: true });
   logo.addEventListener("touchend", cancelLongPress);
+  logo.addEventListener("touchcancel", cancelLongPress);
   logo.addEventListener("touchmove", cancelLongPress);
 
   // للكمبيوتر (ضغط مطول بالفأرة)
