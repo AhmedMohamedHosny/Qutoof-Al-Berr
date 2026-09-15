@@ -1494,6 +1494,7 @@ let pressTimer = null;
 function checkAdminAuth() {
   const pass = prompt("أدخل كلمة سر لوحة تحكم مناحل قطوف البر:");
   if (pass && pass.trim() === currentAdminPass.trim()) {
+    sessionStorage.setItem("qutoof_admin_authenticated", "true"); // تخزين تصريح الدخول
     window.location.href = "admin.html";
   } else if (pass !== null) {
     alert("كلمة السر غير صحيحة!");
