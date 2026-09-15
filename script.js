@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { 
-  getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, 
+  getFirestore, collection, onSnapshot, addDoc, doc, updateDoc, getDoc,
   increment, setDoc, deleteDoc, serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
@@ -212,7 +212,7 @@ let selectedProduct = null;
 let currentPage = 1;
 const PRODUCTS_PER_PAGE = 8;
 let selectedSize = 50; // الحجم الافتراضي: نصف كيلو (500 جم)
-
+let activeCoupon = null; // يحفظ بيانات الكوبون المطبق
 // نسب تسعير أوزان العسل بناءً على سعر عبوة النصف كيلو (500 جم)
 const SIZE_MULTIPLIERS = {
   30: 0.55,  // ربع كيلو (250 جم)
@@ -593,10 +593,23 @@ function getCartCount() {
   }, 0);
 }
 
+// دالة مساعدة لحساب سعر العبوة الواحدة بعد تطبيق الكوبون
+function getItemDiscountedPrice(price) {
+  if (!activeCoupon) return price;
+  if (activeCoupon.type === "percent") {
+    return Math.round(price * (1 - (activeCoupon.value / 100)));
+  } else if (activeCoupon.type === "fixed") {
+    return Math.max(0, price - activeCoupon.value);
+  }
+  return price;
+}
+
 function getCartTotal() {
   return cart.reduce((total, item) => {
     const details = getCartItemDetails(item);
-    return details ? total + (details.price * item.quantity) : total;
+    if (!details) return total;
+    const finalItemPrice = getItemDiscountedPrice(details.price);
+    return total + (finalItemPrice * item.quantity);
   }, 0);
 }
 
@@ -658,7 +671,7 @@ function updateCartUI() {
 
   if (cart.length === 0) {
     cartItems.innerHTML = `
-<div class="cart-empty" style="text-align:center; padding:50px 20px;">
+      <div class="cart-empty" style="text-align:center; padding:50px 20px;">
         <div style="font-size:48px; margin-bottom:12px;">🍯</div>
         <h3 style="font-size:18px; font-weight:800; color:var(--honey-gold); margin-bottom:6px;">سلتك فارغة حالياً</h3>
         <p style="font-size:12px; color:var(--text-muted); line-height:1.6; margin-bottom:18px;">لم تقم بإضافة أي عبوة عسل بعد. اختر من محاصيلنا الطبيعية ما يناسب صحتك.</p>
@@ -675,13 +688,26 @@ function updateCartUI() {
     const details = getCartItemDetails(item);
     if (!details) return "";
 
+    const originalPrice = Number(details.price);
+    const discountedPrice = getItemDiscountedPrice(originalPrice);
+    const hasDiscount = activeCoupon && discountedPrice < originalPrice;
+
     return `
       <div class="cart-item">
         <img class="cart-item-image" src="${details.image}" alt="${escapeHtml(details.name)}" loading="lazy">
         <div class="cart-item-info">
           <span class="cart-item-category">${escapeHtml(details.categoryLabel)} · <strong style="color:var(--gold);">${details.size}</strong></span>
           <h3 class="cart-item-name">${escapeHtml(details.name)}</h3>
-          <span class="cart-item-price">${formatPrice(details.price)}</span>
+          
+          <div class="cart-item-price-wrap" style="margin-bottom: 6px;">
+            ${hasDiscount ? `
+              <span style="text-decoration: line-through; opacity: 0.55; font-size: 11px; margin-left: 6px;">${formatPrice(originalPrice)}</span>
+              <span style="color: var(--success, #2ecc71); font-weight: 800;">${formatPrice(discountedPrice)}</span>
+            ` : `
+              <span class="cart-item-price">${formatPrice(originalPrice)}</span>
+            `}
+          </div>
+
           <div class="cart-item-controls">
             <button class="cart-qty-btn" data-cart-action="decrease" data-id="${details.id}" data-size="${item.size || ''}">−</button>
             <span class="cart-qty">${item.quantity}</span>
@@ -2151,3 +2177,48 @@ window.openReviewLightbox = function(src) {
     modal.classList.add("open");
   }
 };
+/* =========================================================
+   تطبيق كود الخصم على عناصر السلة
+   ========================================================= */
+document.getElementById("applyCouponBtn")?.addEventListener("click", async () => {
+  const input = document.getElementById("couponCodeInput");
+  const msg = document.getElementById("couponStatusMsg");
+  const code = input ? input.value.trim().toUpperCase() : "";
+
+  if (!code) {
+    if (msg) {
+      msg.style.display = "block";
+      msg.style.color = "#e74c3c";
+      msg.textContent = "يرجى كتابة كود الخصم أولاً!";
+    }
+    return;
+  }
+
+  try {
+    const snap = await getDoc(doc(db, "coupons", code));
+    if (snap.exists() && snap.data().active) {
+      activeCoupon = snap.data();
+      if (msg) {
+        msg.style.display = "block";
+        msg.style.color = "#27ae60";
+        msg.textContent = `✓ تم تطبيق الخصم (${activeCoupon.type === 'percent' ? activeCoupon.value + '%' : activeCoupon.value + ' ج'}) على كل عبوة!`;
+      }
+      updateCartUI(); // تحديث السلة لتطبيق الخصم على كل منتج فوراً
+    } else {
+      activeCoupon = null;
+      if (msg) {
+        msg.style.display = "block";
+        msg.style.color = "#e74c3c";
+        msg.textContent = "الكوبون غير صحيح أو معطل!";
+      }
+      updateCartUI();
+    }
+  } catch (err) {
+    console.error(err);
+    if (msg) {
+      msg.style.display = "block";
+      msg.style.color = "#e74c3c";
+      msg.textContent = "تعذر فحص الكوبون، حاول مجدداً.";
+    }
+  }
+});
