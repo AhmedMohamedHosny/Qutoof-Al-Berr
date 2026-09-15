@@ -5201,4 +5201,73 @@ html[dir="rtl"] @keyframes reviewsScroll {
 .hero-cta-btn:hover .cta-arrow {
   transform: translateX(-4px);
 }
+/* =========================================================
+   مزامنة صفحة المنتج الكاملة مع ثيم المتجر (الأبيض أو غيره)
+   ========================================================= */
+.product-full-page {
+  background: var(--bg-main, #ffffff) !important;
+  color: var(--text-main, #2b170c) !important;
+}
 
+.pfp-top-nav {
+  background: var(--bg-card, #fcfaf7) !important;
+  border-bottom: 1px solid var(--border-line, rgba(217, 119, 6, 0.2)) !important;
+}
+
+.pfp-back-btn {
+  background: var(--bg-main, #ffffff) !important;
+  border: 1px solid var(--border-line, rgba(217, 119, 6, 0.3)) !important;
+  color: var(--text-main, #2b170c) !important;
+}
+
+.pfp-title {
+  color: var(--text-main, #2b170c) !important;
+}
+
+.pfp-description {
+  color: var(--text-main, #4a3427) !important;
+  opacity: 0.9;
+}
+
+.pfp-purchase-card {
+  background: var(--bg-card, #fcfaf7) !important;
+  border: 1px solid var(--border-line, rgba(217, 119, 6, 0.25)) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+.pfp-size-btn {
+  background: var(--bg-main, #ffffff) !important;
+  border: 1px solid var(--border-line, rgba(217, 119, 6, 0.3)) !important;
+  color: var(--text-main, #2b170c) !important;
+}
+
+.pfp-size-btn.active {
+  background: var(--honey-gold, #d97706) !important;
+  color: #ffffff !important;
+  border-color: var(--honey-gold, #d97706) !important;
+}
+
+.pfp-qty-picker {
+  background: var(--bg-main, #ffffff) !important;
+  border: 1px solid var(--border-line, rgba(217, 119, 6, 0.3)) !important;
+}
+
+.pfp-qty-btn {
+  color: var(--text-main, #2b170c) !important;
+}
+
+.pfp-qty-num {
+  color: var(--text-main, #2b170c) !important;
+}
+
+.pfp-notes-tags span {
+  background: var(--bg-card, #fcfaf7) !important;
+  border: 1px solid var(--border-line, rgba(217, 119, 6, 0.25)) !important;
+  color: var(--text-main, #2b170c) !important;
+}
+
+.pfp-footer {
+  background: var(--bg-card, #fcfaf7) !important;
+  border-top: 1px solid var(--border-line, rgba(217, 119, 6, 0.2)) !important;
+  color: var(--text-main, #2b170c) !important;
+}
