@@ -1153,20 +1153,20 @@
             <span>🛡️ إعدادات المتجر والأمان</span>
           </div>
 
+<!-- كارت إعدادات التواصل والواتساب -->
+        <div class="panel" style="margin-bottom: 0;">
+          <div class="panel-title">
+            <span>📱 إعدادات التواصل واستقبال الطلبات</span>
+          </div>
+
           <form id="storeSecurityForm">
             <div class="form-group" style="margin-bottom: 14px;">
               <label>رقم واتساب استقبال الطلبات 📱</label>
               <input type="tel" id="cfgAdminWhatsapp" placeholder="مثال: 201061934346" required>
-              <small style="font-size: 10px; color: var(--text-muted);">الرقم الذي ترسل إليه فواتير وبيانات الطلبات تلقائياً مع كود الدولة (20).</small>
+              <small style="font-size: 10px; color: var(--text-muted);">الرقم الذي ترسل إليه فواتير وبيانات طلبات العسل تلقائياً مع كود الدولة (20).</small>
             </div>
 
-            <div class="form-group" style="margin-bottom: 14px;">
-              <label>كلمة مرور لوحة التحكم (Admin Password) 🔒</label>
-              <input type="text" id="cfgAdminPassword" placeholder="أدخل كلمة مرور قوية" required>
-              <small style="font-size: 10px; color: var(--text-muted);">محمية سحابياً ولن تظهر أبداً في الكود البرمجي للمتجر.</small>
-            </div>
-
-            <button type="submit" class="btn-submit" id="saveSecurityBtn" style="width: 100%; margin-top: 10px; background: #27ae60; color: #fff;">💾 حفظ وتحديث الأمان والواتساب</button>
+            <button type="submit" class="btn-submit" id="saveSecurityBtn" style="width: 100%; margin-top: 10px; background: #27ae60; color: #fff;">💾 حفظ وتحديث رقم الواتساب</button>
           </form>
         </div>
 
@@ -2426,9 +2426,7 @@ function applyAdminTheme(themeId) {
       if (data.theme) applyAdminTheme(data.theme);
 
       // تعبئة حقول الأمان
-      const passInp = document.getElementById("cfgAdminPassword");
       const waInp = document.getElementById("cfgAdminWhatsapp");
-      if (passInp && data.adminPassword) passInp.value = data.adminPassword;
       if (waInp && data.whatsappNumber) waInp.value = data.whatsappNumber;
 
       // تعبئة حقول الشريط الإعلاني
@@ -2440,24 +2438,27 @@ function applyAdminTheme(themeId) {
       if (t3 && data.ticker3) t3.value = data.ticker3;
     });
 
-    // حفظ بيانات الأمان والواتساب
+// حفظ رقم الواتساب فقط
     document.getElementById("storeSecurityForm")?.addEventListener("submit", async (e) => {
       e.preventDefault();
       const btn = document.getElementById("saveSecurityBtn");
-      btn.disabled = true;
-      btn.textContent = "جاري الحفظ...";
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "جاري الحفظ...";
+      }
 
       try {
         await setDoc(settingsDoc, {
-          adminPassword: document.getElementById("cfgAdminPassword").value.trim(),
           whatsappNumber: document.getElementById("cfgAdminWhatsapp").value.trim()
         }, { merge: true });
-        toast("تم حفظ كلمة المرور ورقم الواتساب بنجاح! 🔒");
+        toast("تم تحديث رقم واتساب استقبال الطلبات بنجاح! 📱");
       } catch (err) {
-        toast("حدث خطأ أثناء حفظ الأمان!");
+        toast("حدث خطأ أثناء حفظ الرقم!");
       } finally {
-        btn.disabled = false;
-        btn.textContent = "💾 حفظ وتحديث الأمان والواتساب";
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = "💾 حفظ وتحديث رقم الواتساب";
+        }
       }
     });
 
