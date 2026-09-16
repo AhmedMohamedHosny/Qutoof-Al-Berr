@@ -1691,7 +1691,6 @@ onSnapshot(doc(db, "settings", "storeConfig"), (docSnap) => {
     }
   }
 // 1. مزامنة كلمة المرور ورقم الواتساب الحي
-  if (cfg.adminPassword) currentAdminPass = cfg.adminPassword;
 if (cfg.whatsappNumber) {
     let cleanNum = String(cfg.whatsappNumber).replace(/\D/g, ""); // حذف أي مسافات أو رموز
     if (cleanNum.startsWith("0")) {
