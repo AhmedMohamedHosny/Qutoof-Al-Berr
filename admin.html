@@ -1195,39 +1195,59 @@
             <button type="submit" class="btn-submit" id="saveTickerBtn" style="width: 100%; margin-top: 10px; background: #2980b9; color: #fff;">📢 حفظ ونشر العروض في المتجر</button>
           </form>
         </div>
-        <!-- كارت كوبونات الخصم (Promo Codes) -->
+<!-- كارت إدارة كوبونات الخصم المتقدمة -->
         <div class="panel" style="margin-bottom: 0; grid-column: 1 / -1;">
-          <div class="panel-title">
-            <span>🎟️ إدارة كوبونات الخصم والبروموكود</span>
+          <div class="panel-title" style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="color:var(--gold); font-weight:800;">🎟️ إضافة كوبون خصم جديد للمتجر</span>
           </div>
 
           <form id="createCouponForm">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;">
+            <!-- الصف الأول: الكود - النسبة - عدد الاستخدامات - تاريخ الانتهاء -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 15px;">
               <div class="form-group">
-                <label>كود الكوبون (باللغة الإنجليزية)*</label>
-                <input type="text" id="cpnCode" placeholder="مثال: EID10" style="text-transform: uppercase;" required>
+                <label>كود الكوبون (مثال: PROPHET)*</label>
+                <input type="text" id="cpnCode" placeholder="كود الكوبون" style="text-transform: uppercase;" required>
               </div>
 
               <div class="form-group">
-                <label>نوع الخصم*</label>
-                <select id="cpnType">
-                  <option value="percent">نسبة مئوية (%)</option>
-                  <option value="fixed">مبلغ ثابت (جنيه)</option>
-                </select>
+                <label>نسبة الخصم % (مثال: 10)*</label>
+                <input type="number" id="cpnValue" placeholder="نسبة الخصم %" min="1" max="100" required>
               </div>
 
               <div class="form-group">
-                <label>قيمة الخصم*</label>
-                <input type="number" id="cpnValue" placeholder="مثال: 10 أو 50" min="1" required>
+                <label>عدد الاستخدامات (فاضي = غير محدود)</label>
+                <input type="number" id="cpnMaxUses" placeholder="فاضي = غير محدود" min="1">
               </div>
 
               <div class="form-group">
-                <label>تفعيل الكوبون</label>
-                <select id="cpnStatus">
-                  <option value="active">مفعل ويعمل</option>
-                  <option value="disabled">معطل مؤقتاً</option>
-                </select>
+                <label>تاريخ ووقت الانتهاء (اختياري) ⏳</label>
+                <input type="datetime-local" id="cpnExpiry">
               </div>
+            </div>
+
+            <!-- خيار تطبيق الكوبون على كل المنتجات -->
+            <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-bottom: 10px;">
+              <label for="cpnApplyAll" style="font-size: 13px; font-weight: 800; cursor: pointer; color: var(--text-light);">ينطبق على كل منتجات المتجر</label>
+              <input type="checkbox" id="cpnApplyAll" checked style="width: 18px; height: 18px; cursor: pointer; accent-color: var(--gold);">
+            </div>
+
+            <!-- قائمة اختيار أصناف العسل المحددة -->
+            <div id="cpnProductsPickerBox" style="display: none; background: rgba(18, 11, 5, 0.75); border: 1px solid var(--line); border-radius: 8px; padding: 12px; max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
+              <div id="cpnProductsList" style="display: flex; flex-direction: column; gap: 8px;">
+                <!-- يتم توليد أصناف العسل تلقائياً -->
+              </div>
+            </div>
+
+            <button type="submit" class="btn-submit" id="saveCouponBtn" style="width: 100%; padding: 12px; font-size: 13px; background: linear-gradient(135deg, #0284c7, #0369a1); color: #fff; font-weight: 800; border-radius: 6px;">
+              + تفعيل وحفظ الكوبون
+            </button>
+          </form>
+
+          <!-- قائمة كروت الكوبونات المماثلة للتصميم المطلوب -->
+          <div id="couponsCardsList" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+            <!-- الكروت تظهر هنا -->
+          </div>
+        </div>>
             </div>
 
             <button type="submit" class="btn-submit" id="saveCouponBtn" style="width: 100%; margin-top: 12px; background: #d97706; color: #fff;">
@@ -1391,13 +1411,14 @@ document.getElementById("pFileInput")?.addEventListener("change", async (e) => {
       }
     });
 
-    onSnapshot(perfumesCol, (snapshot) => {
+onSnapshot(perfumesCol, (snapshot) => {
       allPerfumes = [];
       snapshot.forEach(docSnap => allPerfumes.push({ id: docSnap.id, ...docSnap.data() }));
       const countEl = document.getElementById("kpiPerfumesCount");
       if (countEl) countEl.textContent = allPerfumes.length;
       renderStockGrid();
       renderAnalytics();
+      populateCouponProductsChecklist();
     });
 
     function calcTotalStockPreview() {
@@ -2507,15 +2528,54 @@ function applyAdminTheme(themeId) {
     setInterval(showGentleReminder, 60000);
   }, 25000);
 })();
-    /* =========================================================
-       إدارة كوبونات الخصم والبروموكود
+/* =========================================================
+       إدارة كوبونات الخصم المتقدمة (تحديد الأصناف + عدد الاستخدامات + تاريخ الانتهاء)
        ========================================================= */
+
+    const cpnApplyAll = document.getElementById("cpnApplyAll");
+    const cpnPickerBox = document.getElementById("cpnProductsPickerBox");
+    const cpnProductsList = document.getElementById("cpnProductsList");
+
+    cpnApplyAll?.addEventListener("change", (e) => {
+      if (cpnPickerBox) {
+        cpnPickerBox.style.display = e.target.checked ? "none" : "block";
+      }
+    });
+
+    function populateCouponProductsChecklist() {
+      if (!cpnProductsList) return;
+      if (allPerfumes.length === 0) {
+        cpnProductsList.innerHTML = `<span style="font-size:11px; color:var(--text-muted);">لا توجد أصناف عسل مضافة بعد.</span>`;
+        return;
+      }
+
+      cpnProductsList.innerHTML = allPerfumes.map(p => `
+        <label style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.03); padding: 7px 10px; border-radius: 4px; cursor: pointer; font-size: 12px;">
+          <span style="color: var(--text-light);">${p.name}</span>
+          <input type="checkbox" class="cpn-product-item" value="${p.id}" style="width: 16px; height: 16px; accent-color: var(--gold); cursor: pointer;">
+        </label>
+      `).join("");
+    }
+
     document.getElementById("createCouponForm")?.addEventListener("submit", async (e) => {
       e.preventDefault();
       const code = document.getElementById("cpnCode").value.trim().toUpperCase();
-      const type = document.getElementById("cpnType").value;
-      const val = Number(document.getElementById("cpnValue").value);
-      const active = document.getElementById("cpnStatus").value === "active";
+      const value = Number(document.getElementById("cpnValue").value);
+      const maxUsesRaw = document.getElementById("cpnMaxUses").value.trim();
+      const maxUses = maxUsesRaw !== "" ? Number(maxUsesRaw) : null;
+      const expiryDate = document.getElementById("cpnExpiry").value || null;
+      const applyAll = document.getElementById("cpnApplyAll").checked;
+
+      let targetProductIds = [];
+      if (!applyAll) {
+        document.querySelectorAll(".cpn-product-item:checked").forEach(cb => {
+          targetProductIds.push(cb.value);
+        });
+        if (targetProductIds.length === 0) {
+          alert("يرجى اختيار صنف عسل واحد على الأقل أو تفعيل خيار (ينطبق على كل منتجات المتجر)!");
+          return;
+        }
+      }
 
       const btn = document.getElementById("saveCouponBtn");
       btn.disabled = true;
@@ -2523,13 +2583,21 @@ function applyAdminTheme(themeId) {
       try {
         await setDoc(doc(db, "coupons", code), {
           code: code,
-          type: type,
-          value: val,
-          active: active,
+          type: "percent",
+          value: value,
+          maxUses: maxUses,
+          expiryDate: expiryDate,
+          usedCount: 0,
+          applyAll: applyAll,
+          targetProducts: targetProductIds,
+          active: true,
           createdAt: new Date()
         });
+
         toast(`تم تفعيل كوبون الخصم [${code}] بنجاح! 🎟️`);
         e.target.reset();
+        document.getElementById("cpnApplyAll").checked = true;
+        if (cpnPickerBox) cpnPickerBox.style.display = "none";
       } catch (err) {
         toast("حدث خطأ أثناء حفظ الكوبون!");
       } finally {
@@ -2538,33 +2606,57 @@ function applyAdminTheme(themeId) {
     });
 
     onSnapshot(couponsCol, (snap) => {
-      const tbody = document.getElementById("couponsTableBody");
-      if (!tbody) return;
+      const container = document.getElementById("couponsCardsList");
+      if (!container) return;
 
       const list = [];
-      snap.forEach(d => list.push(d.data()));
+      snap.forEach(d => list.push({ id: d.id, ...d.data() }));
 
       if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:var(--text-muted);">لا توجد كوبونات خصم منشأة بعد.</td></tr>`;
+        container.innerHTML = `<div style="text-align:center; color:var(--text-muted); font-size:12px; padding:15px;">لا توجد كوبونات خصم منشأة حالياً.</div>`;
         return;
       }
 
-      tbody.innerHTML = list.map(c => `
-        <tr>
-          <td><strong style="color:var(--gold); letter-spacing:1px;">${c.code}</strong></td>
-          <td>${c.type === 'percent' ? `${c.value}% خصم مئوي` : `${c.value} ج.م خصم ثابت`}</td>
-          <td><span style="color:${c.active ? 'var(--success)' : 'var(--danger)'}; font-weight:700;">${c.active ? 'مفعل' : 'معطل'}</span></td>
-          <td>
-            <button type="button" class="btn-card-delete" onclick="deleteCoupon('${c.code}')" title="حذف الكوبون">✕</button>
-          </td>
-        </tr>
-      `).join("");
+      container.innerHTML = list.map(c => {
+        const remainingUses = c.maxUses !== null ? (c.maxUses - (c.usedCount || 0)) : null;
+        const isExhausted = remainingUses !== null && remainingUses <= 0;
+        const isExpired = c.expiryDate && (Date.now() > new Date(c.expiryDate).getTime());
+
+        let scopeText = c.applyAll ? "كل المنتجات" : `${(c.targetProducts || []).length} صنف محدد`;
+
+        let statusHtml = "";
+        if (isExpired) {
+          statusHtml = `<span style="color: #ef4444; font-weight: 800;">منتهي الصلاحية ⏳</span>`;
+        } else if (c.maxUses === null) {
+          statusHtml = `<span style="color: #4ade80; font-weight: 800;">غير محدود</span>`;
+        } else if (isExhausted) {
+          statusHtml = `<span style="color: #ef4444; font-weight: 800;">نفدت الاستخدامات (0 من ${c.maxUses})</span>`;
+        } else {
+          statusHtml = `<span style="color: #0284c7; font-weight: 800;">باقي ${remainingUses} من ${c.maxUses}</span>`;
+        }
+
+        return `
+          <div style="background: rgba(18, 11, 5, 0.9); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+            <button type="button" onclick="deleteCoupon('${c.code}')" style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer; padding:4px;" title="حذف الكوبون">
+              🗑️
+            </button>
+            <div style="font-size: 13px; text-align: left; direction: ltr; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <strong style="color: var(--text-light); font-size: 14px;">${c.code}</strong>
+              <span style="color: var(--text-muted);">(خصم ${c.value}%)</span>
+              <span style="color: var(--line);">—</span>
+              ${statusHtml}
+              <span style="color: var(--line);">—</span>
+              <span style="color: var(--text-muted); direction: rtl;">${scopeText}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
     });
 
     window.deleteCoupon = async function(code) {
       if (!confirm(`هل تريد حذف الكوبون [${code}] نهائياً؟`)) return;
       await deleteDoc(doc(db, "coupons", code));
-      toast(`تم إيقاف وحذف الكوبون ${code}!`);
+      toast(`تم حذف الكوبون [${code}]!`);
     };
 /* =========================================================
    نظام حماية وقفل لوحة التحكم عبر Firebase Auth الرسمي
