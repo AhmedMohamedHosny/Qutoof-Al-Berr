@@ -733,7 +733,7 @@
     </div>
 
     <div class="actions-side">
-      <a href="index.html" class="btn-exit">خروج للمتجر ➔</a>
+<a href="index.html" class="btn-exit" id="adminLogoutBtn">خروج للمتجر ➔</a>      
       <button class="menu-trigger-btn" id="menuBtn" title="القائمة الشاملة">☰</button>
 
       <!-- القائمة المنسدلة -->
@@ -2699,11 +2699,9 @@ document.getElementById("adminLoginForm")?.addEventListener("submit", async (e) 
   }
 });
 
-// تسجيل الخروج الآمن عند الضغط على زر الخروج
-document.querySelectorAll(".btn-exit").forEach(btn => {
-  btn.addEventListener("click", async () => {
-    await signOut(auth);
-  });
+// تسجيل الخروج الآمن عند الضغط على زر الخروج الرئيسي فقط
+document.getElementById("adminLogoutBtn")?.addEventListener("click", async () => {
+  await signOut(auth);
 });
   </script>
         <!-- إشعار الصلاة على النبي الدوري الهادئ -->
