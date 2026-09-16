@@ -712,19 +712,20 @@
   <!-- شريط الرأس -->
   <header class="top-bar">
     <!-- شاشة قفل الأمان للدخول للوحة التحكم -->
-  <div id="adminAuthLockScreen" style="position:fixed; inset:0; background:#120b05; z-index:999999; display:flex; align-items:center; justify-content:center; padding:15px;">
-    <div style="background:#1c1308; border:1px solid #f59e0b; border-radius:12px; padding:32px 24px; width:min(380px, 92vw); text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.85);">
-      <div style="font-size:42px; margin-bottom:12px;">🔒</div>
-      <h2 style="color:#f59e0b; font-size:18px; font-weight:900; margin-bottom:6px;">منطقة المشرفين فقط</h2>
-      <p style="color:#bda38b; font-size:11.5px; margin-bottom:20px; line-height:1.6;">لوحة تحكم مناحل قطوف البر محمية. يرجى إدخال كلمة المرور للمتابعة.</p>
-      
-      <form id="adminLoginForm" onsubmit="event.preventDefault(); submitAdminLogin();">
-        <input type="password" id="adminLoginInput" placeholder="أدخل كلمة المرور..." autocomplete="current-password" required style="width:100%; box-sizing:border-box; background:#120b05; border:1px solid rgba(245,158,11,0.3); color:#fff; padding:12px; border-radius:6px; font-size:13px; text-align:center; outline:none; margin-bottom:14px;">
-        <button type="submit" style="width:100%; background:linear-gradient(135deg, #f59e0b, #d97706); color:#120b05; font-weight:800; border:none; padding:12px; border-radius:6px; font-size:13px; cursor:pointer;">تسجيل الدخول للوحة التحكم</button>
-        <a href="index.html" style="display:block; color:#bda38b; font-size:11px; margin-top:14px; text-decoration:none;">➔ العودة للمتجر الرئيسي</a>
-      </form>
-    </div>
+<div id="adminAuthLockScreen" style="position:fixed; inset:0; background:#120b05; z-index:999999; display:flex; align-items:center; justify-content:center; padding:15px;">
+  <div style="background:#1c1308; border:1px solid #f59e0b; border-radius:12px; padding:32px 24px; width:min(380px, 92vw); text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.85);">
+    <div style="font-size:42px; margin-bottom:12px;">🔒</div>
+    <h2 style="color:#f59e0b; font-size:18px; font-weight:900; margin-bottom:6px;">تسجيل دخول المشرف</h2>
+    <p style="color:#bda38b; font-size:11.5px; margin-bottom:20px; line-height:1.6;">لوحة الإدارة مؤمنة بحساب Firebase الرسمي.</p>
+    
+    <form id="adminLoginForm">
+      <input type="email" id="adminEmailInput" placeholder="البريد الإلكتروني..." required style="width:100%; box-sizing:border-box; background:#120b05; border:1px solid rgba(245,158,11,0.3); color:#fff; padding:12px; border-radius:6px; font-size:13px; text-align:center; outline:none; margin-bottom:10px;">
+      <input type="password" id="adminLoginInput" placeholder="كلمة المرور..." autocomplete="current-password" required style="width:100%; box-sizing:border-box; background:#120b05; border:1px solid rgba(245,158,11,0.3); color:#fff; padding:12px; border-radius:6px; font-size:13px; text-align:center; outline:none; margin-bottom:14px;">
+      <button type="submit" id="adminLoginSubmitBtn" style="width:100%; background:linear-gradient(135deg, #f59e0b, #d97706); color:#120b05; font-weight:800; border:none; padding:12px; border-radius:6px; font-size:13px; cursor:pointer;">دخول آمن للوحة التحكم</button>
+      <a href="index.html" style="display:block; color:#bda38b; font-size:11px; margin-top:14px; text-decoration:none;">➔ العودة للمتجر الرئيسي</a>
+    </form>
   </div>
+</div>
 <div class="brand-side" style="display: flex; align-items: center; gap: 14px;">
 <img src="image/logo.png" alt="قطوف البر" class="brand-logo" style="height: 70px; width: auto; object-fit: contain;">  
       <span class="brand-title" style="font-size: 20px; font-weight: 900; letter-spacing: -0.5px;">مناحل قطوف البر — الإدارة والطلبات</span>
@@ -1283,6 +1284,7 @@
   <!-- فايربيز والمنطق البرمجي -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { 
       getFirestore, collection, onSnapshot, doc, updateDoc, 
       setDoc, getDoc, addDoc, deleteDoc
@@ -1306,6 +1308,7 @@ const ordersCol = collection(db, "orders");
     const reviewsCol = collection(db, "reviews");
     const couponsCol = collection(db, "coupons");
     const settingsDoc = doc(db, "settings", "storeConfig"); // هذا هو السطر الذي كان مفقوداً!
+    const auth = getAuth(app);
 
     const STORE_THEMES = [
       { id: "white-pure", name: "1. الأبيض الملكي الناصع 🤍", gradient: "linear-gradient(135deg, #ffffff, #d97706)" },
@@ -2562,53 +2565,53 @@ function applyAdminTheme(themeId) {
       await deleteDoc(doc(db, "coupons", code));
       toast(`تم إيقاف وحذف الكوبون ${code}!`);
     };
-    /* =========================================================
-   نظام حماية وقفل لوحة التحكم (Admin Auth Guard)
+/* =========================================================
+   نظام حماية وقفل لوحة التحكم عبر Firebase Auth الرسمي
    ========================================================= */
-let correctAdminPass = "01061934346"; // قيمة افتراضية
 
-// جلب كلمة السر الفعلية المحفوظة سحابياً في Firebase
-onSnapshot(settingsDoc, (snap) => {
-  if (snap.exists() && snap.data().adminPassword) {
-    correctAdminPass = String(snap.data().adminPassword).trim();
-  }
-});
-
-// فحص الجلسة: هل سجل المشرف دخوله بالفعل في هذا التبويب؟
-function checkAuthSession() {
-  const isLogged = sessionStorage.getItem("qutoof_admin_authenticated");
-  const lockEl = document.getElementById("adminAuthLockScreen");
-  
-  if (isLogged === "true") {
+// مراقبة حالة جلسة المشرف الحقيقية لحظياً
+const lockEl = document.getElementById("adminAuthLockScreen");
+onAuthStateChanged(auth, (user) => {
+  if (user) {
     if (lockEl) lockEl.style.display = "none";
   } else {
     if (lockEl) lockEl.style.display = "flex";
   }
-}
-
-// تنفيذ تسجيل الدخول
-window.submitAdminLogin = function() {
-  const input = document.getElementById("adminLoginInput");
-  const val = input ? input.value.trim() : "";
-
-  if (val === correctAdminPass) {
-    sessionStorage.setItem("qutoof_admin_authenticated", "true");
-    const lockEl = document.getElementById("adminAuthLockScreen");
-    if (lockEl) lockEl.style.display = "none";
-    toast("أهلاً بك في لوحة تحكم قطوف البر! 🍯");
-  } else {
-    alert("كلمة المرور غير صحيحة! تم حظر الوصول.");
-    if (input) input.value = "";
-  }
-};
-
-// تسجيل الخروج عند الضغط على زر "خروج للمتجر"
-document.querySelector(".btn-exit")?.addEventListener("click", () => {
-  sessionStorage.removeItem("qutoof_admin_authenticated");
 });
 
-// تشغيل الفحص فور فتح الصفحة
-checkAuthSession();
+// تنفيذ تسجيل الدخول الآمن بحساب الإيميل والباسورد
+document.getElementById("adminLoginForm")?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = document.getElementById("adminEmailInput")?.value.trim();
+  const pass = document.getElementById("adminLoginInput")?.value.trim();
+  const btn = document.getElementById("adminLoginSubmitBtn");
+
+  if (!email || !pass) return;
+
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "جاري التحقق...";
+  }
+
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    toast("أهلاً بك يا مدير! تم التحقق بنجاح 🍯");
+  } catch (err) {
+    alert("البريد الإلكتروني أو كلمة المرور غير صحيحة!");
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "دخول آمن للوحة التحكم";
+    }
+  }
+});
+
+// تسجيل الخروج الآمن عند الضغط على زر الخروج
+document.querySelectorAll(".btn-exit").forEach(btn => {
+  btn.addEventListener("click", async () => {
+    await signOut(auth);
+  });
+});
   </script>
         <!-- إشعار الصلاة على النبي الدوري الهادئ -->
   <div id="prophetPrayerNotification" class="prayer-gentle-toast" aria-live="polite">
